@@ -1,3 +1,6 @@
+# VIM
+*.swp
+
 *.py[cod]
 
 # C extensions
