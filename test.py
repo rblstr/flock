@@ -1,4 +1,5 @@
 import unittest
+import flock
 
 class FlockTestCase(unittest.TestCase):
 
