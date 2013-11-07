@@ -6,8 +6,18 @@
 	<body>
 		<h1>flock</h1>
 		<form action="/" method="get">
-			Subreddits:<input type="text" name="subreddits">
+			Subreddits:<input type="text" name="subreddits" value="{{subreddits}}">
 			<input type="submit" value="Submit">
 		</form>
+		<br>
+		<iframe width="560" height="315" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
+		<br>
+		<ol>
+		{% for link in links %}
+			<li>
+				<a href="{{link.get("url")}}">{{link.get("title")}}</a>
+			</li>
+		{% endfor %}
+		</ol>
 	</body>
 </html>

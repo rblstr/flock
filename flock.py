@@ -76,6 +76,15 @@ def parseChildren(children):
 			links.append(child)
 	return links
 
+def removeDuplicates(links):
+	urls = []
+	new_links = []
+	for link in links:
+		if link.get('url') not in urls:
+			new_links.append(link)
+			urls.append(link.get('url'))
+	return new_links
+
 def getLinks(subreddits):
 	connection = httplib.HTTPConnection(REDDIT_URL)
 	request_url = '/r/%s/top.json?t=week&limit=100' % '+'.join(subreddits)
@@ -89,6 +98,7 @@ def getLinks(subreddits):
 	children = response_object['data']['children']
 	children = [child.get('data') for child in children]
 	links = parseChildren(children)
+	links = removeDuplicates(links)
 	return links
 
 @app.route('/', methods=['GET'])
@@ -98,8 +108,9 @@ def front():
 		return render_template('front.html')
 	subreddits = subreddits.split()
 	links = getLinks(subreddits)
-	youtube_embed = '<iframe width="560" height="315" src="%s" frameborder="0" allowfullscreen></iframe>' % getYouTubeURL(links)
-	return youtube_embed
+	youtube_url = getYouTubeURL(links)
+	subreddit_str = " ".join(subreddits)
+	return render_template('front.html', subreddits=subreddit_str, youtube_url=youtube_url, links=links)
 
 if __name__ == '__main__':
 	app.run(debug=True)
