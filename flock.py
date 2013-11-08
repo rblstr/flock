@@ -85,7 +85,7 @@ def removeDuplicates(links):
 			urls.append(link.get('url'))
 	return new_links
 
-def getLinks(subreddits):
+def getChildren(subreddits):
 	connection = httplib.HTTPConnection(REDDIT_URL)
 	request_url = '/r/%s/top.json?t=week&limit=100' % '+'.join(subreddits)
 	headers = {
@@ -93,23 +93,39 @@ def getLinks(subreddits):
 	}
 	connection.request('GET', request_url, headers=headers)
 	response = connection.getresponse()
+	if not response or response.status != 200:
+		return None
 	body = response.read()
 	response_object = json.loads(body)
+	if response_object.get('error'):
+		return None
 	children = response_object['data']['children']
 	children = [child.get('data') for child in children]
+	return children
+
+def getLinks(children):
 	links = parseChildren(children)
 	links = removeDuplicates(links)
 	return links
 
+def renderInvalidSubreddits(subreddits):
+	return render_template('front.html', subreddits=subreddits, error='Invalid subreddits')
+
 @app.route('/', methods=['GET'])
 def front():
-	subreddits = request.args.get('subreddits')
+	subreddit_str = request.args.get('subreddits')
+	if not subreddit_str:
+		return renderInvalidSubreddits(subreddit_str)
+	subreddits = subreddit_str.split()
 	if not subreddits:
-		return render_template('front.html')
-	subreddits = subreddits.split()
-	links = getLinks(subreddits)
+		return renderInvalidSubreddits(subreddit_str)
+	children = getChildren(subreddits)
+	if not children:
+		return renderInvalidSubreddits(subreddit_str)
+	links = getLinks(children)
+	if not links:
+		return renderInvalidSubreddits()
 	youtube_url = getYouTubeURL(links)
-	subreddit_str = " ".join(subreddits)
 	return render_template('front.html', subreddits=subreddit_str, youtube_url=youtube_url, links=links)
 
 if __name__ == '__main__':
