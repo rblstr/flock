@@ -1,3 +1,4 @@
+import HTMLParser
 import urllib
 import urlparse
 import logging
@@ -70,9 +71,11 @@ def sanitiseURL(url):
 
 def parseChildren(children):
 	links = []
+	html_parser = HTMLParser.HTMLParser()
 	for child in children:
 		child['url'] = sanitiseURL(child.get('url'))
 		if child.get('url'):
+			child['title'] = html_parser.unescape(child.get('title'))
 			links.append(child)
 	return links
 
@@ -115,7 +118,7 @@ def renderInvalidSubreddits(subreddits):
 def front():
 	subreddit_str = request.args.get('subreddits')
 	if not subreddit_str:
-		return renderInvalidSubreddits(subreddit_str)
+		return render_template('front.html')
 	subreddits = subreddit_str.split()
 	if not subreddits:
 		return renderInvalidSubreddits(subreddit_str)
@@ -124,7 +127,7 @@ def front():
 		return renderInvalidSubreddits(subreddit_str)
 	links = getLinks(children)
 	if not links:
-		return renderInvalidSubreddits()
+		return renderInvalidSubreddits(subreddit_str)
 	youtube_url = getYouTubeURL(links)
 	return render_template('front.html', subreddits=subreddit_str, youtube_url=youtube_url, links=links)
 

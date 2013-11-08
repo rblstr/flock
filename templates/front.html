@@ -16,7 +16,7 @@
 		<ol>
 		{% for link in links %}
 			<li>
-				<a href="{{link.get("url")}}">{{link.get("title")}}</a>
+			<a href="{{link.get("url")}}">{{link.get("title")}}</a> - <a href="{{link.get("permalink")}}">Permalink</a>
 			</li>
 		{% endfor %}
 		</ol>
