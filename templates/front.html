@@ -2,21 +2,41 @@
 <html>
 	<head>
 		<title>flock - subreddit playlister</title>
+		<script>
+			var tag = document.createElement('script');
+
+			tag.src = "https://www.youtube.com/iframe_api";
+			var first_script_tag = document.getElementsByTagName('script')[0];
+			first_script_tag.parentNode.insertBefore(tag, first_script_tag);
+
+			var player;
+			function onYouTubeIframeAPIReady() {
+				player = new YT.Player('player', {
+					height: '390',
+					width: '640',
+					videoId: 'M7lc1UVf-VE',
+					events: {
+					}
+				});
+			}
+		</script>
 	</head>
 	<body>
 		<h1>flock</h1>
 		<form action="/" method="get">
-			Subreddits:<input type="text" name="subreddits" value="{{subreddits}}">
-			<input type="submit" value="Submit">
+			Subreddits:<input type="text" name="subreddits" value="{{subreddits}}" />
+			<input type="submit" value="Submit" />
 			<span>{{error}}</span>
 		</form>
-		<br>
-		<iframe width="560" height="315" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
-		<br>
+		<br/>
+		<iframe id="player" type="text/html" width="560" height="315" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
+		<br/>
 		<ol>
 		{% for link in links %}
 			<li>
-			<a href="{{link.get("url")}}">{{link.get("title")}}</a> - <a href="{{link.get("permalink")}}">Permalink</a>
+			<a href="javascript:player.playVideoAt({{links.index(link)}});">{{link.get("title")}}</a>
+			<br>
+			<a href="{{link.get("permalink")}}">{{link.get("num_comments")}} Comments</a> - <a href="{{link.get("url")}}">Permalink</a>
 			</li>
 		{% endfor %}
 		</ol>
