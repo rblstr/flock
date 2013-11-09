@@ -76,6 +76,7 @@ def parseChildren(children):
 		child['url'] = sanitiseURL(child.get('url'))
 		if child.get('url'):
 			child['title'] = html_parser.unescape(child.get('title'))
+			child['permalink'] = 'http://%s%s' % (REDDIT_URL, child.get('permalink'))
 			links.append(child)
 	return links
 
