@@ -1,39 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 		<title>flock - subreddit playlister</title>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/flock.css" rel="stylesheet">
 		<script>
-			var tag = document.createElement('script');
+			var tag = document.createElement('script'),
+				first_script_tag,
+				player;
 
 			tag.src = "https://www.youtube.com/iframe_api";
-			var first_script_tag = document.getElementsByTagName('script')[0];
+			first_script_tag = document.getElementsByTagName('script')[0];
 			first_script_tag.parentNode.insertBefore(tag, first_script_tag);
 
-			var player;
+			player;
 			function onYouTubeIframeAPIReady() {
 				player = new YT.Player('player');
 			}
 		</script>
 	</head>
 	<body>
-		<h1>flock</h1>
-		<form action="/" method="get">
-			Subreddits:<input type="text" name="subreddits" value="{{subreddits}}" />
-			<input type="submit" value="Submit" />
-			<span>{{error}}</span>
-		</form>
-		<br/>
-		<iframe id="player" type="text/html" width="560" height="315" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
-		<br/>
-		<ol>
-		{% for link in links %}
-			<li>
-			<a href="javascript:player.playVideoAt({{links.index(link)}});">{{link.get("title")}}</a>
-			<br>
-			<a href="{{link.get("permalink")}}">{{link.get("num_comments")}} Comments</a> - <a href="{{link.get("url")}}">Permalink</a>
-			</li>
-		{% endfor %}
-		</ol>
+		<div class="container">
+			<h1>flock</h1>
+			<form action="/" method="get">
+				<!-- Subreddits: <input type="text" name="subreddits" value="{{subreddits}}" />
+				<button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-play"></span> Play </button>
+				<span>{{error}}</span> -->
+
+				<div class="row">
+					<div class="col-lg-6">
+						<div class="input-group">
+					      <input type="text" placeholder="subreddit subreddit subreddit" class="form-control" name="subreddits" value="{{subreddits}}" />
+					      <span class="input-group-btn">
+					        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-play"></span> Play </button>
+					      </span>
+					    </div><!-- /input-group -->
+			    	</div><!-- /.col-lg-6 -->
+				</div><!-- /.row -->
+				<span>{{error}}</span>
+			</form>
+			<br/>
+			<iframe id="player" type="text/html" width="560" height="315" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
+			<br/>
+			<ol>
+				{% for link in links %}
+					<li>
+					<a href="javascript:player.playVideoAt({{links.index(link)}});">{{link.get("title")}}</a>
+					<br>
+					<a href="{{link.get("permalink")}}">{{link.get("num_comments")}} Comments</a> - <a href="{{link.get("url")}}">Permalink</a>
+					</li>
+				{% endfor %}
+			</ol>
+		</div>
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	    <script src="https://code.jquery.com/jquery.js"></script>
+	    <!-- Include all compiled plugins (for now) -->
+	    <script src="js/bootstrap.min.js"></script>
 	</body>
 </html>
