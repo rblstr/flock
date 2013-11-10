@@ -112,8 +112,21 @@ def getLinks(children):
 	links = removeDuplicates(links)
 	return links
 
-def renderInvalidSubreddits(subreddits):
-	return render_template('front.html', subreddits=subreddits, error='Invalid subreddits')
+def renderError(error_string, subreddit_str=None):
+	return render_template('front.html', subreddits=subreddit_str, error=error_string)
+
+def generatePlaylist(subreddits):
+	if not subreddits:
+		return render_template('front.html')
+	subreddit_str = " ".join(subreddits)
+	children = getChildren(subreddits)
+	if not children:
+		return renderError('Invalid subreddits', subreddit_str)
+	links = getLinks(children)
+	if not links:
+		return renderError('No links returned', subreddit_str)
+	youtube_url = getYouTubeURL(links)
+	return render_template('front.html', subreddits=subreddit_str, youtube_url=youtube_url, links=links)
 
 @app.route('/', methods=['GET'])
 def front():
@@ -121,16 +134,7 @@ def front():
 	if not subreddit_str:
 		return render_template('front.html')
 	subreddits = subreddit_str.split()
-	if not subreddits:
-		return renderInvalidSubreddits(subreddit_str)
-	children = getChildren(subreddits)
-	if not children:
-		return renderInvalidSubreddits(subreddit_str)
-	links = getLinks(children)
-	if not links:
-		return renderInvalidSubreddits(subreddit_str)
-	youtube_url = getYouTubeURL(links)
-	return render_template('front.html', subreddits=subreddit_str, youtube_url=youtube_url, links=links)
+	return generatePlaylist(subreddits)
 
 if __name__ == '__main__':
 	app.run(debug=True)
