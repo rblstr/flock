@@ -1,0 +1,41 @@
+.italic 
+{
+	font-style: italic;
+}
+
+.table
+{
+	display:table;
+}
+
+.table-row 
+{
+	display:table-row;
+}
+
+.table-cell
+{
+	display:table-cell;
+}
+
+/* Specific Styles */
+.container 
+{
+	max-width: 730px;
+}
+
+.player 
+{
+	display:block;
+	width:640px;
+	margin:0 auto;
+}
+
+.track > div 
+{
+	display:inline-block;
+}
+
+.playNumber
+{
+}
