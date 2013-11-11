@@ -12,7 +12,7 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 REDDIT_URL = 'www.reddit.com'
 YOUTUBE_API_URL = 'https://www.googleapis.com'
-YOUTUBE_API_TOKEN = 'AIzaSyCK-iuOjS8u7uDAwr_jyFKpnCpu3Jgh8w8'
+YOUTUBE_API_TOKEN = 'PUT_PRIVATE_TOKEN_HERE'
 assert YOUTUBE_API_TOKEN != 'PUT_PRIVATE_TOKEN_HERE', 'Please contact @rblstr regarding YouTube access token'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
 
