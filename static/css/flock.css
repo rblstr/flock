@@ -18,6 +18,11 @@
 	display:table-cell;
 }
 
+.float-right
+{
+	float:right;
+}
+
 /* Specific Styles */
 .container 
 {
@@ -38,4 +43,10 @@
 
 .playNumber
 {
+}
+
+.playTrack
+{
+	cursor:pointer;
+	text-decoration:underline;
 }

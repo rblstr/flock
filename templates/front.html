@@ -49,7 +49,7 @@
 			<!-- The list of tracks and such -->
 			<ul class="list-group">
 				{% for link in links %}
-					<li class="list-group-item track" data-playNum="{{ loop.index0 }}">
+					<li class="list-group-item track" data-playnum="{{ loop.index0 }}">
 						<div class="playNumber playTrack">
 							{{ loop.index }}
 						</div>
@@ -69,5 +69,13 @@
 	    <script src="https://code.jquery.com/jquery.js"></script>
 	    <!-- Include all compiled plugins (for now) -->
 	    <script src="js/bootstrap.min.js"></script>
+            <script type="text/javascript">
+		$(document).ready(function() {
+			$('.playTrack').on('click', function() {
+				console.log($(this).parent().data('playnum'));
+				player.playVideoAt($(this).parent().data('playnum'));
+			});
+		});
+	    </script>
 	</body>
 </html>
