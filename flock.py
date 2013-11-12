@@ -1,3 +1,5 @@
+from datetime import datetime, date
+import time
 import HTMLParser
 import urllib
 import urlparse
@@ -12,38 +14,38 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 REDDIT_URL = 'www.reddit.com'
 YOUTUBE_API_URL = 'https://www.googleapis.com'
-YOUTUBE_API_TOKEN = 'PUT_PRIVATE_TOKEN_HERE'
+YOUTUBE_API_TOKEN = 'AIzaSyAB7HWB9qehjXQPI-ZtBNGScdKXKqqsSgM'
 assert YOUTUBE_API_TOKEN != 'PUT_PRIVATE_TOKEN_HERE', 'Please contact @rblstr regarding YouTube access token'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
 
 
 def getRedditResponse(subreddits, sort='top', t='week', limit=100):
-    connection = httplib.HTTPConnection(REDDIT_URL)
+	connection = httplib.HTTPConnection(REDDIT_URL)
 
-    query = {
+	query = {
         't' : t,
         'limit' : limit
-    }
-    query_string = urllib.urlencode(query)
+	}
+	query_string = urllib.urlencode(query)
 
-    request_url = '/r/%s/%s.json?%s' % ('+'.join(subreddits), sort, query_string)
+	request_url = '/r/%s/%s.json?%s' % ('+'.join(subreddits), sort, query_string)
 
-    headers = {
-            'User-Agent' : USER_AGENT
-    }
+	headers = {
+        'User-Agent' : USER_AGENT
+	}
+	
+	connection.request('GET', request_url, headers=headers)
+	response = connection.getresponse()
 
-    connection.request('GET', request_url, headers=headers)
-    response = connection.getresponse()
-
-    if not response or response.status != 200:
+	if not response or response.status != 200:
 		return None
 
-    body = response.read()
-    response_object = json.loads(body)
-    if response_object.get('error'):
+	body = response.read()
+	response_object = json.loads(body)
+	if response_object.get('error'):
 		return None
 
-    return response_object
+	return response_object
 
 
 def getYouTubeResponse(links):
