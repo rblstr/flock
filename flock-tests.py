@@ -133,5 +133,104 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
         self.assertEquals(youtube_url, expected)
 
 
+class DuplicatesTestCase(unittest.TestCase):
+    def test_remove_duplicates_one_link(self):
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            }
+        ]
+        new_links = flock.removeDuplicates(links)
+        self.assertEquals(new_links, links)
+
+    def test_remove_duplicates_duplicate_links(self):
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            },
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            }
+        ]
+        new_links = flock.removeDuplicates(links)
+        del links[1]
+        self.assertEquals(new_links, links)
+
+    def test_remove_duplicates_non_duplicate_links(self):
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            },
+            {
+                'url' : 'http://www.youtube.com/watch?v=eAUaOTLvBIM'
+            }
+        ]
+        new_links = flock.removeDuplicates(links)
+        self.assertEquals(new_links, links)
+
+    def test_remove_duplicates_duplicate_links_order_preserved(self):
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk'
+            },
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            },
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            },
+            {
+                'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+            }
+        ]
+        new_links = flock.removeDuplicates(links)
+        del links[2]
+        self.assertEquals(new_links, links)
+
+""" replace getYouTubeResponse """
+original_getYouTubeResponse = flock.getYouTubeResponse
+
+def mock_getYouTubeResponse_no_reponse(links):
+    return None
+
+def mock_getYouTubeResponse_fixed_response(links):
+    response_object = {
+        'items' : [
+            {
+                'snippet' : {
+                    'title' : 'Burial - Untrue (Full Album Mix)'
+                }
+            }
+        ]
+    }
+    return response_object
+
+class GetLinkTitlesTestCase(unittest.TestCase):
+    def tearDown(self):
+        flock.getYouTubeResponse = original_getYouTubeResponse
+
+    def test_get_link_titles_no_response(self):
+        flock.getYouTubeResponse = mock_getYouTubeResponse_no_reponse
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM',
+                'title' : 'Burial - Untrue (Full Album Mix) This is six years old today! (X-post r/dubstep)'
+            }
+        ]
+        new_links = flock.getLinkTitles(links)
+        self.assertEquals(new_links[0]['video_title'], links[0]['title'])
+
+    def test_get_link_titles_response(self):
+        flock.getYouTubeResponse = mock_getYouTubeResponse_fixed_response
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            }
+        ]
+        new_links = flock.getLinkTitles(links)
+        self.assertEquals(new_links[0]['video_title'], 'Burial - Untrue (Full Album Mix)')
+
+    """ TODO: Order is preserved with multiple titles """
+
 if __name__ == '__main__':
     unittest.main()
