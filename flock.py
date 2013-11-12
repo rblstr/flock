@@ -77,15 +77,17 @@ def getYouTubeResponse(links):
 
 
 def sanitiseShortYouTubeURL(url):
-    # parse URL
-    parsed = urlparse.urlparse(url)
-    # get video id
-    video_id = parsed.path[1:]
-    if not video_id:
+	if not 'youtu.be' in url:
 		return None
-    # create new url
-    new_url = 'http://www.youtube.com/watch?v=%s' % video_id
-    return new_url
+	# parse URL
+	parsed = urlparse.urlparse(url)
+	# get video id
+	video_id = parsed.path[1:]
+	if not video_id:
+		return None
+	# create new url
+	new_url = 'http://www.youtube.com/watch?v=%s' % video_id
+	return new_url
 
 
 def sanitiseYouTubeURL(url):
