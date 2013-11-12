@@ -142,6 +142,8 @@ def removeDuplicates(links):
 def getLinkTitles(links):
 	response_object = getYouTubeResponse(links)
 	if not response_object:
+		for link in links:
+			link['video_title'] = link.get('title')
 		return links # No YouTube response, but no matter
 	
 	for i,item in enumerate(response_object.get('items')):
@@ -156,7 +158,7 @@ def generateYouTubeURL(links):
     youtube_ids = []
     for entry in links:
 		link_url = entry.get('url')
-		v_id = urlparse.parse_qs(urlparse.urlparse(link_url).query).get("v")[0]
+		v_id = urlparse.parse_qs(urlparse.urlparse(link_url).query).get("v")
 		if not v_id:
 			continue
 		v_id = v_id[0]

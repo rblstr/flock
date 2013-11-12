@@ -92,5 +92,46 @@ class SanitiseURLCase(unittest.TestCase):
         new_url = flock.sanitiseURL(url)
         self.assertEquals(new_url, None)
 
+class YouTubeEmbedURLTestCase(unittest.TestCase):
+    def test_generate_youtube_embed_url_one_link(self):
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            }
+        ]
+        youtube_url = flock.generateYouTubeURL(links)
+        expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=&showinfo=1&autohide=0&rel=0'
+        self.assertEquals(youtube_url, expected)
+
+    def test_generate_youtube_embed_url_two_links(self):
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            },
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            }
+        ]
+        youtube_url = flock.generateYouTubeURL(links)
+        expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+        self.assertEquals(youtube_url, expected)
+
+    def test_generate_youtube_embed_url_multiple_links(self):
+        links = [
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            },
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            },
+            {
+                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+            }
+        ]
+        youtube_url = flock.generateYouTubeURL(links)
+        expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM%2CwRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+        self.assertEquals(youtube_url, expected)
+
+
 if __name__ == '__main__':
     unittest.main()
