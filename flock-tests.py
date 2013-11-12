@@ -1,6 +1,5 @@
 import unittest
 import flock
-import json
 
 """ Override getRedditResponse() """
 original_getRedditResponse = flock.getRedditResponse
@@ -230,7 +229,6 @@ class GetLinkTitlesTestCase(unittest.TestCase):
         new_links = flock.getLinkTitles(links)
         self.assertEquals(new_links[0]['video_title'], 'Burial - Untrue (Full Album Mix)')
 
-    """ TODO: Order is preserved with multiple titles """
-
 if __name__ == '__main__':
     unittest.main()
+
