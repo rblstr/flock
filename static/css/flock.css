@@ -23,6 +23,11 @@
 	float:right;
 }
 
+.grey
+{
+	color:#ccc;
+}
+
 /* Specific Styles */
 .container 
 {
@@ -43,10 +48,11 @@
 
 .playNumber
 {
+	font-size: 1em;
 }
 
 .playTrack
 {
 	cursor:pointer;
-	text-decoration:underline;
+	max-width: 550px;
 }

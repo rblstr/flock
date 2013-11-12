@@ -47,35 +47,44 @@
 			<br/>
 
 			<!-- The list of tracks and such -->
-			<ul class="list-group">
-				{% for link in links %}
-					<li class="list-group-item track" data-playnum="{{ loop.index0 }}">
-						<div class="playNumber playTrack">
-							{{ loop.index }}
-						</div>
-						<div class="playTrack">
-							{{ link.get("title") }}
-						</div>
-						<div class="">
-							<a class="italic permalink" href="{{ link.get("url") }}">Permalink</a>
-							<a class="comments badge" href="{{ link.get("permalink") }}">{{link.get("num_comments")}}</a>
-						</div>
-					</li>
-				{% endfor %}
-			</ol>
+			<table class="table table-striped">
+				<tbody>
+					{% for link in links %}
+						<tr class="track" data-playnum="{{ loop.index0 }}">
+							<td class="playNumber playTrack">
+								{{ loop.index }}
+							</td>
+							<td class="playTrack">
+								{{ link.get("title") }}
+							</td>
+							<td class="">
+								<a class="italic permalink" href="{{ link.get("url") }}">Permalink</a>
+								<a class="comments badge" href="{{ link.get("permalink") }}">{{link.get("num_comments")}}</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	    <script src="https://code.jquery.com/jquery.js"></script>
 	    <!-- Include all compiled plugins (for now) -->
 	    <script src="js/bootstrap.min.js"></script>
-            <script type="text/javascript">
-		$(document).ready(function() {
-			$('.playTrack').on('click', function() {
-				console.log($(this).parent().data('playnum'));
-				player.playVideoAt($(this).parent().data('playnum'));
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('.playTrack').on('mouseenter', function() {
+					$(this).parent().find('.playNumber').html('<span class="glyphicon glyphicon-play"></span>').addClass('.grey');
+				});
+				
+				$('.playTrack').on('mouseout', function() {
+					$(this).parent().find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1).removeClass('grey');
+				});
+
+				$('.playTrack').on('click', function() {
+					player.playVideoAt($(this).parent().data('playnum'));
+				});
 			});
-		});
 	    </script>
 	</body>
 </html>
