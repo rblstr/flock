@@ -42,15 +42,30 @@
 							</td>
 							<td class="playTrack playTitle">
 								{{ link.get("title") }}
+								<span class="comments">
+									<a class="commentNum" target="_blank" href="{{ link.get("permalink") }}">
+								
+										<span class="glyphicon glyphicon-comment"></span>
+										{{link.get("num_comments")}}</a>
+									</a>
+								</span>
 							</td>
 							<td class="">
-								<a class="italic permalink" href="{{ link.get("url") }}">Permalink</a>
-								<a class="comments badge" href="{{ link.get("permalink") }}">{{link.get("num_comments")}}</a>
+								<span class="youtube">
+									<a class="italic permalink" target="_blank" href="{{ link.get("url") }}">
+										<span class="glyphicon glyphicon-film"></span>
+										YouTube
+									</a>
+								</span>
 							</td>
 						</tr>
 					{% endfor %}
 				</tbody>
 			</table>
+
+			<div class="footer">
+				<h2>with <span class="glyphicon glyphicon-heart"></span> from <a target="_blank" href="http://github.com/rblstr">rblstr</a></h2>
+			</div>
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -99,6 +114,10 @@
 				$('.playTrack').on('click', function() {
 					player.playVideoAt($(this).parent().data('playnum'));
 					updateNowPlaying();
+				});
+
+				$('.commentNum').on('click', function(e) {
+					e.stopPropagation();
 				});
 			});
 	
