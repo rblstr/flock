@@ -48,30 +48,30 @@ def mock_getRedditResponse_set_response(subreddits):
 
 
 class FrontpageTestCase(unittest.TestCase):
-    def setUp(self):
-        flock.app.testing = True
-        self.app = flock.app.test_client()
+	def setUp(self):
+		flock.app.testing = True
+		self.app = flock.app.test_client()
 
-    def tearDown(self):
-        flock.getRedditResponse = original_getRedditResponse
+	def tearDown(self):
+		flock.getRedditResponse = original_getRedditResponse
 
-    def test_frontpage(self):
-        response = self.app.get('/', content_type='text/html')
-        self.assertEqual(response.status_code, 200)
+	def test_frontpage(self):
+		response = self.app.get('/', content_type='text/html')
+		self.assertEqual(response.status_code, 200)
 
-    def test_frontpage_subreddits(self):
-        flock.getRedditResponse = mock_getRedditResponse_no_response
-        response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('No Reddit response' in response.data)
-
-	def test_frontpage_subreddits(self):
-		flock.getRedditResponse = mock_getRedditResponse_no_youtube_links
+	def test_frontpage_subreddits_no_response(self):
+		flock.getRedditResponse = mock_getRedditResponse_no_response
 		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue('No Reddit response' in response.data)
+
+	def test_frontpage_subreddits_no_youtube_links(self):
+		flock.getRedditResponse = mock_getRedditResponse_no_youtube_links
+		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('No links found' in response.data)
     
-	def test_frontpage_no_youtube_links(self):
+	def test_frontpage_subreddits_all_links_present(self):
 		flock.getRedditResponse = mock_getRedditResponse_set_response
 		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
 		self.assertEqual(response.status_code, 200)
