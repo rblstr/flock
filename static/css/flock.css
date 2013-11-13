@@ -59,5 +59,10 @@
 .playTrack
 {
 	cursor:pointer;
-	max-width: 550px;
+	max-width: 500px;
+}
+
+.nowPlaying
+{
+	font-weight:700;
 }

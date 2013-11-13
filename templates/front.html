@@ -7,20 +7,6 @@
 		<title>flock - subreddit playlister</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/flock.css" rel="stylesheet">
-		<script>
-			var tag = document.createElement('script'),
-				first_script_tag,
-				player;
-
-			tag.src = "https://www.youtube.com/iframe_api";
-			first_script_tag = document.getElementsByTagName('script')[0];
-			first_script_tag.parentNode.insertBefore(tag, first_script_tag);
-
-			player;
-			function onYouTubeIframeAPIReady() {
-				player = new YT.Player('player');
-			}
-		</script>
 	</head>
 	<body>
 		<div class="container">
@@ -72,19 +58,70 @@
 	    <!-- Include all compiled plugins (for now) -->
 	    <script src="js/bootstrap.min.js"></script>
 		<script type="text/javascript">
+			var tag = document.createElement('script'),
+				first_script_tag,
+				player;
+
+			tag.src = "https://www.youtube.com/iframe_api";
+			first_script_tag = document.getElementsByTagName('script')[0];
+			first_script_tag.parentNode.insertBefore(tag, first_script_tag);
+
+			function onYouTubeIframeAPIReady() {
+				player = new YT.Player('player', {
+				  events: {
+					'onReady': onPlayerReady,
+					'onStateChange': onPlayerStateChange
+				  }
+				});
+			}
+
 			$(document).ready(function() {
 				$('.playTrack').on('mouseenter', function() {
-					$(this).parent().find('.playNumber').html('<span class="glyphicon glyphicon-play"></span>').addClass('grey');
+					var _this = $(this),
+						trackRow = _this.parent();
+
+					if(!trackRow.hasClass('nowPlaying'))
+					{
+						$(this).parent().find('.playNumber').html('<span class="glyphicon glyphicon-play"></span>').addClass('grey');
+					}
 				});
 				
-				$('.playTrack').on('mouseout', function() {
-					$(this).parent().find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1).removeClass('grey');
+				$('.playTrack').on('mouseout', function() {	
+					var _this = $(this),
+						trackRow = _this.parent();
+
+					if(!trackRow.hasClass('nowPlaying'))
+					{
+						$(this).parent().find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1).removeClass('grey');
+					}
 				});
 
 				$('.playTrack').on('click', function() {
 					player.playVideoAt($(this).parent().data('playnum'));
+					updateNowPlaying();
 				});
 			});
+	
+			function onPlayerReady(event)
+			{
+				updateNowPlaying();
+			}
+
+
+			function onPlayerStateChange(event)
+			{
+				updateNowPlaying();
+			}
+
+			function updateNowPlaying()
+			{
+				if(player)
+				{
+					var currentlyPlayingIndex = player.getPlaylistIndex();
+					$('.track').removeClass('nowPlaying').find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1);
+					$('.track[data-playnum = \'' + currentlyPlayingIndex + '\']').addClass('nowPlaying').find('.playNumber').html('<span class="glyphicon glyphicon-volume-down"></span>').removeClass('grey');
+				}
+			}
 	    </script>
 	</body>
 </html>
