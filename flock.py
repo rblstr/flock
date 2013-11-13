@@ -126,7 +126,7 @@ def parseRedditResponse(response_object):
         child['permalink'] = 'http://%s%s' % (REDDIT_URL, child.get('permalink'))
         links.append(child)
         
-        return links
+    return links
 
 
 def removeDuplicates(links):
