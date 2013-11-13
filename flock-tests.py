@@ -20,6 +20,32 @@ def mock_getRedditResponse_no_youtube_links(subreddits):
         }
     }
 
+def mock_getRedditResponse_set_response(subreddits):
+    return {
+        'data' : {
+            'children' : [
+                {
+                    'data' : {
+						'title' : 'Burial - Untrue (Full Album Mix)',
+						'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+                    }
+                },
+                {
+                    'data' : {
+						'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+						'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+                    }
+                },
+                {
+                    'data' : {
+						'title' : 'Koreless & Jacques Greene - Untitled',
+						'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk'
+                    }
+                }
+            ]
+        }
+    }
+
 
 class FrontpageTestCase(unittest.TestCase):
     def setUp(self):
@@ -38,12 +64,20 @@ class FrontpageTestCase(unittest.TestCase):
         response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('No Reddit response' in response.data)
+
+	def test_frontpage_subreddits(self):
+		flock.getRedditResponse = mock_getRedditResponse_no_youtube_links
+		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('No Reddit response' in response.data)
     
-    def test_frontpage_no_youtube_links(self):
-        flock.getRedditResponse = mock_getRedditResponse_no_youtube_links
-        response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('No links found' in response.data)
+	def test_frontpage_no_youtube_links(self):
+		flock.getRedditResponse = mock_getRedditResponse_set_response
+		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('http://www.youtube.com/watch?v=wRpHf4X7FNM' in response.data)
+		self.assertTrue('http://www.youtube.com/watch?v=cfLmW-dKtwg' in response.data)
+		self.assertTrue('http://www.youtube.com/watch?v=AY08MWIGYsk' in response.data)
 
 class SanitiseURLCase(unittest.TestCase):
     def test_sanitise_short_youtube_url(self):
