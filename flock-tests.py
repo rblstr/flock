@@ -76,8 +76,11 @@ class FrontpageTestCase(unittest.TestCase):
 		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue('http://www.youtube.com/watch?v=wRpHf4X7FNM' in response.data)
+		self.assertTrue('Burial - Untrue (Full Album Mix)' in response.data)
 		self.assertTrue('http://www.youtube.com/watch?v=cfLmW-dKtwg' in response.data)
+		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)' in response.data)
 		self.assertTrue('http://www.youtube.com/watch?v=AY08MWIGYsk' in response.data)
+		self.assertTrue('Koreless &amp; Jacques Greene - Untitled' in response.data)
 
 class SanitiseURLCase(unittest.TestCase):
 	def test_sanitise_short_youtube_url(self):

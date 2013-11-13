@@ -110,6 +110,24 @@ def sanitiseURL(url):
     else:
         return None
 
+def parseChild(child):
+    accepted_keys = [
+        'id',
+        'title',
+        'url',
+        'permalink',
+        'num_comments',
+        'ups',
+        'downs',
+        'author',
+        'subreddits',
+        'created_utc',
+    ]
+    for key in child.keys():
+        if key not in accepted_keys:
+            del child[key]
+    return child
+
 def parseRedditResponse(response_object):
     html_parser = HTMLParser.HTMLParser()
     
@@ -124,6 +142,7 @@ def parseRedditResponse(response_object):
         child['url'] = url
         child['title'] = html_parser.unescape(child.get('title'))
         child['permalink'] = 'http://%s%s' % (REDDIT_URL, child.get('permalink'))
+        child = parseChild(child)
         links.append(child)
         
     return links
