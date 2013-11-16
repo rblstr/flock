@@ -1,5 +1,3 @@
-from datetime import datetime, date
-import time
 import HTMLParser
 import urllib
 import urlparse
