@@ -99,7 +99,7 @@
 
 					if(!trackRow.hasClass('nowPlaying'))
 					{
-						$(this).parent().find('.playNumber').html('<span class="glyphicon glyphicon-play"></span>').addClass('grey');
+						_this.parent().find('.playNumber').html('<span class="glyphicon glyphicon-play"></span>').addClass('grey');
 					}
 				});
 				
@@ -109,7 +109,7 @@
 
 					if(!trackRow.hasClass('nowPlaying'))
 					{
-						$(this).parent().find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1).removeClass('grey');
+						_this.parent().find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1).removeClass('grey');
 					}
 				});
 
@@ -138,8 +138,9 @@
 			{
 				if(player)
 				{
-					var currentlyPlayingIndex = player.getPlaylistIndex();
-					$('.track.nowPlaying').removeClass('nowPlaying').find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1);
+					var currentlyPlayingIndex = player.getPlaylistIndex(),
+						nowPlaying = $('.track.nowPlaying');
+					nowPlaying.removeClass('nowPlaying').find('.playNumber').html(parseInt($(nowPlaying).data('playnum')) + 1);
 					var currentlyPlayingTrackRow = $('.track[data-playnum = \'' + currentlyPlayingIndex + '\']');
 					currentlyPlayingTrackRow.addClass('nowPlaying').find('.playNumber').html('<span class="glyphicon glyphicon-volume-down"></span>').removeClass('grey');
 
