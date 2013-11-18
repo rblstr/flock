@@ -139,7 +139,7 @@
 				if(player)
 				{
 					var currentlyPlayingIndex = player.getPlaylistIndex();
-					$('.track').removeClass('nowPlaying').find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1);
+					$('.track.nowPlaying').removeClass('nowPlaying').find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1);
 					var currentlyPlayingTrackRow = $('.track[data-playnum = \'' + currentlyPlayingIndex + '\']');
 					currentlyPlayingTrackRow.addClass('nowPlaying').find('.playNumber').html('<span class="glyphicon glyphicon-volume-down"></span>').removeClass('grey');
 
