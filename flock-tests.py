@@ -61,7 +61,8 @@ class FrontpageTestCase(unittest.TestCase):
 					{
 						'data' : {
 							'title' : 'Koreless & Jacques Greene - Untitled',
-							'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk'
+							'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
+							'media' : 'adding a field to be pruned'
 						}
 					}
 				]
