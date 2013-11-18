@@ -14,10 +14,12 @@ class FrontpageTestCase(unittest.TestCase):
 
 	def test_frontpage_subreddits_no_response(self):
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=None)
+
 		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
+
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'])
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue('No Reddit response' in response.data)
-		flock.getRedditResponse.assert_called_once()
 
 	def test_frontpage_subreddits_no_youtube_links(self):
 		return_value = {
@@ -36,9 +38,9 @@ class FrontpageTestCase(unittest.TestCase):
 
 		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
 
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'])
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue('No links found' in response.data)
-		flock.getRedditResponse.assert_called_once()
 	
 	def test_frontpage_subreddits_all_links_present(self):
 		return_value = {
@@ -69,6 +71,8 @@ class FrontpageTestCase(unittest.TestCase):
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
 
 		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
+
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'])
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue('http://www.youtube.com/watch?v=wRpHf4X7FNM' in response.data)
 		self.assertTrue('Burial - Untrue (Full Album Mix)' in response.data)
@@ -76,13 +80,12 @@ class FrontpageTestCase(unittest.TestCase):
 		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)' in response.data)
 		self.assertTrue('http://www.youtube.com/watch?v=AY08MWIGYsk' in response.data)
 		self.assertTrue('Koreless &amp; Jacques Greene - Untitled' in response.data)
-		flock.getRedditResponse.assert_called_once()
 
 class SanitiseURLCase(unittest.TestCase):
 	def test_sanitise_short_youtube_url(self):
 		url = 'http://youtu.be/wRpHf4X7FNM'
 		new_url = flock.sanitiseShortYouTubeURL(url)
-		self.assertTrue('http://www.youtube.com/watch?v=wRpHf4X7FNM' == new_url)
+		self.assertEquals(new_url, 'http://www.youtube.com/watch?v=wRpHf4X7FNM')
 
 	def test_sanitise_short_youtube_url_fail_long(self):
 		url = 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
@@ -232,8 +235,8 @@ class GetLinkTitlesTestCase(unittest.TestCase):
 		]
 		new_links = flock.getLinkTitles(links)
 
+		flock.getYouTubeResponse.assert_called_once_with(links)
 		self.assertEquals(new_links[0]['video_title'], links[0]['title'])
-		flock.getYouTubeResponse.assert_called_once()
 
 	def test_get_link_titles_response(self):
 		return_value = {
@@ -254,8 +257,9 @@ class GetLinkTitlesTestCase(unittest.TestCase):
 		]
 		new_links = flock.getLinkTitles(links)
 
+		flock.getYouTubeResponse.assert_called_once_with(links)
 		self.assertEquals(new_links[0]['video_title'], 'Burial - Untrue (Full Album Mix)')
-		flock.getYouTubeResponse.assert_called_once()
+
 
 if __name__ == '__main__':
 	unittest.main()
