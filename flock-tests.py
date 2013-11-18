@@ -69,6 +69,7 @@ class FrontpageTestCase(unittest.TestCase):
 		}
 		
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+		flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
 
 		response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
 
@@ -94,6 +95,11 @@ class SanitiseURLCase(unittest.TestCase):
 
 	def test_sanitise_short_youtube_url_fail_wrong(self):
 		url = 'http://i.imgur.com/2A2IS5z.jpg'
+		new_url = flock.sanitiseShortYouTubeURL(url)
+		self.assertEquals(new_url, None)
+
+	def test_sanitise_short_youtube_url_fail_no_videoid(self):
+		url = 'http://youtu.be/'
 		new_url = flock.sanitiseShortYouTubeURL(url)
 		self.assertEquals(new_url, None)
 
@@ -165,6 +171,22 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
 		]
 		youtube_url = flock.generateYouTubeURL(links)
 		expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM%2CwRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+		self.assertEquals(youtube_url, expected)
+
+	def test_generate_youtube_embed_url_missing_videoid(self):
+		links = [
+			{
+				'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+			},
+			{
+				'url' : 'http://www.youtube.com/v/wRpHf4X7FNM'
+			},
+			{
+				'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+			}
+		]
+		youtube_url = flock.generateYouTubeURL(links)
+		expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
 		self.assertEquals(youtube_url, expected)
 
 
