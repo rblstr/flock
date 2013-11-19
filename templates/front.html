@@ -1,39 +1,153 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 		<title>flock - subreddit playlister</title>
-		<script>
-			var tag = document.createElement('script');
-
-			tag.src = "https://www.youtube.com/iframe_api";
-			var first_script_tag = document.getElementsByTagName('script')[0];
-			first_script_tag.parentNode.insertBefore(tag, first_script_tag);
-
-			var player;
-			function onYouTubeIframeAPIReady() {
-				player = new YT.Player('player');
-			}
-		</script>
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/flock.css" rel="stylesheet">
 	</head>
 	<body>
-		<h1>flock</h1>
-		<form action="/" method="get">
-			Subreddits:<input type="text" name="subreddits" value="{{subreddits}}" />
-			<input type="submit" value="Submit" />
-			<span>{{error}}</span>
-		</form>
-		<br/>
-		<iframe id="player" type="text/html" width="560" height="315" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
-		<br/>
-		<ol>
-		{% for link in links %}
-			<li>
-			<a href="javascript:player.playVideoAt({{links.index(link)}});">{{link.get("title")}}</a>
-			<br>
-			<a href="{{link.get("permalink")}}">{{link.get("num_comments")}} Comments</a> - <a href="{{link.get("url")}}">Permalink</a>
-			</li>
-		{% endfor %}
-		</ol>
+		<div class="container">
+			<a href="/" class="black"><h1>flock</h1></a>
+			<form action="/" method="get">
+				<!-- Subreddits: <input type="text" name="subreddits" value="{{subreddits}}" />
+				<button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-play"></span> Play </button>
+				<span>{{error}}</span> -->
+
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="input-group">
+					      <input type="text" placeholder="subreddit subreddit subreddit" class="form-control" name="subreddits" value="{{subreddits}}" />
+					      <span class="input-group-btn">
+					        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-play"></span> Play </button>
+					      </span>
+					    </div><!-- /input-group -->
+			    	</div><!-- /.col-lg-6 -->
+				</div><!-- /.row -->
+				<span>{{error}}</span>
+			</form>
+			<br/>
+			{% if links is defined and links|count > 0 %}
+				<iframe id="player" class="player" type="text/html" width="640" height="360" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
+			{% endif %}
+			<br/>
+
+			<!-- The list of tracks and such -->
+			<table class="table table-striped">
+				<tbody>
+					{% for link in links %}
+						<tr class="track" data-playnum="{{ loop.index0 }}">
+							<td class="playNumber playTrack">
+								{{ loop.index }}
+							</td>
+							<td class="playTrack">
+								<span class="playTitle">{{ link.get("title") }}</span>
+								<span class="comments">
+									<a class="commentNum" target="_blank" href="{{ link.get("permalink") }}">
+								
+										<span class="glyphicon glyphicon-comment"></span>
+										{{link.get("num_comments")}}</a>
+									</a>
+								</span>
+							</td>
+							<td class="">
+								<span class="youtube">
+									<a class="italic permalink" target="_blank" href="{{ link.get("url") }}">
+										<span class="glyphicon glyphicon-film"></span>
+										YouTube
+									</a>
+								</span>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			<div class="footer">
+				<h2>with <span class="glyphicon glyphicon-heart"></span> from <a target="_blank" href="http://github.com/rblstr">@rblstr</a> and <a target="_blank" href="http://github.com/rorokeeffe">@rorokeeffe</a></h2>
+			</div>
+		</div>
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	    <script src="https://code.jquery.com/jquery.js"></script>
+	    <!-- Include all compiled plugins (for now) -->
+	    <script src="js/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			var tag = document.createElement('script'),
+				first_script_tag,
+				player;
+
+			tag.src = "https://www.youtube.com/iframe_api";
+			first_script_tag = document.getElementsByTagName('script')[0];
+			first_script_tag.parentNode.insertBefore(tag, first_script_tag);
+
+			function onYouTubeIframeAPIReady() {
+				player = new YT.Player('player', {
+				  events: {
+					'onReady': onPlayerReady,
+					'onStateChange': onPlayerStateChange
+				  }
+				});
+			}
+
+			$(document).ready(function() {
+				$('.playTrack').on('mouseenter', function() {
+					var _this = $(this),
+						trackRow = _this.parent();
+
+					if(!trackRow.hasClass('nowPlaying'))
+					{
+						_this.parent().find('.playNumber').html('<span class="glyphicon glyphicon-play"></span>').addClass('grey');
+					}
+				});
+				
+				$('.playTrack').on('mouseout', function() {	
+					var _this = $(this),
+						trackRow = _this.parent();
+
+					if(!trackRow.hasClass('nowPlaying'))
+					{
+						_this.parent().find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1).removeClass('grey');
+					}
+				});
+
+				$('.playTrack').on('click', function() {
+					player.playVideoAt($(this).parent().data('playnum'));
+					updateNowPlaying();
+				});
+
+				$('.commentNum').on('click', function(e) {
+					e.stopPropagation();
+				});
+			});
+	
+			function onPlayerReady(event)
+			{
+				//updateNowPlaying();
+			}
+
+
+			function onPlayerStateChange(event)
+			{
+				updateNowPlaying();
+			}
+
+			function updateNowPlaying()
+			{
+				if(player)
+				{
+					var currentlyPlayingIndex = player.getPlaylistIndex(),
+						nowPlaying = $('.track.nowPlaying'),
+						currentlyPlayingTrackRow = $('.track[data-playnum = \'' + currentlyPlayingIndex + '\']');
+
+					nowPlaying.removeClass('nowPlaying').find('.playNumber').html(parseInt($(nowPlaying).data('playnum')) + 1);
+					currentlyPlayingTrackRow.addClass('nowPlaying').find('.playNumber').html('<span class="glyphicon glyphicon-volume-down"></span>').removeClass('grey');
+
+					document.title = 'flock - ' + currentlyPlayingTrackRow.find('.playTitle').html();
+				}
+			}
+	    </script>
 	</body>
 </html>

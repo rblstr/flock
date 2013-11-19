@@ -1,0 +1,73 @@
+.italic 
+{
+	font-style: italic;
+}
+
+.table
+{
+	display:table;
+}
+
+.table-row 
+{
+	display:table-row;
+}
+
+.table-cell
+{
+	display:table-cell;
+}
+
+.float-right
+{
+	float:right;
+}
+
+.grey
+{
+	color:#ccc;
+}
+
+.black
+{
+	color:#212121;
+}
+
+/* Specific Styles */
+.container 
+{
+	max-width: 730px;
+}
+
+.player 
+{
+	display:block;
+	width:640px;
+	margin:0 auto;
+}
+
+.track > div 
+{
+	display:inline-block;
+}
+
+.playNumber
+{
+	font-size: 1em;
+}
+
+.playTrack
+{
+	cursor:pointer;
+	max-width: 500px;
+}
+
+.nowPlaying
+{
+	font-weight:700;
+}
+
+.footer h2
+{
+	text-align:right;
+}
