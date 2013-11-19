@@ -42,8 +42,8 @@
 							<td class="playNumber playTrack">
 								{{ loop.index }}
 							</td>
-							<td class="playTrack playTitle">
-								{{ link.get("title") }}
+							<td class="playTrack">
+								<span class="playTitle">{{ link.get("title") }}</span>
 								<span class="comments">
 									<a class="commentNum" target="_blank" href="{{ link.get("permalink") }}">
 								
@@ -139,9 +139,10 @@
 				if(player)
 				{
 					var currentlyPlayingIndex = player.getPlaylistIndex(),
-						nowPlaying = $('.track.nowPlaying');
+						nowPlaying = $('.track.nowPlaying'),
+						currentlyPlayingTrackRow = $('.track[data-playnum = \'' + currentlyPlayingIndex + '\']');
+
 					nowPlaying.removeClass('nowPlaying').find('.playNumber').html(parseInt($(nowPlaying).data('playnum')) + 1);
-					var currentlyPlayingTrackRow = $('.track[data-playnum = \'' + currentlyPlayingIndex + '\']');
 					currentlyPlayingTrackRow.addClass('nowPlaying').find('.playNumber').html('<span class="glyphicon glyphicon-volume-down"></span>').removeClass('grey');
 
 					document.title = 'flock - ' + currentlyPlayingTrackRow.find('.playTitle').html();
