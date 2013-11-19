@@ -29,7 +29,7 @@
 				<span>{{error}}</span>
 			</form>
 			<br/>
-			{% if links is defined and links|count > 0 %}
+			{% if links %}
 				<iframe id="player" class="player" type="text/html" width="640" height="360" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
 			{% endif %}
 			<br/>
