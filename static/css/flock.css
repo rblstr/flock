@@ -71,3 +71,36 @@
 {
 	text-align:right;
 }
+
+.track .playIcon
+{
+	display:none;
+}
+.track:not(.nowPlaying):hover .playNum 
+{
+	display:none;
+}
+.track .nowPlayingIcon
+{
+	display:none;
+}
+.track:not(.nowPlaying):hover .nowPlayingIcon 
+{
+	display:none;
+}
+.track:not(.nowPlaying):hover .playIcon
+{
+	display:inline;
+}
+.track.nowPlaying .nowPlayingIcon
+{
+	display:inline;
+}
+.track.nowPlaying .playNum
+{
+	display:none;
+}
+.track.nowPlaying .playIcon
+{
+	display:none;
+}
