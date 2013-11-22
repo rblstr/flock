@@ -40,7 +40,9 @@
 					{% for link in links %}
 						<tr class="track" data-playnum="{{ loop.index0 }}">
 							<td class="playNumber playTrack">
-								{{ loop.index }}
+								<span class="playNum">{{ loop.index }}</span>
+								<span class="glyphicon glyphicon-play grey playIcon"></span>
+								<span class="glyphicon glyphicon-volume-down nowPlayingIcon"></span>
 							</td>
 							<td class="playTrack">
 								<span class="playTitle">{{ link.get("title") }}</span>
@@ -71,7 +73,7 @@
 		</div>
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	    <script src="https://code.jquery.com/jquery.js"></script>
+	    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	    <!-- Include all compiled plugins (for now) -->
 	    <script src="js/bootstrap.min.js"></script>
 		<script type="text/javascript">
@@ -93,26 +95,6 @@
 			}
 
 			$(document).ready(function() {
-				$('.playTrack').on('mouseenter', function() {
-					var _this = $(this),
-						trackRow = _this.parent();
-
-					if(!trackRow.hasClass('nowPlaying'))
-					{
-						_this.parent().find('.playNumber').html('<span class="glyphicon glyphicon-play"></span>').addClass('grey');
-					}
-				});
-				
-				$('.playTrack').on('mouseout', function() {	
-					var _this = $(this),
-						trackRow = _this.parent();
-
-					if(!trackRow.hasClass('nowPlaying'))
-					{
-						_this.parent().find('.playNumber').html(parseInt($(this).parent().data('playnum')) + 1).removeClass('grey');
-					}
-				});
-
 				$('.playTrack').on('click', function() {
 					player.playVideoAt($(this).parent().data('playnum'));
 					updateNowPlaying();
@@ -142,8 +124,8 @@
 						nowPlaying = $('.track.nowPlaying'),
 						currentlyPlayingTrackRow = $('.track[data-playnum = \'' + currentlyPlayingIndex + '\']');
 
-					nowPlaying.removeClass('nowPlaying').find('.playNumber').html(parseInt($(nowPlaying).data('playnum')) + 1);
-					currentlyPlayingTrackRow.addClass('nowPlaying').find('.playNumber').html('<span class="glyphicon glyphicon-volume-down"></span>').removeClass('grey');
+					nowPlaying.removeClass('nowPlaying');
+					currentlyPlayingTrackRow.addClass('nowPlaying');
 
 					document.title = 'flock - ' + currentlyPlayingTrackRow.find('.playTitle').html();
 				}
