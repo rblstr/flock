@@ -201,10 +201,6 @@ def generateYouTubeURL(links):
     return youtube_url
 
 
-def renderError(error_string, subreddit_str=None):
-    return render_template('front.html', subreddits=subreddit_str, error=error_string)
-
-
 @app.route('/', methods=['GET'])
 def playlist():
     subreddits_str = request.args.get('subreddits')
@@ -231,6 +227,7 @@ def playlist():
                             subreddits=subreddits_str,
                             youtube_url=youtube_url,
                             links=links)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
