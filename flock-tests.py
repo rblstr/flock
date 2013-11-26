@@ -9,13 +9,13 @@ class FrontpageTestCase(unittest.TestCase):
         self.app = flock.app.test_client()
 
     def test_frontpage(self):
-        response = self.app.get('/', content_type='text/html')
+        response = self.app.get('/', content_type='text/html', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
     def test_frontpage_subreddits_no_response(self):
         flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=None)
 
-        response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
+        response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
 
         flock.getRedditResponse.assert_called_once_with(['futuregarage'])
         self.assertEqual(response.status_code, 200)
@@ -36,7 +36,7 @@ class FrontpageTestCase(unittest.TestCase):
 
         flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
 
-        response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
+        response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
 
         flock.getRedditResponse.assert_called_once_with(['futuregarage'])
         self.assertEqual(response.status_code, 200)
@@ -72,7 +72,7 @@ class FrontpageTestCase(unittest.TestCase):
         flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
         flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
 
-        response = self.app.get('/?subreddits=futuregarage', content_type='text/html')
+        response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
 
         flock.getRedditResponse.assert_called_once_with(['futuregarage'])
         self.assertEqual(response.status_code, 200)

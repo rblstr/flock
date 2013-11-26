@@ -4,7 +4,7 @@ import urlparse
 import logging
 import json
 import httplib
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__, static_folder='static', static_url_path='')
 
@@ -14,6 +14,9 @@ REDDIT_URL = 'www.reddit.com'
 YOUTUBE_API_URL = 'https://www.googleapis.com'
 YOUTUBE_API_TOKEN = 'AIzaSyDPBTRqfIAJM5zRP9fDauMYcAkJip3UaMQ'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
+SECRET_KEY = 'skeleton_key'
+
+app.config['SECRET_KEY'] = SECRET_KEY
 
 
 def getRedditResponse(subreddits, sort='top', t='week', limit=100):
@@ -202,43 +205,32 @@ def renderError(error_string, subreddit_str=None):
     return render_template('front.html', subreddits=subreddit_str, error=error_string)
 
 
-def generatePlaylist(subreddits):
-    subreddit_str = " ".join(subreddits)
+@app.route('/', methods=['GET'])
+def playlist():
+    subreddits_str = request.args.get('subreddits')
+    if not subreddits_str:
+        return render_template('front.html')
+    subreddits = subreddits_str.split()
     
-    # get reddit response
-    response_object = getRedditResponse(subreddits)
-    # no reddit response
-    if not response_object:
-        return renderError('No Reddit response', subreddit_str)
-    
-    # parse response
-    links = parseRedditResponse(response_object)
-    # no links detected
-    if not links:
-        return renderError('No links found', subreddit_str)
+    reddit_response = getRedditResponse(subreddits)
+    if not reddit_response:
+        flash('No Reddit response')
+        return redirect('/')
 
-    # process links
+    links = parseRedditResponse(reddit_response)
+    if not links:
+        flash('No links found')
+        return redirect('/')
+
     links = removeDuplicates(links)
     links = getLinkTitles(links)
-    
-    # generate YouTube embed code
+
     youtube_url = generateYouTubeURL(links)
-    
-    # return frontpage
+
     return render_template( 'front.html',
-                            subreddits = subreddit_str,
-                            youtube_url = youtube_url,
-                            links = links )
-
-
-@app.route('/', methods=['GET'])
-def front():
-    subreddit_str = request.args.get('subreddits')
-    if not subreddit_str:
-        return render_template('front.html')
-    subreddits = subreddit_str.split()
-    return generatePlaylist(subreddits)
-
+                            subreddits=subreddits_str,
+                            youtube_url=youtube_url,
+                            links=links)
 
 if __name__ == '__main__':
     app.run(debug=True)
