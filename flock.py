@@ -210,12 +210,12 @@ def playlist():
     
     reddit_response = getRedditResponse(subreddits)
     if not reddit_response:
-        flash('No Reddit response')
+        flash('No Reddit response', 'error')
         return redirect('/')
 
     links = parseRedditResponse(reddit_response)
     if not links:
-        flash('No links found')
+        flash('No links found', 'error')
         return redirect('/')
 
     links = removeDuplicates(links)
