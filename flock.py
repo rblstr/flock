@@ -201,14 +201,49 @@ def generateYouTubeURL(links):
     return youtube_url
 
 
+supported_sorts = [
+    'top',
+    'hot'
+]
+
+supported_times = [
+    'day',
+    'week',
+    'month',
+    'year',
+    'all'
+]
+
+
 @app.route('/', methods=['GET'])
 def playlist():
     subreddits_str = request.args.get('subreddits')
     if not subreddits_str:
         return render_template('front.html')
+
+    sort = request.args.get('sort', 'top')
+    if not sort in supported_sorts:
+        flash('Invalid sort type: %s' % sort, 'error')
+        return redirect('/')
+
+    t = request.args.get('t', 'week')
+    if not t in supported_times:
+        flash('Invalid time type: %s' % t, 'error')
+        return redirect('/')
+
+    limit = request.args.get('limit', '100')
+    try:
+        limit = int(limit)
+    except ValueError:
+        flash('Invalid limit: %s' % limit, 'error')
+        return redirect('/')
+    if not (limit > 0 and limit <= 100):
+        flash('Invalid limit: %d' % limit, 'error')
+        return redirect('/')
+
     subreddits = subreddits_str.split()
     
-    reddit_response = getRedditResponse(subreddits)
+    reddit_response = getRedditResponse(subreddits, sort, t, limit)
     if not reddit_response:
         flash('No Reddit response', 'error')
         return redirect('/')

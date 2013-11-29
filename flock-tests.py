@@ -17,7 +17,7 @@ class FrontpageTestCase(unittest.TestCase):
 
         response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
 
-        flock.getRedditResponse.assert_called_once_with(['futuregarage'])
+        flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('No Reddit response' in response.data)
 
@@ -38,7 +38,7 @@ class FrontpageTestCase(unittest.TestCase):
 
         response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
 
-        flock.getRedditResponse.assert_called_once_with(['futuregarage'])
+        flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('No links found' in response.data)
         
@@ -74,7 +74,7 @@ class FrontpageTestCase(unittest.TestCase):
 
         response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
 
-        flock.getRedditResponse.assert_called_once_with(['futuregarage'])
+        flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('http://www.youtube.com/watch?v=wRpHf4X7FNM' in response.data)
         self.assertTrue('Burial - Untrue (Full Album Mix)' in response.data)
@@ -282,6 +282,68 @@ class GetLinkTitlesTestCase(unittest.TestCase):
 
         flock.getYouTubeResponse.assert_called_once_with(links)
         self.assertEquals(new_links[0]['video_title'], 'Burial - Untrue (Full Album Mix)')
+
+
+class OptionalPlaylistOptionsTestCase(unittest.TestCase):
+	def setUp(self):
+		flock.app.testing = True
+		self.app = flock.app.test_client()
+
+	def test_accepts_valid_optional_arguments(self):
+		return_value = {
+			'data' : {
+				'children' : [
+					{
+						'data' : {
+							'title' : 'Burial - Untrue (Full Album Mix)',
+							'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+						}
+					}
+				]
+			}
+		}
+				
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+		flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
+
+		response = self.app.get('/?subreddits=futuregarage&sort=hot&t=month&limit=50',
+									content_type='text/html',
+									follow_redirects=True)
+
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'hot', 'month', 50)
+		self.assertEqual(response.status_code, 200)
+	
+	def test_unsupported_sort_argument(self):
+		response = self.app.get('/?subreddits=futuregarage&sort=error',
+									content_type='text/html',
+									follow_redirects=True)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('Invalid sort type: error' in response.data)
+
+	def test_unsupported_time_argument(self):
+		response = self.app.get('/?subreddits=futuregarage&t=never',
+									content_type='text/html',
+									follow_redirects=True)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('Invalid time type: never' in response.data)
+
+	def test_unsupported_limit_argument(self):
+		response = self.app.get('/?subreddits=futuregarage&limit=1000',
+									content_type='text/html',
+									follow_redirects=True)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('Invalid limit: 1000' in response.data)
+
+	def test_unsupported_limit_string_argument(self):
+		response = self.app.get('/?subreddits=futuregarage&limit=never',
+									content_type='text/html',
+									follow_redirects=True)
+
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('Invalid limit: never' in response.data)
 
 
 if __name__ == '__main__':

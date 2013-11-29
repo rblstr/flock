@@ -22,4 +22,13 @@ Returns subreddit submission form
 
 **Arguments:**
 
-* **subreddits** - '+' seperated list of subreddits
+* **subreddits** - **_REQUIRED_** - '+' seperated list of subreddits
+* **sort** - **_OPTIONAL_** - What Reddit sort function to use.
+    * **Default:** _top_
+    * **Supported:** _top_, _hot_
+* **t** - **_OPTIONAL_** - Select time range for items.
+    * **Default:** _week_
+    * **Supported:** _day_, _week_, _month_, _year_, _all_
+* **limit** - **_OPTIONAL_** - Set a limit on the maximum number of items in the playlist.
+    * **Default:** _100_
+    * **Supported:** Any number in the range 0 < t <= 100
