@@ -1,4 +1,4 @@
-# *flock*
+# _flock_
 
 Subreddit YouTube playlister
 
@@ -18,7 +18,7 @@ To clone and run flock for the first time, follow these steps:
 
 **"/"** - _GET_
 
-Returns subreddit submission form
+Returns subreddit submission form and YouTube playlist if subreddits have been given.
 
 **Arguments:**
 
