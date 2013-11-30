@@ -26,7 +26,8 @@ class FrontpageTestCase(unittest.TestCase):
             'data' : {
                 'children' : [
                     {
-                        'data' : {
+                        'data' : 
+						{
                             'url' : 'imgur.com'
                         }
                     }
@@ -310,8 +311,64 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 									content_type='text/html',
 									follow_redirects=True)
 
-		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'hot', 'month', 50)
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'hot', 'month', 100)
 		self.assertEqual(response.status_code, 200)
+
+	def test_limit_argument_operates_on_reddit_results_post_parsing(self):
+		return_value = {
+			'data' : {
+				'children' : [
+					{
+						'data' : {
+							'title' : 'Burial - Untrue (Full Album Mix)',
+							'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+						}
+					},
+                    {
+                        'data' : 
+						{
+                            'url' : 'imgur.com'
+                        }
+                    },
+                    {
+                        'data' : 
+						{
+                            'url' : 'imgur.com'
+                        }
+                    },
+                    {
+                        'data' : 
+						{
+                            'url' : 'imgur.com'
+                        }
+                    },
+                    {
+                        'data' : {
+                            'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+                            'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+                        }
+                    },
+                    {
+                        'data' : {
+                            'title' : 'Koreless & Jacques Greene - Untitled',
+                            'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
+                            'media' : 'adding a field to be pruned'
+                        }
+                    }
+				]
+			}
+		}
+
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+		flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
+
+		response = self.app.get('/?subreddits=futuregarage&sort=hot&t=month&limit=2',
+									content_type='text/html',
+									follow_redirects=True)
+
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'hot', 'month', 100)
+		self.assertEqual(response.status_code, 200)
+		self.assertEqual(response.data.count('"track"'), 2)
 	
 	def test_unsupported_sort_argument(self):
 		response = self.app.get('/?subreddits=futuregarage&sort=error',

@@ -243,7 +243,7 @@ def playlist():
 
     subreddits = subreddits_str.split()
     
-    reddit_response = getRedditResponse(subreddits, sort, t, limit)
+    reddit_response = getRedditResponse(subreddits, sort, t, 100)
     if not reddit_response:
         flash('No Reddit response', 'error')
         return redirect('/')
@@ -255,6 +255,8 @@ def playlist():
 
     links = removeDuplicates(links)
     links = getLinkTitles(links)
+
+    links = links[0:limit]
 
     youtube_url = generateYouTubeURL(links)
 
