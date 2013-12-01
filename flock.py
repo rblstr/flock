@@ -55,25 +55,25 @@ def getYouTubeResponse(links):
         video_id = urlparse.parse_qs(urlparse.urlparse(link_url).query).get("v")[0]
         video_ids.append(video_id)
         
-        playlist = ",".join(video_ids)
-        playlist = unicode(playlist).encode('utf-8')
-        
-        query = {
-            'part' : 'snippet',
-            'id' : playlist,
-            'key' : YOUTUBE_API_TOKEN
-        }
-        query_string = urllib.urlencode(query)
-        
-        request_url = '%s/youtube/v3/videos?%s' % (YOUTUBE_API_URL, query_string)
-        
-        response = urllib.urlopen(request_url)
-        if not response:
-            return None
-        
-        body = response.read()
-        response_object = json.loads(body)
-        return response_object
+    playlist = ",".join(video_ids)
+    playlist = unicode(playlist).encode('utf-8')
+    
+    query = {
+        'part' : 'snippet',
+        'id' : playlist,
+        'key' : YOUTUBE_API_TOKEN
+    }
+    query_string = urllib.urlencode(query)
+    
+    request_url = '%s/youtube/v3/videos?%s' % (YOUTUBE_API_URL, query_string)
+    
+    response = urllib.urlopen(request_url)
+    if not response:
+        return None
+    
+    body = response.read()
+    response_object = json.loads(body)
+    return response_object
 
 
 def sanitiseShortYouTubeURL(url):
