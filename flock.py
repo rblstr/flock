@@ -41,7 +41,10 @@ def getRedditResponse(subreddits, sort='top', t='week', limit=100):
         return None
     
     body = response.read()
-    response_object = json.loads(body)
+    try:
+        response_object = json.loads(body)
+    except ValueError:
+        return None
     if response_object.get('error'):
         return None
     
@@ -72,7 +75,14 @@ def getYouTubeResponse(links):
         return None
     
     body = response.read()
-    response_object = json.loads(body)
+    try:
+        response_object = json.loads(body)
+    except ValueError:
+        return None
+
+    if response_object.get('error'):
+        return None
+
     return response_object
 
 
@@ -164,7 +174,7 @@ def getLinkTitles(links):
         for link in links:
             link['video_title'] = link.get('title')
         return links # No YouTube response, but no matter
-        
+
     for i,item in enumerate(response_object.get('items')):
         snippet = item.get('snippet')
         link = links[i]
