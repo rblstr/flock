@@ -11,8 +11,6 @@ app = Flask(__name__, static_folder='static', static_url_path='')
 logging.getLogger().setLevel(logging.DEBUG)
 
 REDDIT_URL = 'www.reddit.com'
-YOUTUBE_API_URL = 'https://www.googleapis.com'
-YOUTUBE_API_TOKEN = 'AIzaSyDPBTRqfIAJM5zRP9fDauMYcAkJip3UaMQ'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
 SECRET_KEY = 'skeleton_key'
 
@@ -48,41 +46,6 @@ def getRedditResponse(subreddits, sort='top', t='week', limit=100):
     if response_object.get('error'):
         return None
     
-    return response_object
-
-
-def getYouTubeResponse(links):
-    video_ids = []
-    for link in links:
-        link_url = link.get('url')
-        video_id = urlparse.parse_qs(urlparse.urlparse(link_url).query).get("v")[0]
-        video_ids.append(video_id)
-        
-    playlist = ",".join(video_ids)
-    playlist = unicode(playlist).encode('utf-8')
-    
-    query = {
-        'part' : 'snippet',
-        'id' : playlist,
-        'key' : YOUTUBE_API_TOKEN
-    }
-    query_string = urllib.urlencode(query)
-    
-    request_url = '%s/youtube/v3/videos?%s' % (YOUTUBE_API_URL, query_string)
-    
-    response = urllib.urlopen(request_url)
-    if not response:
-        return None
-    
-    body = response.read()
-    try:
-        response_object = json.loads(body)
-    except ValueError:
-        return None
-
-    if response_object.get('error'):
-        return None
-
     return response_object
 
 
@@ -168,21 +131,6 @@ def removeDuplicates(links):
     return new_links
 
 
-def getLinkTitles(links):
-    response_object = getYouTubeResponse(links)
-    if not response_object:
-        for link in links:
-            link['video_title'] = link.get('title')
-        return links # No YouTube response, but no matter
-
-    for i,item in enumerate(response_object.get('items')):
-        snippet = item.get('snippet')
-        link = links[i]
-        link['video_title'] = snippet['title']
-    
-    return links
-
-
 def generateYouTubeURL(links):
     youtube_ids = []
     for entry in links:
@@ -264,7 +212,6 @@ def playlist():
         return redirect('/')
 
     links = removeDuplicates(links)
-    links = getLinkTitles(links)
 
     links = links[0:limit]
 

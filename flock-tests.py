@@ -246,44 +246,6 @@ class DuplicatesTestCase(unittest.TestCase):
         self.assertEquals(new_links, links)
 
 
-class GetLinkTitlesTestCase(unittest.TestCase):
-    def test_get_link_titles_no_response(self):
-        flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
-
-        links = [
-            {
-                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM',
-                'title' : 'Burial - Untrue (Full Album Mix) This is six years old today! (X-post r/dubstep)'
-            }
-        ]
-        new_links = flock.getLinkTitles(links)
-
-        flock.getYouTubeResponse.assert_called_once_with(links)
-        self.assertEquals(new_links[0]['video_title'], links[0]['title'])
-
-    def test_get_link_titles_response(self):
-        return_value = {
-            'items' : [
-                {
-                    'snippet' : {
-                        'title' : 'Burial - Untrue (Full Album Mix)'
-                    }
-                }
-            ]
-        }
-        flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=return_value)
-
-        links = [
-            {
-                'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-            }
-        ]
-        new_links = flock.getLinkTitles(links)
-
-        flock.getYouTubeResponse.assert_called_once_with(links)
-        self.assertEquals(new_links[0]['video_title'], 'Burial - Untrue (Full Album Mix)')
-
-
 class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 	def setUp(self):
 		flock.app.testing = True
