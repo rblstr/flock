@@ -26,8 +26,7 @@ class FrontpageTestCase(unittest.TestCase):
             'data' : {
                 'children' : [
                     {
-                        'data' : 
-						{
+                        'data' : {
                             'url' : 'imgur.com'
                         }
                     }
@@ -325,20 +324,17 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 						}
 					},
                     {
-                        'data' : 
-						{
+                        'data' : {
                             'url' : 'imgur.com'
                         }
                     },
                     {
-                        'data' : 
-						{
+                        'data' : {
                             'url' : 'imgur.com'
                         }
                     },
                     {
-                        'data' : 
-						{
+                        'data' : {
                             'url' : 'imgur.com'
                         }
                     },
