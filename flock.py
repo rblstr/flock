@@ -1,3 +1,4 @@
+import os
 import HTMLParser
 import urllib
 import urlparse
@@ -12,10 +13,6 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 REDDIT_URL = 'www.reddit.com'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
-SECRET_KEY = 'skeleton_key'
-
-app.config['SECRET_KEY'] = SECRET_KEY
-
 
 def getRedditResponse(subreddits, sort='top', t='week', limit=100):
     connection = httplib.HTTPConnection(REDDIT_URL)
@@ -222,6 +219,9 @@ def playlist():
                             youtube_url=youtube_url,
                             links=links)
 
+app.config.from_object('debug_config')
+if os.getenv('FLOCK_SETTINGS', None):
+    app.config.from_envvar('FLOCK_SETTINGS')
 
 if __name__ == '__main__':
     app.run(debug=True)
