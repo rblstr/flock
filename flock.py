@@ -80,6 +80,7 @@ def sanitiseURL(url):
     else:
         return None
 
+
 def parseChild(child):
     accepted_keys = [
         'id',
@@ -97,6 +98,7 @@ def parseChild(child):
         if key not in accepted_keys:
             del child[key]
     return child
+
 
 def parseRedditResponse(response_object):
     html_parser = HTMLParser.HTMLParser()
@@ -219,9 +221,11 @@ def playlist():
                             youtube_url=youtube_url,
                             links=links)
 
+
 app.config.from_object('debug_config')
 if os.getenv('FLOCK_SETTINGS', None):
     app.config.from_envvar('FLOCK_SETTINGS')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
