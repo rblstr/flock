@@ -1,4 +1,4 @@
-from datetime import datetime
+import time
 import unittest
 import mock
 import flock
@@ -53,7 +53,7 @@ class FrontpageTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 5,
 								'downs' : 0,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
@@ -62,7 +62,7 @@ class FrontpageTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 3,
 								'downs' : 1,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
@@ -71,7 +71,7 @@ class FrontpageTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 2,
 								'downs' : 2,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								'media' : 'i should be pruned'
@@ -272,7 +272,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 5,
 								'downs' : 0,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
@@ -281,7 +281,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 3,
 								'downs' : 1,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
@@ -290,7 +290,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 2,
 								'downs' : 2,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								}
@@ -318,7 +318,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 5,
 								'downs' : 0,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
@@ -327,7 +327,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 3,
 								'downs' : 1,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
@@ -336,7 +336,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 2,
 								'downs' : 2,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								}
@@ -351,7 +351,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 5,
 								'downs' : 0,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
@@ -375,7 +375,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 3,
 								'downs' : 1,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
@@ -384,7 +384,7 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 2,
 								'downs' : 2,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								'media' : 'adding a field to be pruned'
@@ -452,7 +452,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 5,
 								'downs' : 0,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
@@ -461,7 +461,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 3,
 								'downs' : 1,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
@@ -470,7 +470,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 2,
 								'downs' : 2,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								}
@@ -497,7 +497,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 5,
 								'downs' : 0,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
@@ -506,7 +506,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 3,
 								'downs' : 1,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
@@ -515,7 +515,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 2,
 								'downs' : 2,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								}
@@ -543,7 +543,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 5,
 								'downs' : 0,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
@@ -552,7 +552,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 3,
 								'downs' : 1,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
@@ -561,7 +561,7 @@ class CacheTestCase(unittest.TestCase):
 							'data' : {
 								'ups' : 2,
 								'downs' : 2,
-								'created_utc' : datetime.utcnow(),
+								'created_utc' : time.time(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								}
@@ -585,6 +585,73 @@ class CacheTestCase(unittest.TestCase):
 				mock.call('4'),
 				mock.call('5') ]
 		flock.cache.get.assert_has_calls(calls)
+	
+	def test_link_sort_order_is_maintained_top(self):
+		cache_value = {
+				'data' : {
+					'children' : [
+						{
+							'data' : {
+								'ups' : 5,
+								'downs' : 0,
+								'created_utc' : time.time(),
+								'title' : 'Burial - Untrue (Full Album Mix)',
+								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+							}
+						},
+						{
+							'data' : {
+								'ups' : 2,
+								'downs' : 2,
+								'created_utc' : time.time(),
+								'title' : 'Koreless & Jacques Greene - Untitled',
+								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
+								}
+							}
+						]
+					}
+				}
+		cache_value = flock.parseRedditResponse(cache_value)
+
+		def cache_side_effect(*args, **kwargs):
+			if args[0] == 'futuregarage':
+				return cache_value
+			return None
+
+		flock.cache.get = mock.MagicMock(name='get')
+		flock.cache.get.side_effect = cache_side_effect
+		
+		reddit_value = {
+				'data': {
+					'children' : [
+						{
+							'data' : {
+								'ups' : 3,
+								'downs' : 1,
+								'created_utc' : time.time(),
+								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+							}
+						}
+					]
+				}
+			}
+
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=reddit_value)
+
+		response = self.app.get('/?subreddits=futuregarage+futurebeats', follow_redirects=True)
+
+		self.assertTrue('Burial - Untrue (Full Album Mix)')
+		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)')
+		self.assertTrue('Koreless & Jacques Greene - Untitled')
+
+		first_pos = response.data.find('Burial - Untrue (Full Album Mix)')
+		second_pos = response.data.find('Sage The Gemini - Gas Pedal (Motez Edit)')
+		third_pos = response.data.find('Koreless &amp; Jacques Greene - Untitled')
+
+		self.assertLess(first_pos, second_pos)
+		self.assertLess(second_pos, third_pos)
 
 
 if __name__ == '__main__':
