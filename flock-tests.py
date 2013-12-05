@@ -1,3 +1,4 @@
+from datetime import datetime
 import unittest
 import mock
 import flock
@@ -50,21 +51,30 @@ class FrontpageTestCase(unittest.TestCase):
 					'children' : [
 						{
 							'data' : {
+								'ups' : 5,
+								'downs' : 0,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 3,
+								'downs' : 1,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 2,
+								'downs' : 2,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								'media' : 'adding a field to be pruned'
+								'media' : 'i should be pruned'
 								}
 							}
 						]
@@ -260,8 +270,29 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 					'children' : [
 						{
 							'data' : {
+								'ups' : 5,
+								'downs' : 0,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+								}
+							},
+						{
+							'data' : {
+								'ups' : 3,
+								'downs' : 1,
+								'created_utc' : datetime.utcnow(),
+								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+								}
+							},
+						{
+							'data' : {
+								'ups' : 2,
+								'downs' : 2,
+								'created_utc' : datetime.utcnow(),
+								'title' : 'Koreless & Jacques Greene - Untitled',
+								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								}
 							}
 						]
@@ -285,6 +316,42 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 					'children' : [
 						{
 							'data' : {
+								'ups' : 5,
+								'downs' : 0,
+								'created_utc' : datetime.utcnow(),
+								'title' : 'Burial - Untrue (Full Album Mix)',
+								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+								}
+							},
+						{
+							'data' : {
+								'ups' : 3,
+								'downs' : 1,
+								'created_utc' : datetime.utcnow(),
+								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+								}
+							},
+						{
+							'data' : {
+								'ups' : 2,
+								'downs' : 2,
+								'created_utc' : datetime.utcnow(),
+								'title' : 'Koreless & Jacques Greene - Untitled',
+								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
+								}
+							}
+						]
+					}
+				}
+		return_value = {
+				'data' : {
+					'children' : [
+						{
+							'data' : {
+								'ups' : 5,
+								'downs' : 0,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
@@ -306,12 +373,18 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 							},
 						{
 							'data' : {
+								'ups' : 3,
+								'downs' : 1,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 2,
+								'downs' : 2,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								'media' : 'adding a field to be pruned'
@@ -377,21 +450,29 @@ class CacheTestCase(unittest.TestCase):
 					'children' : [
 						{
 							'data' : {
+								'ups' : 5,
+								'downs' : 0,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 3,
+								'downs' : 1,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 2,
+								'downs' : 2,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								'media' : 'adding a field to be pruned'
 								}
 							}
 						]
@@ -414,21 +495,29 @@ class CacheTestCase(unittest.TestCase):
 					'children' : [
 						{
 							'data' : {
+								'ups' : 5,
+								'downs' : 0,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 3,
+								'downs' : 1,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 2,
+								'downs' : 2,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								'media' : 'adding a field to be pruned'
 								}
 							}
 						]
@@ -452,18 +541,27 @@ class CacheTestCase(unittest.TestCase):
 					'children' : [
 						{
 							'data' : {
+								'ups' : 5,
+								'downs' : 0,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Burial - Untrue (Full Album Mix)',
 								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 3,
+								'downs' : 1,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
 								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
 								}
 							},
 						{
 							'data' : {
+								'ups' : 2,
+								'downs' : 2,
+								'created_utc' : datetime.utcnow(),
 								'title' : 'Koreless & Jacques Greene - Untitled',
 								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
 								}

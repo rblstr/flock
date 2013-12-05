@@ -1,3 +1,5 @@
+import math
+from datetime import datetime
 import os
 import HTMLParser
 import urllib
@@ -183,10 +185,30 @@ def getLinks(subreddits, sort, t):
     return links
 
 
-supported_sorts = [
-    'top',
-    'hot'
-]
+def hot(entry):
+    ups = entry.get('ups')
+    downs = entry.get('downs')
+    date = (datetime.fromtimestamp(entry.get('created_utc')) - datetime(1970, 1, 1)).total_seconds()
+    s = ups - downs
+    order = math.log10(max(abs(s), 1))
+    if s > 0:
+        sign = 1
+    elif s < 0:
+        sign = -1
+    else:
+        sign = 0
+    seconds = date - 1134028003
+    return round(order + sign * seconds / 45000, 7)
+
+
+def top(entry):
+    return entry.get('ups') - entry.get('downs')
+
+
+supported_sorts = {
+    'top' : top,
+    'hot' : hot
+}
 
 supported_times = [
     'day',
@@ -204,7 +226,7 @@ def playlist():
         return render_template('front.html')
 
     sort = request.args.get('sort', 'top')
-    if not sort in supported_sorts:
+    if not sort in supported_sorts.keys():
         flash('Invalid sort type: %s' % sort, 'error')
         return redirect('/')
 
@@ -232,6 +254,9 @@ def playlist():
         return redirect('/')
 
     links = removeDuplicates(links)
+
+    sort_func = supported_sorts[sort]
+    links = sorted(links, reverse=True, key=lambda l: sort_func(l))
 
     links = links[0:limit]
 
