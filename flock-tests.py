@@ -654,6 +654,75 @@ class CacheTestCase(unittest.TestCase):
 		self.assertLess(second_pos, third_pos)
 
 
+	def test_link_sort_order_is_maintained_top(self):
+		cache_value = {
+				'data' : {
+					'children' : [
+						{
+							'data' : {
+								'ups' : 5,
+								'downs' : 1,
+								'created_utc' : 1386278592.0, 
+								'title' : 'Burial - Untrue (Full Album Mix)',
+								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+							}
+						},
+						{
+							'data' : {
+								'ups' : 6,
+								'downs' : 0,
+								'created_utc' : 1386267180.0,
+								'title' : 'Koreless & Jacques Greene - Untitled',
+								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
+								}
+							}
+						]
+					}
+				}
+		cache_value = flock.parseRedditResponse(cache_value)
+
+		def cache_side_effect(*args, **kwargs):
+			if args[0] == 'futuregarage':
+				return cache_value
+			return None
+
+		flock.cache.get = mock.MagicMock(name='get')
+		flock.cache.get.side_effect = cache_side_effect
+		
+		reddit_value = {
+				'data': {
+					'children' : [
+						{
+							'data' : {
+								'ups' : 8,
+								'downs' : 0,
+								'created_utc' : 1386264411.0,
+								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+							}
+						}
+					]
+				}
+			}
+
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=reddit_value)
+
+		response = self.app.get('/?subreddits=futuregarage+futurebeats&sort=hot',
+								follow_redirects=True)
+
+		self.assertTrue('Burial - Untrue (Full Album Mix)' in response.data)
+		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)' in response.data)
+		self.assertTrue('Koreless &amp; Jacques Greene - Untitled' in response.data)
+
+		first_pos = response.data.find('Burial - Untrue (Full Album Mix)')
+		second_pos = response.data.find('Sage The Gemini - Gas Pedal (Motez Edit)')
+		third_pos = response.data.find('Koreless &amp; Jacques Greene - Untitled')
+
+		self.assertLess(first_pos, second_pos)
+		self.assertLess(second_pos, third_pos)
+
+
 if __name__ == '__main__':
 	unittest.main()
 

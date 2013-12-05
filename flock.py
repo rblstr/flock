@@ -188,7 +188,7 @@ def getLinks(subreddits, sort, t):
 def hot(entry):
     ups = entry.get('ups')
     downs = entry.get('downs')
-    date = (datetime.fromtimestamp(entry.get('created_utc')) - datetime(1970, 1, 1)).total_seconds()
+    date = entry.get("created_utc")
     s = ups - downs
     order = math.log10(max(abs(s), 1))
     if s > 0:
