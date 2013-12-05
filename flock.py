@@ -1,3 +1,4 @@
+import pickle
 import math
 from datetime import datetime
 import os
@@ -170,7 +171,7 @@ def getLinks(subreddits, sort, t):
         if not subreddit_links:
             subreddits_to_get.append(subreddit)
         else:
-            links.extend(subreddit_links)
+            links.extend(pickle.loads(subreddit_links))
 
     if subreddits_to_get:
         reddit_response = getRedditResponse(subreddits_to_get, sort, t, 100)
@@ -179,6 +180,8 @@ def getLinks(subreddits, sort, t):
             return links
 
         response_links = parseRedditResponse(reddit_response)
+
+        cache.set(pickle.dumps(response_links))
 
         links.extend(response_links)
 

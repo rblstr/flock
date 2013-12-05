@@ -1,3 +1,4 @@
+import pickle
 import time
 import unittest
 import mock
@@ -573,7 +574,7 @@ class CacheTestCase(unittest.TestCase):
 
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=None)
 
-		flock.cache.get = mock.MagicMock(name='get', return_value=return_value)
+		flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(return_value))
 
 		response = self.app.get('/?subreddits=1+2+3+4+5', follow_redirects=True)
 
@@ -615,7 +616,7 @@ class CacheTestCase(unittest.TestCase):
 
 		def cache_side_effect(*args, **kwargs):
 			if args[0] == 'futuregarage':
-				return cache_value
+				return picle.dumps(cache_value)
 			return None
 
 		flock.cache.get = mock.MagicMock(name='get')
@@ -683,7 +684,7 @@ class CacheTestCase(unittest.TestCase):
 
 		def cache_side_effect(*args, **kwargs):
 			if args[0] == 'futuregarage':
-				return cache_value
+				return pickle.dumps(cache_value)
 			return None
 
 		flock.cache.get = mock.MagicMock(name='get')
@@ -721,6 +722,34 @@ class CacheTestCase(unittest.TestCase):
 
 		self.assertLess(first_pos, second_pos)
 		self.assertLess(second_pos, third_pos)
+
+	def test_cache_is_heated_with_parsed_links(self):
+		reddit_value = {
+				'data': {
+					'children' : [
+						{
+							'data' : {
+								'ups' : 8,
+								'downs' : 0,
+								'created_utc' : 1386264411.0,
+								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+							}
+						}
+					]
+				}
+			}
+		cache_value = flock.parseRedditResponse(reddit_value)
+		
+		flock.cache.set = mock.MagicMock(name='set')
+		flock.cache.get = mock.MagicMock(name='get', return_value=None)
+
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=reddit_value)
+
+		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
+
+		flock.cache.set.assert_called_with(pickle.dumps(cache_value))
 
 
 if __name__ == '__main__':
