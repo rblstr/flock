@@ -13,13 +13,13 @@ class FrontpageTestCase(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_frontpage_subreddits_no_response(self):
-        flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=None)
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=None)
 
-        response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
+		response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
 
-        flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue('No Reddit response' in response.data)
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
+		self.assertEqual(response.status_code, 200)
+		self.assertTrue('No Reddit response' in response.data)
 
     def test_frontpage_subreddits_no_youtube_links(self):
         return_value = {
@@ -360,6 +360,85 @@ class OptionalPlaylistOptionsTestCase(unittest.TestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertTrue('Invalid limit: never' in response.data)
 
+
+class CacheTestCase(unittest.TestCase):
+	def setUp(self):
+		flock.app.testing = True
+		self.app = flock.app.test_client()
+
+	def test_frontpage_hits_memcached(self):
+		return_value = {
+            'data' : {
+                'children' : [
+                    {
+                        'data' : {
+                            'title' : 'Burial - Untrue (Full Album Mix)',
+                            'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+                        }
+                    },
+                    {
+                        'data' : {
+                            'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+                            'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+                        }
+                    },
+                    {
+                        'data' : {
+                            'title' : 'Koreless & Jacques Greene - Untitled',
+                            'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
+                            'media' : 'adding a field to be pruned'
+                        }
+                    }
+                ]
+            }
+        }
+
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+
+		flock.cache.get = mock.MagicMock(name='get', return_value=None)
+		
+		response = self.app.get('/?subreddits=futuregarage', follow_redirects=True)
+
+		self.assertEquals(response.status_code, 200)
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
+		flock.cache.get.assert_called_once_with('futuregarage')
+
+	def test_frontpage_hits_memcached_same_number_of_times_as_subreddits(self):
+		return_value = {
+            'data' : {
+                'children' : [
+                    {
+                        'data' : {
+                            'title' : 'Burial - Untrue (Full Album Mix)',
+                            'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
+                        }
+                    },
+                    {
+                        'data' : {
+                            'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+                            'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+                        }
+                    },
+                    {
+                        'data' : {
+                            'title' : 'Koreless & Jacques Greene - Untitled',
+                            'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
+                            'media' : 'adding a field to be pruned'
+                        }
+                    }
+                ]
+            }
+        }
+
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+
+		flock.cache.get = mock.MagicMock(name='get', return_value=None)
+		
+		response = self.app.get('/?subreddits=1+2+3+4+5', follow_redirects=True)
+
+		self.assertEquals(response.status_code, 200)
+		flock.getRedditResponse.assert_called_once_with(['1', '2', '3', '4', '5'], 'top', 'week', 100)
+		self.assertEquals(flock.cache.get.call_count, 5)
 
 if __name__ == '__main__':
         unittest.main()

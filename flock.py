@@ -5,9 +5,11 @@ import urlparse
 import logging
 import json
 import httplib
+from werkzeug.contrib.cache import MemcachedCache
 from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__, static_folder='static', static_url_path='')
+cache = MemcachedCache(['127.0.0.1:11211'])
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -158,6 +160,29 @@ def generateYouTubeURL(links):
     return youtube_url
 
 
+def getLinks(subreddits, sort, t):
+    subreddits_to_get = []
+    links = []
+    for subreddit in subreddits:
+        subreddit_links = cache.get(subreddit)
+        if not subreddit_links:
+            subreddits_to_get.append(subreddit)
+        else:
+            links.extend(subreddit_links)
+
+    if subreddits_to_get:
+        reddit_response = getRedditResponse(subreddits_to_get, sort, t, 100)
+        if not reddit_response:
+            flash('No Reddit response', 'error')
+            return links
+
+        response_links = parseRedditResponse(reddit_response)
+
+        links.extend(response_links)
+
+    return links
+
+
 supported_sorts = [
     'top',
     'hot'
@@ -200,12 +225,8 @@ def playlist():
 
     subreddits = subreddits_str.split()
     
-    reddit_response = getRedditResponse(subreddits, sort, t, 100)
-    if not reddit_response:
-        flash('No Reddit response', 'error')
-        return redirect('/')
+    links = getLinks(subreddits, sort, t)
 
-    links = parseRedditResponse(reddit_response)
     if not links:
         flash('No links found', 'error')
         return redirect('/')
