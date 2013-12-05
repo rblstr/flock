@@ -642,9 +642,9 @@ class CacheTestCase(unittest.TestCase):
 
 		response = self.app.get('/?subreddits=futuregarage+futurebeats', follow_redirects=True)
 
-		self.assertTrue('Burial - Untrue (Full Album Mix)')
-		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)')
-		self.assertTrue('Koreless & Jacques Greene - Untitled')
+		self.assertTrue('Burial - Untrue (Full Album Mix)' in response.data)
+		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)' in response.data)
+		self.assertTrue('Koreless &amp; Jacques Greene - Untitled' in response.data)
 
 		first_pos = response.data.find('Burial - Untrue (Full Album Mix)')
 		second_pos = response.data.find('Sage The Gemini - Gas Pedal (Motez Edit)')
