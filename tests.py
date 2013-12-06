@@ -752,6 +752,46 @@ class CacheTestCase(unittest.TestCase):
 
 		flock.cache.set.assert_called_with('futuregarage', pickle.dumps(cache_value))
 
+	def test_cache_is_hit_after_cache_is_warmed(self):
+		reddit_value = {
+				'data': {
+					'children' : [
+						{
+							'data' : {
+								'ups' : 8,
+								'downs' : 0,
+								'created_utc' : 1386264411.0,
+								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
+								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg',
+								'subreddit' : 'futuregarage'
+							}
+						}
+					]
+				}
+			}
+		cache_value = flock.parseRedditResponse(reddit_value)
+
+		flock.cache.set = mock.MagicMock(name='set')
+		flock.cache.get = mock.MagicMock(name='get', return_value=None)
+
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=reddit_value)
+
+		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
+
+		flock.getRedditResponse.assert_called_with(['futuregarage'], 'top', 'week', 100)
+		flock.cache.set.assert_called_with('futuregarage', pickle.dumps(cache_value))
+
+		flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(cache_value))
+		flock.cache.set = mock.MagicMock(name='set')
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse')
+
+		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
+
+		flock.cache.get.assert_called_with('futuregarage')
+		self.assertEqual(flock.getRedditResponse.call_count, 0)
+		self.assertEqual(flock.cache.set.call_count, 0)
+
 
 if __name__ == '__main__':
 	unittest.main()

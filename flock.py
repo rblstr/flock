@@ -182,7 +182,8 @@ def getLinks(subreddits, sort, t):
         response_links = parseRedditResponse(reddit_response)
 
         for subreddit in subreddits_to_get:
-            subreddit_links = filter(lambda link: link.get('subreddits') != subreddit, response_links)
+            subreddit_links = filter(lambda link: link.get('subreddits') != subreddit,
+                                        response_links)
             if subreddit_links:
                 cache.set(subreddit, pickle.dumps(subreddit_links))
 
