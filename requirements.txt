@@ -4,4 +4,5 @@ MarkupSafe==0.18
 Werkzeug==0.9.4
 itsdangerous==0.23
 mock==1.0.1
+python-memcached==1.53
 wsgiref==0.1.2
