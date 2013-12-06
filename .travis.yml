@@ -6,6 +6,6 @@ install:
     - "pip install coveralls"
     - "pip install -r requirements.txt"
 script:
-    - "coverage run --source=flock test"
+    - "coverage run --source=flock tests.py"
 after_success:
     coveralls
