@@ -733,7 +733,8 @@ class CacheTestCase(unittest.TestCase):
 								'downs' : 0,
 								'created_utc' : 1386264411.0,
 								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
+								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg',
+								'subreddit' : 'futuregarage'
 							}
 						}
 					]
@@ -749,7 +750,7 @@ class CacheTestCase(unittest.TestCase):
 
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
-		flock.cache.set.assert_called_with(pickle.dumps(cache_value))
+		flock.cache.set.assert_called_with('futuregarage', pickle.dumps(cache_value))
 
 
 if __name__ == '__main__':
