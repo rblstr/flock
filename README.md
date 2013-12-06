@@ -1,4 +1,5 @@
 # _flock_
+[![Build Status](https://travis-ci.org/rblstr/flock.png?branch=dev)](https://travis-ci.org/rblstr/flock) [![Coverage Status](https://coveralls.io/repos/rblstr/flock/badge.png?branch=dev)](https://coveralls.io/r/rblstr/flock?branch=dev)
 
 Subreddit YouTube playlister
 
