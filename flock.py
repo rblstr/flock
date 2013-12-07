@@ -263,6 +263,7 @@ def playlist():
     links = removeDuplicates(links)
 
     sort_func = supported_sorts[sort]
+    links = sorted(links, reverse=True, key=lambda l: l['created_utc'])
     links = sorted(links, reverse=True, key=lambda l: sort_func(l))
 
     links = links[0:limit]

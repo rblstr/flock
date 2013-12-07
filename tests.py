@@ -1,3 +1,5 @@
+import HTMLParser
+import json
 import pickle
 import time
 import unittest
@@ -5,11 +7,19 @@ import mock
 import flock
 
 
-class FrontpageTestCase(unittest.TestCase):
+class FlockBaseTestCase(unittest.TestCase):
 	def setUp(self):
 		flock.app.testing = True
 		self.app = flock.app.test_client()
+		test_json_handle = open('tests/futuregarage_top_week_100.json')
+		self.futuregarage_top = json.load(test_json_handle)
+		test_json_handle.close()
+		test_json_handle = open('tests/futuregarage_hot_week_100.json')
+		self.futuregarage_hot = json.load(test_json_handle)
+		test_json_handle.close()
 
+
+class FrontpageTestCase(FlockBaseTestCase):
 	def test_frontpage(self):
 		response = self.app.get('/', content_type='text/html', follow_redirects=True)
 		self.assertEqual(response.status_code, 200)
@@ -18,84 +28,47 @@ class FrontpageTestCase(unittest.TestCase):
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=None)
 
-		response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
+		response = self.app.get('/?subreddits=futuregarage',
+								content_type='text/html',
+								follow_redirects=True)
 
-		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
 		self.assertEqual(response.status_code, 200)
-		self.assertTrue('No Reddit response' in response.data)
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
+		self.assertIn('No Reddit response', response.data)
 
 	def test_frontpage_subreddits_no_youtube_links(self):
-		return_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'url' : 'imgur.com'
-								}
-							}
-						]
-					}
-				}
-
-		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
-		response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
+		response = self.app.get('/?subreddits=futuregarage',
+				                content_type='text/html',
+								follow_redirects=True)
 
-		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
 		self.assertEqual(response.status_code, 200)
-		self.assertTrue('No links found' in response.data)
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
+		self.assertNotIn('RA News: New Burial EP set for December', response.data)
 
 	def test_frontpage_subreddits_all_links_present(self):
-		return_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 0,
-								'created_utc' : time.time(),
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 3,
-								'downs' : 1,
-								'created_utc' : time.time(),
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 2,
-								'downs' : 2,
-								'created_utc' : time.time(),
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								'media' : 'i should be pruned'
-								}
-							}
-						]
-					}
-				}
+		h = HTMLParser.HTMLParser()
+		futuregarage_links = flock.parseRedditResponse(self.futuregarage_top)
 
-		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
-		flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
-		response = self.app.get('/?subreddits=futuregarage', content_type='text/html', follow_redirects=True)
+		response = self.app.get('/?subreddits=futuregarage',
+								content_type='text/html',
+								follow_redirects=True)
 
 		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
 		self.assertEqual(response.status_code, 200)
-		self.assertTrue('http://www.youtube.com/watch?v=wRpHf4X7FNM' in response.data)
-		self.assertTrue('Burial - Untrue (Full Album Mix)' in response.data)
-		self.assertTrue('http://www.youtube.com/watch?v=cfLmW-dKtwg' in response.data)
-		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)' in response.data)
-		self.assertTrue('http://www.youtube.com/watch?v=AY08MWIGYsk' in response.data)
-		self.assertTrue('Koreless &amp; Jacques Greene - Untitled' in response.data)
+
+		unescaped_response = h.unescape(response.data)
+		for child in futuregarage_links:
+			self.assertIn(child['title'], unescaped_response)
+			self.assertIn(child['url'], unescaped_response)
+			self.assertIn(child['permalink'], unescaped_response)
 
 class SanitiseURLCase(unittest.TestCase):
 	def test_sanitise_short_youtube_url(self):
@@ -260,227 +233,71 @@ class DuplicatesTestCase(unittest.TestCase):
 		self.assertEquals(new_links, links)
 
 
-class OptionalPlaylistOptionsTestCase(unittest.TestCase):
-	def setUp(self):
-		flock.app.testing = True
-		self.app = flock.app.test_client()
-
+class OptionalPlaylistOptionsTestCase(FlockBaseTestCase):
 	def test_accepts_valid_optional_arguments(self):
-		return_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 0,
-								'created_utc' : time.time(),
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 3,
-								'downs' : 1,
-								'created_utc' : time.time(),
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 2,
-								'downs' : 2,
-								'created_utc' : time.time(),
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								}
-							}
-						]
-					}
-				}
-
-		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
 		flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
 		response = self.app.get('/?subreddits=futuregarage&sort=hot&t=month&limit=50',
-				content_type='text/html',
-				follow_redirects=True)
+								content_type='text/html',
+								follow_redirects=True)
 
 		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'hot', 'month', 100)
 		self.assertEqual(response.status_code, 200)
 
 	def test_limit_argument_operates_on_reddit_results_post_parsing(self):
-		return_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 0,
-								'created_utc' : time.time(),
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 3,
-								'downs' : 1,
-								'created_utc' : time.time(),
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 2,
-								'downs' : 2,
-								'created_utc' : time.time(),
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								}
-							}
-						]
-					}
-				}
-		return_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 0,
-								'created_utc' : time.time(),
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-								}
-							},
-						{
-							'data' : {
-								'url' : 'imgur.com'
-								}
-							},
-						{
-							'data' : {
-								'url' : 'imgur.com'
-								}
-							},
-						{
-							'data' : {
-								'url' : 'imgur.com'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 3,
-								'downs' : 1,
-								'created_utc' : time.time(),
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 2,
-								'downs' : 2,
-								'created_utc' : time.time(),
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								'media' : 'adding a field to be pruned'
-								}
-							}
-						]
-					}
-				}
-
-		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
 		flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
 		response = self.app.get('/?subreddits=futuregarage&sort=hot&t=month&limit=2',
-				content_type='text/html',
-				follow_redirects=True)
+								content_type='text/html',
+								follow_redirects=True)
 
-		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'hot', 'month', 100)
 		self.assertEqual(response.status_code, 200)
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'hot', 'month', 100)
 		self.assertEqual(response.data.count('"track"'), 2)
 
 	def test_unsupported_sort_argument(self):
 		response = self.app.get('/?subreddits=futuregarage&sort=error',
-				content_type='text/html',
-				follow_redirects=True)
+								content_type='text/html',
+								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
-		self.assertTrue('Invalid sort type: error' in response.data)
+		self.assertIn('Invalid sort type: error', response.data)
 
 	def test_unsupported_time_argument(self):
 		response = self.app.get('/?subreddits=futuregarage&t=never',
-				content_type='text/html',
-				follow_redirects=True)
+								content_type='text/html',
+								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
-		self.assertTrue('Invalid time type: never' in response.data)
+		self.assertIn('Invalid time type: never', response.data)
 
 	def test_unsupported_limit_argument(self):
 		response = self.app.get('/?subreddits=futuregarage&limit=1000',
-				content_type='text/html',
-				follow_redirects=True)
+								content_type='text/html',
+								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
-		self.assertTrue('Invalid limit: 1000' in response.data)
+		self.assertIn('Invalid limit: 1000', response.data)
 
 	def test_unsupported_limit_string_argument(self):
 		response = self.app.get('/?subreddits=futuregarage&limit=never',
-				content_type='text/html',
-				follow_redirects=True)
+								content_type='text/html',
+								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
-		self.assertTrue('Invalid limit: never' in response.data)
+		self.assertTrue('Invalid limit: never', response.data)
 
 
-class CacheTestCase(unittest.TestCase):
-	def setUp(self):
-		flock.app.testing = True
-		self.app = flock.app.test_client()
-
+class CacheTestCase(FlockBaseTestCase):
 	def test_frontpage_hits_memcached(self):
-		return_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 0,
-								'created_utc' : time.time(),
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 3,
-								'downs' : 1,
-								'created_utc' : time.time(),
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 2,
-								'downs' : 2,
-								'created_utc' : time.time(),
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								}
-							}
-						]
-					}
-				}
-
-		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',				
+												 return_value=self.futuregarage_top)
 
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
@@ -491,41 +308,8 @@ class CacheTestCase(unittest.TestCase):
 		flock.cache.get.assert_called_once_with('futuregarage')
 
 	def test_frontpage_hits_memcached_same_number_of_times_as_subreddits(self):
-		return_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 0,
-								'created_utc' : time.time(),
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 3,
-								'downs' : 1,
-								'created_utc' : time.time(),
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 2,
-								'downs' : 2,
-								'created_utc' : time.time(),
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								}
-							}
-						]
-					}
-				}
-
-		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=return_value)
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
 
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
@@ -536,41 +320,8 @@ class CacheTestCase(unittest.TestCase):
 		self.assertEquals(flock.cache.get.call_count, 5)
 
 
-	def test_frontpage_hits_memcached_same_number_of_times_as_subreddits(self):
-		return_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 0,
-								'created_utc' : time.time(),
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 3,
-								'downs' : 1,
-								'created_utc' : time.time(),
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-								}
-							},
-						{
-							'data' : {
-								'ups' : 2,
-								'downs' : 2,
-								'created_utc' : time.time(),
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								}
-							}
-						]
-					}
-				}
-		return_value = flock.parseRedditResponse(return_value)
+	def test_frontpage_hits_memcached_same_number_of_times_as_subreddits_with_names(self):
+		return_value = flock.parseRedditResponse(self.futuregarage_top)
 
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse', return_value=None)
 
@@ -588,98 +339,19 @@ class CacheTestCase(unittest.TestCase):
 		flock.cache.get.assert_has_calls(calls)
 	
 	def test_link_sort_order_is_maintained_top(self):
-		cache_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 0,
-								'created_utc' : time.time(),
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-							}
-						},
-						{
-							'data' : {
-								'ups' : 2,
-								'downs' : 2,
-								'created_utc' : time.time(),
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								}
-							}
-						]
-					}
-				}
-		cache_value = flock.parseRedditResponse(cache_value)
+		h = HTMLParser.HTMLParser()
+		futuregarage_links = flock.parseRedditResponse(self.futuregarage_top)
+		futuregarage_links = sorted(futuregarage_links,
+									reverse=True,
+									key=lambda l: l['created_utc'])
+		futuregarage_links = sorted(futuregarage_links,
+									reverse=True,
+									key=lambda l: flock.top(l))
 
-		def cache_side_effect(*args, **kwargs):
-			if args[0] == 'futuregarage':
-				return picle.dumps(cache_value)
-			return None
-
-		flock.cache.get = mock.MagicMock(name='get')
-		flock.cache.get.side_effect = cache_side_effect
-		
-		reddit_value = {
-				'data': {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 3,
-								'downs' : 1,
-								'created_utc' : time.time(),
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-							}
-						}
-					]
-				}
-			}
-
-		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
-												 return_value=reddit_value)
-
-		response = self.app.get('/?subreddits=futuregarage+futurebeats', follow_redirects=True)
-
-		self.assertTrue('Burial - Untrue (Full Album Mix)' in response.data)
-		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)' in response.data)
-		self.assertTrue('Koreless &amp; Jacques Greene - Untitled' in response.data)
-
-		first_pos = response.data.find('Burial - Untrue (Full Album Mix)')
-		second_pos = response.data.find('Sage The Gemini - Gas Pedal (Motez Edit)')
-		third_pos = response.data.find('Koreless &amp; Jacques Greene - Untitled')
-
-		self.assertLess(first_pos, second_pos)
-		self.assertLess(second_pos, third_pos)
-
-
-	def test_link_sort_order_is_maintained_top(self):
-		cache_value = {
-				'data' : {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 5,
-								'downs' : 1,
-								'created_utc' : 1386278592.0, 
-								'title' : 'Burial - Untrue (Full Album Mix)',
-								'url' : 'http://www.youtube.com/watch?v=wRpHf4X7FNM'
-							}
-						},
-						{
-							'data' : {
-								'ups' : 6,
-								'downs' : 0,
-								'created_utc' : 1386267180.0,
-								'title' : 'Koreless & Jacques Greene - Untitled',
-								'url' : 'http://www.youtube.com/watch?v=AY08MWIGYsk',
-								}
-							}
-						]
-					}
-				}
+		cache_value = {}
+		cache_value['data'] = {}
+		cache_value['data']['children'] = {}
+		cache_value['data']['children'] = self.futuregarage_top['data']['children'][::2]
 		cache_value = flock.parseRedditResponse(cache_value)
 
 		def cache_side_effect(*args, **kwargs):
@@ -690,92 +362,107 @@ class CacheTestCase(unittest.TestCase):
 		flock.cache.get = mock.MagicMock(name='get')
 		flock.cache.get.side_effect = cache_side_effect
 		
-		reddit_value = {
-				'data': {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 8,
-								'downs' : 0,
-								'created_utc' : 1386264411.0,
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg'
-							}
-						}
-					]
-				}
-			}
-
+		reddit_value = {}
+		reddit_value['data'] = {}
+		reddit_value['data']['children'] = {}
+		reddit_value['data']['children'] = self.futuregarage_top['data']['children'][1::2]
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
 												 return_value=reddit_value)
 
-		response = self.app.get('/?subreddits=futuregarage+futurebeats&sort=hot',
-								follow_redirects=True)
+		response = self.app.get('/?subreddits=futuregarage+futurebeats', follow_redirects=True)
 
-		self.assertTrue('Burial - Untrue (Full Album Mix)' in response.data)
-		self.assertTrue('Sage The Gemini - Gas Pedal (Motez Edit)' in response.data)
-		self.assertTrue('Koreless &amp; Jacques Greene - Untitled' in response.data)
+		unescaped_response = h.unescape(response.data)
+		for child in futuregarage_links:
+			self.assertIn(child['title'], unescaped_response)
+			self.assertIn(child['url'], unescaped_response)
+			self.assertIn(child['permalink'], unescaped_response)
 
-		first_pos = response.data.find('Burial - Untrue (Full Album Mix)')
-		second_pos = response.data.find('Sage The Gemini - Gas Pedal (Motez Edit)')
-		third_pos = response.data.find('Koreless &amp; Jacques Greene - Untitled')
+		j = 1
+		for i,child in enumerate(futuregarage_links):
+			first_child = futuregarage_links[i]
+			second_child = futuregarage_links[j]
+			first_pos = unescaped_response.find(first_child['title'])
+			second_pos = unescaped_response.find(second_child['title'])
+			self.assertLess(first_pos, second_pos,
+				'%s:%d, %s:%d' % (first_child['title'], flock.top(first_child),
+								  second_child['title'], flock.top(second_child)))
+			j = j + 1
+			if j >= len(futuregarage_links):
+				break
 
-		self.assertLess(first_pos, second_pos)
-		self.assertLess(second_pos, third_pos)
+	def test_link_sort_order_is_maintained_hot(self):
+		h = HTMLParser.HTMLParser()
+		futuregarage_links = flock.parseRedditResponse(self.futuregarage_top)
+		futuregarage_links = sorted(futuregarage_links,
+									reverse=True,
+									key=lambda l: l['created_utc'])
+		futuregarage_links = sorted(futuregarage_links,
+									reverse=True,
+									key=lambda l: flock.hot(l))
+
+		cache_value = {}
+		cache_value['data'] = {}
+		cache_value['data']['children'] = {}
+		cache_value['data']['children'] = self.futuregarage_top['data']['children'][::2]
+		cache_value = flock.parseRedditResponse(cache_value)
+
+		def cache_side_effect(*args, **kwargs):
+			if args[0] == 'futuregarage':
+				return pickle.dumps(cache_value)
+			return None
+
+		flock.cache.get = mock.MagicMock(name='get')
+		flock.cache.get.side_effect = cache_side_effect
+		
+		reddit_value = {}
+		reddit_value['data'] = {}
+		reddit_value['data']['children'] = {}
+		reddit_value['data']['children'] = self.futuregarage_top['data']['children'][1::2]
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=reddit_value)
+
+		response = self.app.get('/?subreddits=futuregarage+futurebeats&sort=hot', follow_redirects=True)
+
+		unescaped_response = h.unescape(response.data)
+		for child in futuregarage_links:
+			self.assertIn(child['title'], unescaped_response)
+			self.assertIn(child['url'], unescaped_response)
+			self.assertIn(child['permalink'], unescaped_response)
+
+		j = 1
+		for i,child in enumerate(futuregarage_links):
+			first_child = futuregarage_links[i]
+			second_child = futuregarage_links[j]
+			first_pos = unescaped_response.find(first_child['title'])
+			second_pos = unescaped_response.find(second_child['title'])
+			self.assertLess(first_pos, second_pos,
+				'%s:%d, %s:%d' % (first_child['title'], flock.top(first_child),
+								  second_child['title'], flock.top(second_child)))
+			j = j + 1
+			if j >= len(futuregarage_links):
+				break
 
 	def test_cache_is_heated_with_parsed_links(self):
-		reddit_value = {
-				'data': {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 8,
-								'downs' : 0,
-								'created_utc' : 1386264411.0,
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg',
-								'subreddit' : 'futuregarage'
-							}
-						}
-					]
-				}
-			}
-		cache_value = flock.parseRedditResponse(reddit_value)
+		cache_value = flock.parseRedditResponse(self.futuregarage_top)
 		
 		flock.cache.set = mock.MagicMock(name='set')
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
-												 return_value=reddit_value)
+												 return_value=self.futuregarage_top)
 
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
 		flock.cache.set.assert_called_with('futuregarage', pickle.dumps(cache_value))
 
 	def test_cache_is_hit_after_cache_is_warmed(self):
-		reddit_value = {
-				'data': {
-					'children' : [
-						{
-							'data' : {
-								'ups' : 8,
-								'downs' : 0,
-								'created_utc' : 1386264411.0,
-								'title' : 'Sage The Gemini - Gas Pedal (Motez Edit)',
-								'url' : 'http://www.youtube.com/watch?v=cfLmW-dKtwg',
-								'subreddit' : 'futuregarage'
-							}
-						}
-					]
-				}
-			}
-		cache_value = flock.parseRedditResponse(reddit_value)
+		cache_value = flock.parseRedditResponse(self.futuregarage_top)
 
 		flock.cache.set = mock.MagicMock(name='set')
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
-												 return_value=reddit_value)
+												 return_value=self.futuregarage_top)
 
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
