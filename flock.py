@@ -45,7 +45,7 @@ def getRedditResponse(subreddits, sort='top', t='week', limit=100):
         response_object = json.loads(body)
     except ValueError:
         return None
-    if response_object.get('error'):
+    if response_object.get('error') != None:
         return None
     
     return response_object
