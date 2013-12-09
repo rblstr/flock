@@ -8,7 +8,7 @@ import mock
 import flock
 
 
-class MockHTTPResponseWithJSON(object):
+class MockHTTPResponseWithString(object):
 	def __init__(self, status, response):
 		self.status = status
 		self.response = response
@@ -16,37 +16,28 @@ class MockHTTPResponseWithJSON(object):
 	def read(self):
 		return self.response
 
-class MockHTTPResponseWithError(object):
-	def __init__(self, status):
-		self.status = status
-	
-	def read(self):
-		return '{ "error" : "" }'
-
-class MockHTTPResponseWithInvalidJSON(object):
-	def __init__(self, status):
-		self.status = status
-	
-	def read(self):
-		return '<html></html>'
-
 
 class FlockBaseTestCase(unittest.TestCase):
 	def setUp(self):
 		flock.app.testing = True
 		self.app = flock.app.test_client()
+		
 		test_json_handle = open('tests/futuregarage_top_week_100.json')
 		self.futuregarage_top = json.load(test_json_handle)
 		test_json_handle.close()
+
 		test_json_handle = open('tests/futuregarage_hot_week_100.json')
 		self.futuregarage_hot = json.load(test_json_handle)
 		test_json_handle.close()
+
 		self.original_getRedditResponse = flock.getRedditResponse
 		self.original_cache_get = flock.cache.get
 		self.original_cache_set = flock.cache.set
 		self.original_request = flock.httplib.HTTPConnection.request
-		flock.httplib.HTTPConnection.request = mock.MagicMock(name='request')
 		self.original_response = flock.httplib.HTTPConnection.getresponse
+
+		""" We never want to make an actual HTTP request """
+		flock.httplib.HTTPConnection.request = mock.MagicMock(name='request')
 	
 	def tearDown(self):
 		flock.getRedditResponse = self.original_getRedditResponse
@@ -76,7 +67,7 @@ class FrontpageTestCase(FlockBaseTestCase):
 	def test_frontpage_subreddits_no_response_404(self):
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 		flock.httplib.HTTPConnection.getresponse = mock.MagicMock(name='getresponse',
-												return_value=MockHTTPResponseWithJSON(404, ''))
+												return_value=MockHTTPResponseWithString(404, ''))
 
 		response = self.app.get('/?subreddits=futuregarage',
 								content_type='text/html',
@@ -86,9 +77,10 @@ class FrontpageTestCase(FlockBaseTestCase):
 		self.assertIn('No Reddit response', response.data)
 
 	def test_frontpage_subreddits_reddit_error(self):
+		response_string = '{ "error" : {} }'
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 		flock.httplib.HTTPConnection.getresponse = mock.MagicMock(name='getresponse',
-													return_value=MockHTTPResponseWithError(200))
+									return_value=MockHTTPResponseWithString(200, response_string))
 
 		response = self.app.get('/?subreddits=futuregarage',
 								content_type='text/html',
@@ -98,9 +90,10 @@ class FrontpageTestCase(FlockBaseTestCase):
 		self.assertIn('No Reddit response', response.data)
 
 	def test_frontpage_subreddits_invalid_json(self):
+		response_string = '<html></html>'
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 		flock.httplib.HTTPConnection.getresponse = mock.MagicMock(name='getresponse',
-											return_value=MockHTTPResponseWithInvalidJSON(200))
+									return_value=MockHTTPResponseWithString(200, response_string))
 
 		response = self.app.get('/?subreddits=futuregarage',
 								content_type='text/html',
@@ -111,8 +104,9 @@ class FrontpageTestCase(FlockBaseTestCase):
 
 	def test_frontpage_subreddits_no_youtube_links(self):
 		flock.httplib.HTTPConnection.getresponse = mock.MagicMock(
-							name='getresponse ',
-							return_value=MockHTTPResponseWithJSON(200, json.dumps(self.futuregarage_top)))
+				name='getresponse',
+				return_value=MockHTTPResponseWithString(200, json.dumps(self.futuregarage_top)))
+
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
 		response = self.app.get('/?subreddits=futuregarage',
@@ -120,7 +114,19 @@ class FrontpageTestCase(FlockBaseTestCase):
 								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
-		self.assertNotIn('RA News: New Burial EP set for December', response.data)
+
+		for child in self.futuregarage_top['data']['children']:
+			child = child['data']
+			if not 'youtube' in child['domain'] and not 'youtu.be' in child['domain']:
+				self.assertNotIn(child['title'], response.data)
+
+	def test_parse_reddit_response(self):
+		futuregarage_links = flock.parseRedditResponse(self.futuregarage_top)
+		futuregarage_links = [ child['title'] for child in futuregarage_links ]
+		for child in self.futuregarage_top['data']['children']:
+			child = child['data']
+			if not 'youtube' in child['domain'] and not 'youtu.be' in child['domain']:
+				self.assertNotIn(child['title'], futuregarage_links)
 
 	def test_frontpage_subreddits_all_links_present(self):
 		h = HTMLParser.HTMLParser()
@@ -128,8 +134,9 @@ class FrontpageTestCase(FlockBaseTestCase):
 
 		flock.httplib.HTTPConnection.request = mock.MagicMock(name='request')
 		flock.httplib.HTTPConnection.getresponse = mock.MagicMock(
-							name='getresponse ',
-							return_value=MockHTTPResponseWithJSON(200, json.dumps(self.futuregarage_top)))
+				name='getresponse ',
+				return_value=MockHTTPResponseWithString(200, json.dumps(self.futuregarage_top)))
+	
 		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
 		response = self.app.get('/?subreddits=futuregarage',

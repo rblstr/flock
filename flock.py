@@ -1,3 +1,4 @@
+import copy
 import pickle
 import math
 from datetime import datetime
@@ -99,17 +100,20 @@ def parseChild(child):
         'subreddits',
         'created_utc',
     ]
+
     for key in child.keys():
         if key not in accepted_keys:
             del child[key]
+
     return child
 
 
 def parseRedditResponse(response_object):
+    response_copy = copy.deepcopy(response_object)
     html_parser = HTMLParser.HTMLParser()
     
-    children = response_object['data']['children']
-    children = [child.get('data') for child in children]
+    children = response_copy['data']['children']
+    children = [child['data'] for child in children]
     
     links = []
     for child in children:
