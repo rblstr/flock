@@ -38,6 +38,8 @@ class FlockBaseTestCase(unittest.TestCase):
 
 		""" We never want to make an actual HTTP request """
 		flock.httplib.HTTPConnection.request = mock.MagicMock(name='request')
+		""" Ensure we don't hit the cache by default """
+		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 	
 	def tearDown(self):
 		flock.getRedditResponse = self.original_getRedditResponse
@@ -318,8 +320,6 @@ class OptionalPlaylistOptionsTestCase(FlockBaseTestCase):
 	def test_accepts_valid_optional_arguments(self):
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
 												 return_value=self.futuregarage_top)
-		flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
-		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
 		response = self.app.get('/?subreddits=futuregarage&sort=hot&t=month&limit=50',
 								content_type='text/html',
@@ -331,8 +331,6 @@ class OptionalPlaylistOptionsTestCase(FlockBaseTestCase):
 	def test_limit_argument_operates_on_reddit_results_post_parsing(self):
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
 												 return_value=self.futuregarage_top)
-		flock.getYouTubeResponse = mock.MagicMock(name='getYouTubeResponse', return_value=None)
-		flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
 		response = self.app.get('/?subreddits=futuregarage&sort=hot&t=month&limit=2',
 								content_type='text/html',
@@ -343,35 +341,51 @@ class OptionalPlaylistOptionsTestCase(FlockBaseTestCase):
 		self.assertEqual(response.data.count('"track"'), 2)
 
 	def test_unsupported_sort_argument(self):
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
+
 		response = self.app.get('/?subreddits=futuregarage&sort=error',
 								content_type='text/html',
 								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
+		self.assertFalse(flock.getRedditResponse.called)
 		self.assertIn('Invalid sort type: error', response.data)
 
 	def test_unsupported_time_argument(self):
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
+
 		response = self.app.get('/?subreddits=futuregarage&t=never',
 								content_type='text/html',
 								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
+		self.assertFalse(flock.getRedditResponse.called)
 		self.assertIn('Invalid time type: never', response.data)
 
 	def test_unsupported_limit_argument(self):
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
+
 		response = self.app.get('/?subreddits=futuregarage&limit=1000',
 								content_type='text/html',
 								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
+		self.assertFalse(flock.getRedditResponse.called)
 		self.assertIn('Invalid limit: 1000', response.data)
 
 	def test_unsupported_limit_string_argument(self):
+		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
+												 return_value=self.futuregarage_top)
+
 		response = self.app.get('/?subreddits=futuregarage&limit=never',
 								content_type='text/html',
 								follow_redirects=True)
 
 		self.assertEqual(response.status_code, 200)
+		self.assertFalse(flock.getRedditResponse.called)
 		self.assertTrue('Invalid limit: never', response.data)
 
 
