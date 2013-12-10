@@ -171,7 +171,8 @@ def getLinks(subreddits, sort, t):
     subreddits_to_get = []
     links = []
     for subreddit in subreddits:
-        subreddit_links = cache.get(subreddit)
+        key = "%s+%s+%s" % (subreddit, sort, t)
+        subreddit_links = cache.get(key)
         if not subreddit_links:
             subreddits_to_get.append(subreddit)
         else:
@@ -189,7 +190,8 @@ def getLinks(subreddits, sort, t):
             subreddit_links = filter(lambda link: link.get('subreddits') != subreddit,
                                         response_links)
             if subreddit_links:
-                cache.set(subreddit, pickle.dumps(subreddit_links))
+                key = "%s+%s+%s" % (subreddit, sort, t)
+                cache.set(key, pickle.dumps(subreddit_links))
 
         links.extend(response_links)
 

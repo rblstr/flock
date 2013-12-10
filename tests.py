@@ -400,7 +400,7 @@ class CacheTestCase(FlockBaseTestCase):
 
 		self.assertEquals(response.status_code, 200)
 		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
-		flock.cache.get.assert_called_once_with('futuregarage')
+		flock.cache.get.assert_called_once_with('futuregarage+top+week')
 
 	def test_frontpage_hits_memcached_same_number_of_times_as_subreddits(self):
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
@@ -426,11 +426,11 @@ class CacheTestCase(FlockBaseTestCase):
 
 		self.assertEquals(response.status_code, 200)
 		self.assertFalse(flock.getRedditResponse.called)
-		calls = [ mock.call('1'), 
-				mock.call('2'),
-				mock.call('3'),
-				mock.call('4'),
-				mock.call('5') ]
+		calls = [ mock.call('1+top+week'), 
+				mock.call('2+top+week'),
+				mock.call('3+top+week'),
+				mock.call('4+top+week'),
+				mock.call('5+top+week') ]
 		flock.cache.get.assert_has_calls(calls)
 	
 	def test_link_sort_order_is_maintained_top(self):
@@ -450,7 +450,7 @@ class CacheTestCase(FlockBaseTestCase):
 		cache_value = flock.parseRedditResponse(cache_value)
 
 		def cache_side_effect(*args, **kwargs):
-			if args[0] == 'futuregarage':
+			if args[0] == 'futuregarage+top+week':
 				return pickle.dumps(cache_value)
 			return None
 
@@ -502,7 +502,7 @@ class CacheTestCase(FlockBaseTestCase):
 		cache_value = flock.parseRedditResponse(cache_value)
 
 		def cache_side_effect(*args, **kwargs):
-			if args[0] == 'futuregarage':
+			if args[0] == 'futuregarage+hot+week':
 				return pickle.dumps(cache_value)
 			return None
 
@@ -548,7 +548,7 @@ class CacheTestCase(FlockBaseTestCase):
 
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
-		flock.cache.set.assert_called_with('futuregarage', pickle.dumps(cache_value))
+		flock.cache.set.assert_called_with('futuregarage+top+week', pickle.dumps(cache_value))
 
 	def test_cache_is_hit_after_cache_is_warmed(self):
 		cache_value = flock.parseRedditResponse(self.futuregarage_top)
@@ -562,7 +562,7 @@ class CacheTestCase(FlockBaseTestCase):
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
 		flock.getRedditResponse.assert_called_with(['futuregarage'], 'top', 'week', 100)
-		flock.cache.set.assert_called_with('futuregarage', pickle.dumps(cache_value))
+		flock.cache.set.assert_called_with('futuregarage+top+week', pickle.dumps(cache_value))
 
 		flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(cache_value))
 		flock.cache.set = mock.MagicMock(name='set')
@@ -570,7 +570,7 @@ class CacheTestCase(FlockBaseTestCase):
 
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
-		flock.cache.get.assert_called_with('futuregarage')
+		flock.cache.get.assert_called_with('futuregarage+top+week')
 		self.assertEqual(flock.getRedditResponse.call_count, 0)
 		self.assertEqual(flock.cache.set.call_count, 0)
 
