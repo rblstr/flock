@@ -62,6 +62,25 @@
 				<ul class="nav nav-pills sort-nav">
 					<li {% if sort == "top" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('sort', 'top')">Top</a></li>
 					<li {% if sort == "hot" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('sort', 'hot')">Hot</a></li>
+					<li class="dropdown">
+					    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+					      	{% if time == 'day' %} 
+					      		today 
+				      		{% elif time == 'all' %} 
+				      			all-time 
+			      			{% else %} 
+			      				this {{ time }} 
+			      			{% endif %}
+		      				<span class="caret"></span>
+					    </a>
+					    <ul class="dropdown-menu">
+							<li {% if time == "day" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'day')">today</a></li>
+					      	<li {% if time == "week" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'week')">this week</a></li>
+					      	<li {% if time == "month" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'month')">this month</a></li>
+					      	<li {% if time == "year" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'year')">this year</a></li>
+					      	<li {% if time == "all" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'all')">all-time</a></li>
+					    </ul>
+				  	</li>
 				</ul>
 
 				<br>
@@ -170,12 +189,16 @@
 			function addArg(key, value)
 			{
 				var newUrl = window.location.href;
-				if(newUrl.indexOf('&sort=') > 0)
+				if(newUrl.indexOf('&' + key + '=') > 0)
 				{
-					newUrl = newUrl.replace('&sort=top', '');
-					newUrl = newUrl.replace('&sort=hot', '');
+					newUrl = newUrl.replace('&' + key + '=' + getParameterByName(key), '');
 				}
 				window.location = newUrl + '&' + key + '=' + value;
+			}
+
+			function getParameterByName(name) {
+			    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+			    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 			}
 	    </script>
 	</body>
