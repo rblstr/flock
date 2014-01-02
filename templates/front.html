@@ -161,7 +161,13 @@
 
 			function addArg(key, value)
 			{
-				window.location += '&' + key + '=' + value;
+				var newUrl = window.location.href;
+				if(newUrl.indexOf('&sort=') > 0)
+				{
+					newUrl = newUrl.replace('&sort=top', '');
+					newUrl = newUrl.replace('&sort=hot', '');
+				}
+				window.location = newUrl + '&' + key + '=' + value;
 			}
 	    </script>
 	</body>
