@@ -51,42 +51,50 @@
 			</form>
 			<br/>
 			{% if links %}
-				<iframe id="player" class="player" type="text/html" width="640" height="360" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
-			{% endif %}
-			<br/>
+				<ul class="nav nav-pills">
+					<li {% if sort == "top" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('sort', 'top')">Top</a></li>
+					<li {% if sort == "hot" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('sort', 'hot')">Hot</a></li>
+				</li>
 
-			<!-- The list of tracks and such -->
-			<table class="table table-striped">
-				<tbody>
-					{% for link in links %}
-						<tr class="track" data-playnum="{{ loop.index0 }}">
-							<td class="playNumber playTrack">
-								<span class="playNum">{{ loop.index }}</span>
-								<span class="glyphicon glyphicon-play grey playIcon"></span>
-								<span class="glyphicon glyphicon-volume-down nowPlayingIcon"></span>
-							</td>
-							<td class="playTrack">
-								<span class="playTitle">{{ link.get("title") }}</span>
-								<span class="comments">
-									<a class="commentNum" target="_blank" href="{{ link.get("permalink") }}">
-								
-										<span class="glyphicon glyphicon-comment"></span>
-										{{link.get("num_comments")}}</a>
-									</a>
-								</span>
-							</td>
-							<td class="">
-								<span class="youtube">
-									<a class="italic permalink" target="_blank" href="{{ link.get("url") }}">
-										<span class="glyphicon glyphicon-film"></span>
-										YouTube
-									</a>
-								</span>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+				<br>
+
+				<iframe id="player" class="player" type="text/html" width="640" height="360" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
+
+				<br>
+
+				<!-- The list of tracks and such -->
+				<table class="table table-striped">
+					<tbody>
+						{% for link in links %}
+							<tr class="track" data-playnum="{{ loop.index0 }}">
+								<td class="playNumber playTrack">
+									<span class="playNum">{{ loop.index }}</span>
+									<span class="glyphicon glyphicon-play grey playIcon"></span>
+									<span class="glyphicon glyphicon-volume-down nowPlayingIcon"></span>
+								</td>
+								<td class="playTrack">
+									<span class="playTitle">{{ link.get("title") }}</span>
+									<span class="comments">
+										<a class="commentNum" target="_blank" href="{{ link.get("permalink") }}">
+									
+											<span class="glyphicon glyphicon-comment"></span>
+											{{link.get("num_comments")}}</a>
+										</a>
+									</span>
+								</td>
+								<td class="">
+									<span class="youtube">
+										<a class="italic permalink" target="_blank" href="{{ link.get("url") }}">
+											<span class="glyphicon glyphicon-film"></span>
+											YouTube
+										</a>
+									</span>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
 
 			<div class="footer">
 				<h2>with <span class="glyphicon glyphicon-heart"></span> from <a target="_blank" href="http://github.com/rblstr">@rblstr</a> and <a target="_blank" href="http://github.com/rorokeeffe">@rorokeeffe</a></h2>
@@ -131,7 +139,6 @@
 				//updateNowPlaying();
 			}
 
-
 			function onPlayerStateChange(event)
 			{
 				updateNowPlaying();
@@ -150,6 +157,11 @@
 
 					document.title = 'flock - ' + currentlyPlayingTrackRow.find('.playTitle').html();
 				}
+			}
+
+			function addArg(key, value)
+			{
+				window.location += '&' + key + '=' + value;
 			}
 	    </script>
 	</body>
