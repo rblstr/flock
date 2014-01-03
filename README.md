@@ -11,7 +11,7 @@ To clone and run flock for the first time, follow these steps:
 
 1. git clone https://github.com/rblstr/flock.git && cd flock
 2. virtualenv --no-site-packages .
-3. . bin activate
+3. . bin/activate
 4. pip install -r requirements.txt
 5. python flock.py
 
