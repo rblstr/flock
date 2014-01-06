@@ -279,7 +279,9 @@ def playlist():
     return render_template( 'front.html',
                             subreddits=subreddits_str,
                             youtube_url=youtube_url,
-                            links=links)
+                            links=links, 
+                            sort=sort,
+                            time=t)
 
 
 app.config.from_object('debug_config')
