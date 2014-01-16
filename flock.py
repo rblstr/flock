@@ -238,7 +238,7 @@ def playlist():
     if not subreddits_str:
         return render_template('front.html')
 
-    sort = request.args.get('sort', 'top')
+    sort = request.args.get('sort', 'hot')
     if not sort in supported_sorts.keys():
         flash('Invalid sort type: %s' % sort, 'error')
         return redirect('/')

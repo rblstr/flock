@@ -60,11 +60,12 @@
 			{% endif %}
 			{% if links %}
 				<ul class="nav nav-pills sort-nav">
-					<li {% if sort == "top" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('sort', 'top')">Top</a></li>
 					<li {% if sort == "hot" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('sort', 'hot')">Hot</a></li>
-					{% if sort == "top" %}
-						<li class="dropdown">
-						    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+					<li class="dropdown {% if sort == "top" %} active {% endif %}">
+					    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+					    	Top
+					    	{% if sort == "top" %}
+					    		&nbsp;-&nbsp;
 						      	{% if time == 'day' %} 
 						      		today 
 					      		{% elif time == 'all' %} 
@@ -72,17 +73,17 @@
 				      			{% else %} 
 				      				this {{ time }} 
 				      			{% endif %}
-			      				<span class="caret"></span>
-						    </a>
-						    <ul class="dropdown-menu">
-								<li {% if time == "day" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'day')">today</a></li>
-						      	<li {% if time == "week" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'week')">this week</a></li>
-						      	<li {% if time == "month" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'month')">this month</a></li>
-						      	<li {% if time == "year" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'year')">this year</a></li>
-						      	<li {% if time == "all" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('t', 'all')">all-time</a></li>
-						    </ul>
-					  	</li>
-				  	{% endif %}
+			      			{% endif %}
+		      				<span class="caret"></span>
+					    </a>
+					    <ul class="dropdown-menu">
+							<li {% if time == "day" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['day', 'top'])">today</a></li>
+					      	<li {% if time == "week" and sort == 'top' %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['week', 'top'])">this week</a></li>
+					      	<li {% if time == "month" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['month', 'top'])">this month</a></li>
+					      	<li {% if time == "year" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['year', 'top'])">this year</a></li>
+					      	<li {% if time == "all" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['all', 'top'])">all-time</a></li>
+					    </ul>
+				  	</li>
 				</ul>
 
 				<br>
@@ -192,15 +193,21 @@
 			function addArg(key, value)
 			{
 				var newUrl = window.location.href;
-				if(newUrl.indexOf('&' + key + '=') > 0)
+				for(var i = 0; i < key.length; i ++)
 				{
-					newUrl = newUrl.replace('&' + key + '=' + getParameterByName(key), '');
+					if(newUrl.indexOf('&' + key[i] + '=') > 0)
+					{
+						newUrl = newUrl.replace('&' + key[i] + '=' + getParameterByName(key[i]), '');
+					}
+					if(key[i] == 'sort' && value[i] == 'hot')
+					{
+						newUrl = newUrl.replace('&t=' + getParameterByName('t'), '');
+					}
+
+					newUrl = newUrl + '&' + key[i] + '=' + value[i];
 				}
-				if(key == 'sort' && value == 'hot')
-				{
-					newUrl = newUrl.replace('&t=' + getParameterByName('t'), '');
-				}
-				window.location = newUrl + '&' + key + '=' + value;
+				
+				window.location = newUrl;
 			}
 
 			function getParameterByName(name) {
