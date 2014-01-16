@@ -148,6 +148,7 @@
 			function onYouTubeIframeAPIReady() {
 				player = new YT.Player('player', {
 				  events: {
+				  	'onError': onYTError,
 					'onReady': onPlayerReady,
 					'onStateChange': onPlayerStateChange
 				  }
@@ -165,6 +166,17 @@
 				});
 			});
 	
+			function onYTError(event)
+			{
+				$('.error').html(
+					$('.error').html() +
+					'<div class="alert alert-danger">
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+						<strong>Error!</strong> Having difficulty connecting to the YouTube API. The player controls will still work, but certain functions will not. This is most likely due to network problems. Thanks for your patience!
+					</div>'
+				);
+			}
+
 			function onPlayerReady(event)
 			{
 				player.playVideoAt(0);
