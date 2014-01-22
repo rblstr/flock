@@ -110,18 +110,14 @@
 }
 .beta-stamp
 {
-	color: #a13761;
+	color:#fff;
+	background-color: #a13761;
+	border-radius: 10%;
 	position: relative;
-	top: -10px;
+	top: -6px;
 	display: inline-block;
-	border: 1px solid;
-	text-transform: capitalize;
+	text-transform: uppercase;
 	font-size: 0.775em;
-	padding: 3px;
-	margin-left: -6px;
-	-webkit-transform: rotate(-45deg);
-	-moz-transform: rotate(-45deg);
-	-ms-transform: rotate(-45deg);
-	-o-transform: rotate(-45deg);
-	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	padding: 3px 5px;
+	margin-left: 4px;
 }
