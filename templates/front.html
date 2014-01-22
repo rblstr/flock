@@ -60,7 +60,7 @@
 			{% endif %}
 			{% if links %}
 				<ul class="nav nav-pills sort-nav">
-					<li {% if sort == "hot" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg('sort', 'hot')">Hot</a></li>
+					<li {% if sort == "hot" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['sort'], ['hot'])">Hot</a></li>
 					<li class="dropdown {% if sort == "top" %} active {% endif %}">
 					    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
 					    	Top
@@ -204,22 +204,13 @@
 
 			function addArg(key, value)
 			{
-				var newUrl = window.location.href;
+				var newParams = '';
 				for(var i = 0; i < key.length; i ++)
 				{
-					if(newUrl.indexOf('&' + key[i] + '=') > 0)
-					{
-						newUrl = newUrl.replace('&' + key[i] + '=' + getParameterByName(key[i]), '');
-					}
-					if(key[i] == 'sort' && value[i] == 'hot')
-					{
-						newUrl = newUrl.replace('&t=' + getParameterByName('t'), '');
-					}
-
-					newUrl = newUrl + '&' + key[i] + '=' + value[i];
+					newParams += '&' + key[i] + '=' + value[i];
 				}
 				
-				window.location = newUrl;
+				window.location.search = '?subreddits=' + getParameterByName('subreddits') + newParams;
 			}
 
 			function getParameterByName(name) {
