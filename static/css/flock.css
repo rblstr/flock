@@ -104,3 +104,24 @@
 {
 	display:none;
 }
+.flock
+{
+	display:inline-block;
+}
+.beta-stamp
+{
+	color: #a13761;
+	position: relative;
+	top: -10px;
+	display: inline-block;
+	border: 1px solid;
+	text-transform: capitalize;
+	font-size: 0.775em;
+	padding: 3px;
+	margin-left: -6px;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}
