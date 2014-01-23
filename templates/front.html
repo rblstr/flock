@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-46021850-1', 'rblstr.com');
+		  ga('send', 'pageview');
+
+		</script>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
@@ -10,7 +20,7 @@
 	</head>
 	<body>
 		<div class="container">
-			<a href="/" class="black"><h1>flock</h1></a>
+			<a href="/" class="black"><h1 class="flock">flock</h1><span class="beta-stamp">beta</span></a>
 			<form action="/" method="get">
 				<!-- Subreddits: <input type="text" name="subreddits" value="{{subreddits}}" />
 				<button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-play"></span> Play </button>
@@ -26,49 +36,99 @@
 					    </div><!-- /input-group -->
 			    	</div><!-- /.col-lg-6 -->
 				</div><!-- /.row -->
-				<span>{{error}}</span>
+				{% with errors = get_flashed_messages(category_filter=["error"]) %}
+					{% if errors %}
+						<div class="errors">
+							{% for error in errors %}
+								<div class="alert alert-danger">
+									<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+									<strong>Error!</strong> {{error}}
+								</div>
+							{% endfor %}
+						</div>
+					{% endif %}
+				{% endwith %}
 			</form>
 			<br/>
-			{% if links %}
-				<iframe id="player" class="player" type="text/html" width="640" height="360" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
-			{% endif %}
-			<br/>
 
-			<!-- The list of tracks and such -->
-			<table class="table table-striped">
-				<tbody>
-					{% for link in links %}
-						<tr class="track" data-playnum="{{ loop.index0 }}">
-							<td class="playNumber playTrack">
-								<span class="playNum">{{ loop.index }}</span>
-								<span class="glyphicon glyphicon-play grey playIcon"></span>
-								<span class="glyphicon glyphicon-volume-down nowPlayingIcon"></span>
-							</td>
-							<td class="playTrack">
-								<span class="playTitle">{{ link.get("title") }}</span>
-								<span class="comments">
-									<a class="commentNum" target="_blank" href="{{ link.get("permalink") }}">
-								
-										<span class="glyphicon glyphicon-comment"></span>
-										{{link.get("num_comments")}}</a>
-									</a>
-								</span>
-							</td>
-							<td class="">
-								<span class="youtube">
-									<a class="italic permalink" target="_blank" href="{{ link.get("url") }}">
-										<span class="glyphicon glyphicon-film"></span>
-										YouTube
-									</a>
-								</span>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
+			{% if not links %}
+				<div class="jumbotron">
+    				<h1>Music discovery, powered by Reddit</h1>
+  					<p>Simply enter one or more <a href="http://www.reddit.com/r/Music/wiki/musicsubreddits" target="_blank">musical subreddit names</a> and flock will return a playlist of what's hot for your listening pleasure</p>
+  					<!-- <p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p> -->
+				</div>
+			{% endif %}
+			{% if links %}
+				<ul class="nav nav-pills sort-nav">
+					<li {% if sort == "hot" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['sort'], ['hot'])">Hot</a></li>
+					<li class="dropdown {% if sort == "top" %} active {% endif %}">
+					    <a class="dropdown-toggle" data-toggle="dropdown" href="javascript:void(0);">
+					    	Top
+					    	{% if sort == "top" %}
+					    		&nbsp;-&nbsp;
+						      	{% if time == 'day' %} 
+						      		today 
+					      		{% elif time == 'all' %} 
+					      			all-time 
+				      			{% else %} 
+				      				this {{ time }} 
+				      			{% endif %}
+			      			{% endif %}
+		      				<span class="caret"></span>
+					    </a>
+					    <ul class="dropdown-menu">
+							<li {% if time == "day" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['day', 'top'])">today</a></li>
+					      	<li {% if time == "week" and sort == 'top' %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['week', 'top'])">this week</a></li>
+					      	<li {% if time == "month" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['month', 'top'])">this month</a></li>
+					      	<li {% if time == "year" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['year', 'top'])">this year</a></li>
+					      	<li {% if time == "all" %} class='active' {% endif %}><a href="javascript:void(0);" onclick="addArg(['t', 'sort'], ['all', 'top'])">all-time</a></li>
+					    </ul>
+				  	</li>
+				</ul>
+
+				<br>
+
+				<iframe id="player" class="player" type="text/html" width="640" height="360" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
+
+				<br>
+
+				<!-- The list of tracks and such -->
+				<table class="table table-striped">
+					<tbody>
+						{% for link in links %}
+							<tr class="track" data-playnum="{{ loop.index0 }}">
+								<td class="playNumber playTrack">
+									<span class="playNum">{{ loop.index }}</span>
+									<span class="glyphicon glyphicon-play grey playIcon"></span>
+									<span class="glyphicon glyphicon-volume-down nowPlayingIcon"></span>
+								</td>
+								<td class="playTrack">
+									<span class="playTitle">{{ link.get("title") }}</span>
+									<span class="comments">
+										<a class="commentNum" target="_blank" href="{{ link.get("permalink") }}">
+									
+											<span class="glyphicon glyphicon-comment"></span>
+											{{link.get("num_comments")}}</a>
+										</a>
+									</span>
+								</td>
+								<td class="">
+									<span class="youtube">
+										<a class="italic permalink" target="_blank" href="{{ link.get("url") }}">
+											<span class="glyphicon glyphicon-film"></span>
+											YouTube
+										</a>
+									</span>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
 
 			<div class="footer">
-				<h2>with <span class="glyphicon glyphicon-heart"></span> from <a target="_blank" href="http://github.com/rblstr">@rblstr</a> and <a target="_blank" href="http://github.com/rorokeeffe">@rorokeeffe</a></h2>
+				<h2>with <span class="glyphicon glyphicon-heart"></span> from <a target="_blank" href="https://twitter.com/rblestr">@rblstr</a> and <a target="_blank" href="http://twitter.com/rokeeffe">@rorokeeffe</a></h2>
+				<h4>Check out the project and submit bug reports on <a href="https://github.com/rblstr/flock">GitHub</a></h4>
 			</div>
 		</div>
 
@@ -81,13 +141,14 @@
 				first_script_tag,
 				player;
 
-			tag.src = "https://www.youtube.com/iframe_api";
+			tag.src = "http://www.youtube.com/iframe_api";
 			first_script_tag = document.getElementsByTagName('script')[0];
 			first_script_tag.parentNode.insertBefore(tag, first_script_tag);
 
 			function onYouTubeIframeAPIReady() {
 				player = new YT.Player('player', {
 				  events: {
+				  	'onError': onYTError,
 					'onReady': onPlayerReady,
 					'onStateChange': onPlayerStateChange
 				  }
@@ -105,11 +166,21 @@
 				});
 			});
 	
-			function onPlayerReady(event)
+			function onYTError(event)
 			{
-				//updateNowPlaying();
+				$('.errors').html(
+					$('.errors').html() +
+					'<div class="alert alert-danger">' +
+						'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
+						'<strong>Error!</strong> Having difficulty connecting to the YouTube API. The player controls will still work, but certain functions will not. This is most likely due to network problems. Thanks for your patience!' +
+					'</div>'
+				);
 			}
 
+			function onPlayerReady(event)
+			{
+				player.playVideoAt(0);
+			}
 
 			function onPlayerStateChange(event)
 			{
@@ -129,6 +200,22 @@
 
 					document.title = 'flock - ' + currentlyPlayingTrackRow.find('.playTitle').html();
 				}
+			}
+
+			function addArg(key, value)
+			{
+				var newParams = '';
+				for(var i = 0; i < key.length; i ++)
+				{
+					newParams += '&' + key[i] + '=' + value[i];
+				}
+				
+				window.location.search = '?subreddits=' + getParameterByName('subreddits') + newParams;
+			}
+
+			function getParameterByName(name) {
+			    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+			    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 			}
 	    </script>
 	</body>

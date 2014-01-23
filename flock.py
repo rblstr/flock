@@ -1,20 +1,24 @@
+import copy
+import pickle
+import math
+from datetime import datetime
+import os
 import HTMLParser
 import urllib
 import urlparse
 import logging
 import json
 import httplib
-from flask import Flask, render_template, request
+from werkzeug.contrib.cache import MemcachedCache
+from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__, static_folder='static', static_url_path='')
+cache = MemcachedCache(['127.0.0.1:11211'])
 
 logging.getLogger().setLevel(logging.DEBUG)
 
 REDDIT_URL = 'www.reddit.com'
-YOUTUBE_API_URL = 'https://www.googleapis.com'
-YOUTUBE_API_TOKEN = 'AIzaSyDPBTRqfIAJM5zRP9fDauMYcAkJip3UaMQ'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
-
 
 def getRedditResponse(subreddits, sort='top', t='week', limit=100):
     connection = httplib.HTTPConnection(REDDIT_URL)
@@ -38,39 +42,14 @@ def getRedditResponse(subreddits, sort='top', t='week', limit=100):
         return None
     
     body = response.read()
-    response_object = json.loads(body)
-    if response_object.get('error'):
+    try:
+        response_object = json.loads(body)
+    except ValueError:
+        return None
+    if response_object.get('error') != None:
         return None
     
     return response_object
-
-
-def getYouTubeResponse(links):
-    video_ids = []
-    for link in links:
-        link_url = link.get('url')
-        video_id = urlparse.parse_qs(urlparse.urlparse(link_url).query).get("v")[0]
-        video_ids.append(video_id)
-        
-        playlist = ",".join(video_ids)
-        playlist = unicode(playlist).encode('utf-8')
-        
-        query = {
-            'part' : 'snippet',
-            'id' : playlist,
-            'key' : YOUTUBE_API_TOKEN
-        }
-        query_string = urllib.urlencode(query)
-        
-        request_url = '%s/youtube/v3/videos?%s' % (YOUTUBE_API_URL, query_string)
-        
-        response = urllib.urlopen(request_url)
-        if not response:
-            return None
-        
-        body = response.read()
-        response_object = json.loads(body)
-        return response_object
 
 
 def sanitiseShortYouTubeURL(url):
@@ -107,6 +86,7 @@ def sanitiseURL(url):
     else:
         return None
 
+
 def parseChild(child):
     accepted_keys = [
         'id',
@@ -120,16 +100,20 @@ def parseChild(child):
         'subreddits',
         'created_utc',
     ]
+
     for key in child.keys():
         if key not in accepted_keys:
             del child[key]
+
     return child
 
+
 def parseRedditResponse(response_object):
+    response_copy = copy.deepcopy(response_object)
     html_parser = HTMLParser.HTMLParser()
     
-    children = response_object['data']['children']
-    children = [child.get('data') for child in children]
+    children = response_copy['data']['children']
+    children = [child['data'] for child in children]
     
     links = []
     for child in children:
@@ -153,21 +137,6 @@ def removeDuplicates(links):
             new_links.append(link)
             urls.append(link.get('url'))
     return new_links
-
-
-def getLinkTitles(links):
-    response_object = getYouTubeResponse(links)
-    if not response_object:
-        for link in links:
-            link['video_title'] = link.get('title')
-        return links # No YouTube response, but no matter
-        
-    for i,item in enumerate(response_object.get('items')):
-        snippet = item.get('snippet')
-        link = links[i]
-        link['video_title'] = snippet['title']
-    
-    return links
 
 
 def generateYouTubeURL(links):
@@ -194,50 +163,130 @@ def generateYouTubeURL(links):
     }
     query_string = urllib.urlencode(query)
     
-    youtube_url = "http://www.youtube.com/embed/%s?%s" % (first_id, query_string)
+    youtube_url = "https://www.youtube.com/embed/%s?%s" % (first_id, query_string)
     return youtube_url
 
 
-def renderError(error_string, subreddit_str=None):
-    return render_template('front.html', subreddits=subreddit_str, error=error_string)
+def getLinks(subreddits, sort, t):
+    subreddits_to_get = []
+    links = []
+    for subreddit in subreddits:
+        key = "%s+%s+%s" % (subreddit, sort, t)
+        subreddit_links = cache.get(key)
+        if not subreddit_links:
+            subreddits_to_get.append(subreddit)
+        else:
+            links.extend(pickle.loads(subreddit_links))
+
+    if subreddits_to_get:
+        reddit_response = getRedditResponse(subreddits_to_get, sort, t, 100)
+        if not reddit_response:
+            flash('No Reddit response', 'error')
+            return links
+
+        response_links = parseRedditResponse(reddit_response)
+
+        for subreddit in subreddits_to_get:
+            subreddit_links = filter(lambda link: link.get('subreddits') != subreddit,
+                                        response_links)
+            if subreddit_links:
+                key = "%s+%s+%s" % (subreddit, sort, t)
+                cache.set(key, pickle.dumps(subreddit_links))
+
+        links.extend(response_links)
+
+    return links
 
 
-def generatePlaylist(subreddits):
-    subreddit_str = " ".join(subreddits)
-    
-    # get reddit response
-    response_object = getRedditResponse(subreddits)
-    # no reddit response
-    if not response_object:
-        return renderError('No Reddit response', subreddit_str)
-    
-    # parse response
-    links = parseRedditResponse(response_object)
-    # no links detected
-    if not links:
-        return renderError('No links found', subreddit_str)
+def hot(entry):
+    ups = entry.get('ups')
+    downs = entry.get('downs')
+    date = entry.get("created_utc")
+    s = ups - downs
+    order = math.log10(max(abs(s), 1))
+    if s > 0:
+        sign = 1
+    elif s < 0:
+        sign = -1
+    else:
+        sign = 0
+    seconds = date - 1134028003
+    return round(order + sign * seconds / 45000, 7)
 
-    # process links
-    links = removeDuplicates(links)
-    links = getLinkTitles(links)
-    
-    # generate YouTube embed code
-    youtube_url = generateYouTubeURL(links)
-    
-    # return frontpage
-    return render_template( 'front.html',
-                            subreddits = subreddit_str,
-                            youtube_url = youtube_url,
-                            links = links )
+
+def top(entry):
+    return entry.get('ups') - entry.get('downs')
+
+
+supported_sorts = {
+    'top' : top,
+    'hot' : hot
+}
+
+supported_times = [
+    'day',
+    'week',
+    'month',
+    'year',
+    'all'
+]
 
 
 @app.route('/', methods=['GET'])
-def front():
-    subreddit_str = request.args.get('subreddits')
-    if not subreddit_str:
+def playlist():
+    subreddits_str = request.args.get('subreddits')
+    if not subreddits_str:
         return render_template('front.html')
-    subreddits = subreddit_str.split()
-    return generatePlaylist(subreddits)
+
+    sort = request.args.get('sort', 'hot')
+    if not sort in supported_sorts.keys():
+        flash('Invalid sort type: %s' % sort, 'error')
+        return redirect('/')
+
+    t = request.args.get('t', 'week')
+    if not t in supported_times:
+        flash('Invalid time type: %s' % t, 'error')
+        return redirect('/')
+
+    limit = request.args.get('limit', '100')
+    try:
+        limit = int(limit)
+    except ValueError:
+        flash('Invalid limit: %s' % limit, 'error')
+        return redirect('/')
+    if not (limit > 0 and limit <= 100):
+        flash('Invalid limit: %d' % limit, 'error')
+        return redirect('/')
+
+    subreddits = subreddits_str.split()
+    
+    links = getLinks(subreddits, sort, t)
+
+    if not links:
+        flash('No links found', 'error')
+        return redirect('/')
+
+    links = removeDuplicates(links)
+
+    sort_func = supported_sorts[sort]
+    links = sorted(links, reverse=True, key=lambda l: l['created_utc'])
+    links = sorted(links, reverse=True, key=lambda l: sort_func(l))
+
+    links = links[0:limit]
+
+    youtube_url = generateYouTubeURL(links)
+
+    return render_template( 'front.html',
+                            subreddits=subreddits_str,
+                            youtube_url=youtube_url,
+                            links=links, 
+                            sort=sort,
+                            time=t)
+
+
+app.config.from_object('debug_config')
+if os.getenv('FLOCK_SETTINGS', None):
+    app.config.from_envvar('FLOCK_SETTINGS')
 
 
 if __name__ == '__main__':

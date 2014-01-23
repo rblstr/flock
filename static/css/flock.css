@@ -67,7 +67,7 @@
 	font-weight:700;
 }
 
-.footer h2
+.footer h2, .footer h4
 {
 	text-align:right;
 }
@@ -103,4 +103,21 @@
 .track.nowPlaying .playIcon
 {
 	display:none;
+}
+.flock
+{
+	display:inline-block;
+}
+.beta-stamp
+{
+	color:#fff;
+	background-color: #a13761;
+	border-radius: 10%;
+	position: relative;
+	top: -6px;
+	display: inline-block;
+	text-transform: uppercase;
+	font-size: 0.775em;
+	padding: 3px 5px;
+	margin-left: 4px;
 }
