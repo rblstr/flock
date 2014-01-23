@@ -163,7 +163,7 @@ def generateYouTubeURL(links):
     }
     query_string = urllib.urlencode(query)
     
-    youtube_url = "http://www.youtube.com/embed/%s?%s" % (first_id, query_string)
+    youtube_url = "https://www.youtube.com/embed/%s?%s" % (first_id, query_string)
     return youtube_url
 
 
