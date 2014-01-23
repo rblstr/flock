@@ -212,7 +212,7 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
 					}
 				]
 		youtube_url = flock.generateYouTubeURL(links)
-		expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=&showinfo=1&autohide=0&rel=0'
+		expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=&showinfo=1&autohide=0&rel=0'
 		self.assertEquals(youtube_url, expected)
 
 	def test_generate_youtube_embed_url_two_links(self):
@@ -225,7 +225,7 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
 					}
 				]
 		youtube_url = flock.generateYouTubeURL(links)
-		expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+		expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
 		self.assertEquals(youtube_url, expected)
 
 	def test_generate_youtube_embed_url_multiple_links(self):
@@ -241,7 +241,7 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
 					}
 				]
 		youtube_url = flock.generateYouTubeURL(links)
-		expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM%2CwRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+		expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM%2CwRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
 		self.assertEquals(youtube_url, expected)
 
 	def test_generate_youtube_embed_url_missing_videoid(self):
@@ -257,7 +257,7 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
 					}
 				]
 		youtube_url = flock.generateYouTubeURL(links)
-		expected = 'http://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+		expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
 		self.assertEquals(youtube_url, expected)
 
 
@@ -399,8 +399,8 @@ class CacheTestCase(FlockBaseTestCase):
 		response = self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
 		self.assertEquals(response.status_code, 200)
-		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'top', 'week', 100)
-		flock.cache.get.assert_called_once_with('futuregarage+top+week')
+		flock.getRedditResponse.assert_called_once_with(['futuregarage'], 'hot', 'week', 100)
+		flock.cache.get.assert_called_once_with('futuregarage+hot+week')
 
 	def test_frontpage_hits_memcached_same_number_of_times_as_subreddits(self):
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
@@ -411,7 +411,7 @@ class CacheTestCase(FlockBaseTestCase):
 		response = self.app.get('/?subreddits=1+2+3+4+5', follow_redirects=True)
 
 		self.assertEquals(response.status_code, 200)
-		flock.getRedditResponse.assert_called_once_with(['1', '2', '3', '4', '5'], 'top', 'week', 100)
+		flock.getRedditResponse.assert_called_once_with(['1', '2', '3', '4', '5'], 'hot', 'week', 100)
 		self.assertEquals(flock.cache.get.call_count, 5)
 
 
@@ -426,11 +426,11 @@ class CacheTestCase(FlockBaseTestCase):
 
 		self.assertEquals(response.status_code, 200)
 		self.assertFalse(flock.getRedditResponse.called)
-		calls = [ mock.call('1+top+week'), 
-				mock.call('2+top+week'),
-				mock.call('3+top+week'),
-				mock.call('4+top+week'),
-				mock.call('5+top+week') ]
+		calls = [ mock.call('1+hot+week'), 
+				mock.call('2+hot+week'),
+				mock.call('3+hot+week'),
+				mock.call('4+hot+week'),
+				mock.call('5+hot+week') ]
 		flock.cache.get.assert_has_calls(calls)
 	
 	def test_link_sort_order_is_maintained_top(self):
@@ -464,7 +464,7 @@ class CacheTestCase(FlockBaseTestCase):
 		flock.getRedditResponse = mock.MagicMock(name='getRedditResponse',
 												 return_value=reddit_value)
 
-		response = self.app.get('/?subreddits=futuregarage+futurebeats', follow_redirects=True)
+		response = self.app.get('/?subreddits=futuregarage+futurebeats&sort=top', follow_redirects=True)
 
 		unescaped_response = h.unescape(response.data)
 		for child in futuregarage_links:
@@ -548,7 +548,7 @@ class CacheTestCase(FlockBaseTestCase):
 
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
-		flock.cache.set.assert_called_with('futuregarage+top+week', pickle.dumps(cache_value))
+		flock.cache.set.assert_called_with('futuregarage+hot+week', pickle.dumps(cache_value))
 
 	def test_cache_is_hit_after_cache_is_warmed(self):
 		cache_value = flock.parseRedditResponse(self.futuregarage_top)
@@ -561,8 +561,8 @@ class CacheTestCase(FlockBaseTestCase):
 
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
-		flock.getRedditResponse.assert_called_with(['futuregarage'], 'top', 'week', 100)
-		flock.cache.set.assert_called_with('futuregarage+top+week', pickle.dumps(cache_value))
+		flock.getRedditResponse.assert_called_with(['futuregarage'], 'hot', 'week', 100)
+		flock.cache.set.assert_called_with('futuregarage+hot+week', pickle.dumps(cache_value))
 
 		flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(cache_value))
 		flock.cache.set = mock.MagicMock(name='set')
@@ -570,7 +570,7 @@ class CacheTestCase(FlockBaseTestCase):
 
 		self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
-		flock.cache.get.assert_called_with('futuregarage+top+week')
+		flock.cache.get.assert_called_with('futuregarage+hot+week')
 		self.assertEqual(flock.getRedditResponse.call_count, 0)
 		self.assertEqual(flock.cache.set.call_count, 0)
 

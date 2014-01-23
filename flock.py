@@ -163,7 +163,7 @@ def generateYouTubeURL(links):
     }
     query_string = urllib.urlencode(query)
     
-    youtube_url = "http://www.youtube.com/embed/%s?%s" % (first_id, query_string)
+    youtube_url = "https://www.youtube.com/embed/%s?%s" % (first_id, query_string)
     return youtube_url
 
 
@@ -238,7 +238,7 @@ def playlist():
     if not subreddits_str:
         return render_template('front.html')
 
-    sort = request.args.get('sort', 'top')
+    sort = request.args.get('sort', 'hot')
     if not sort in supported_sorts.keys():
         flash('Invalid sort type: %s' % sort, 'error')
         return redirect('/')
