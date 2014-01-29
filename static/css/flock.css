@@ -33,6 +33,11 @@
 	color:#212121;
 }
 
+.smaller
+{
+	font-size:0.875em;
+}
+
 /* Specific Styles */
 .container 
 {
