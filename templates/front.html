@@ -186,12 +186,23 @@
 					function(event, params) {
 						var subreddits = $('#subredditsParam').val();
 
-						subreddits += ' ' + params.selected;
-						subreddits.replace(' ' + params.deselected, '');
+						if(params.selected)
+						{	
+							subreddits += ' ' + params.selected;
+						}
+						if(params.deselected)
+						{
+							subreddits = subreddits.replace(params.deselected, '');
+							subreddits = subreddits.replace('  ', ' ');
+						}
 
 						if(subreddits[0] == ' ')
 						{
 							subreddits = subreddits.slice(1);
+						}
+						if(subreddits[subreddits.length - 1] == ' ')
+						{
+							subreddits = subreddits.slice(0, subreddits.length - 2);
 						}
 
 						$('#subredditsParam').val(subreddits);
@@ -241,7 +252,7 @@
 				{
 					newParams += '&' + key[i] + '=' + value[i];
 				}
-				
+
 				window.location.search = '?subreddits=' + getParameterByName('subreddits') + newParams;
 			}
 
