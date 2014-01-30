@@ -33,7 +33,7 @@
 							<select data-placeholder="subreddit subreddit subreddit" class="chosen-select form-control" multiple tabindex="4">
 								<option value=""></option>
 								{% for subreddit in subreddit_list %}
-									<option value="{{subreddit['text']}}" {% if subreddit['text'] in subreddits %} selected {% endif %}>{{subreddit['text']}}</option>
+									<option value="{{subreddit}}" {% if subreddit in subreddits %} selected {% endif %}>{{subreddit}}</option>
 								{% endfor %}
 							</select>
 							<input type="hidden" name="subreddits" value="{{subreddits}}" id="subredditsParam" />

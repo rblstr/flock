@@ -31,16 +31,15 @@ def getSubredditList():
         
         results = response_obj['results']
         subreddit_list = results['collection1'] + results['collection2']
-        subreddit_list = [ entry['subreddit'] for entry in subreddit_list ]
         
+        parsed_subreddit_list = []
         for entry in subreddit_list:
+            entry = entry['subreddit']
             if entry['text'].startswith('/r/'):
-                entry['text'] = entry['text'].replace('/r/', '')
-                del entry['href']
-            else:
-                del entry
-        
-        subreddit_list = sorted(subreddit_list, key=lambda e: e['text'])
+                entry = entry['text'][3:]
+                parsed_subreddit_list.append(entry)
+
+        subreddit_list = sorted(parsed_subreddit_list)
         
         cache.set('subreddits', pickle.dumps(subreddit_list))
         
