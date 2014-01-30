@@ -182,7 +182,7 @@
 					e.stopPropagation();
 				});
 
-				$('.chosen-select').chosen({no_results_text: "Oops, no subreddit found! Maybe you should create it?"}).change(
+				$('.chosen-select').chosen({no_results_text: "Oops, no subreddit found! Maybe you should create it?", search_contains: true}).change(
 					function(event, params) {
 						var subreddits = $('#subredditsParam').val();
 
