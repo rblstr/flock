@@ -1,3 +1,11 @@
+body {
+	line-height:25px;
+	font-size:15px;
+}
+body, h1, h2, h3, h4, h5, h6 {
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	line-height:25px;
+}
 .italic 
 {
 	font-style: italic;
@@ -119,7 +127,7 @@
 	background-color: #a13761;
 	border-radius: 10%;
 	position: relative;
-	top: -6px;
+	top: -9px;
 	display: inline-block;
 	text-transform: uppercase;
 	font-size: 0.775em;

@@ -19,6 +19,21 @@
 		<link href="css/flock.css" rel="stylesheet">
 		<link href="css/chosen.min.css" rel="stylesheet">
 		<link href="css/chosen-bootstrap.css" rel="stylesheet">
+
+		<script type="text/javascript">
+		  WebFontConfig = {
+		    google: { families: [ 'Lato:400,700,400italic:latin' ] }
+		  };
+		  (function() {
+		    var wf = document.createElement('script');
+		    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+		    wf.type = 'text/javascript';
+		    wf.async = 'true';
+		    var s = document.getElementsByTagName('script')[0];
+		    s.parentNode.insertBefore(wf, s);
+		  })(); 
+	  	</script>
 	</head>
 	<body>
 		<div class="container">
@@ -33,7 +48,7 @@
 							<select data-placeholder="subreddit subreddit subreddit" class="chosen-select form-control" multiple tabindex="4">
 								<option value=""></option>
 								{% for subreddit in subreddit_list %}
-									<option value="{{subreddit}}" {% if subreddit in subreddits %} selected {% endif %}>{{subreddit}}</option>
+									<option value="{{subreddit}}" {% if subreddit|lower in subreddits|lower %} selected {% endif %}>{{subreddit}}</option>
 								{% endfor %}
 							</select>
 							<input type="hidden" name="subreddits" value="{{subreddits}}" id="subredditsParam" />
@@ -69,7 +84,6 @@
   						<a href="/?subreddits=blues+rock">Blues &amp; Rock</a> &bull; 
   						<a href="/?subreddits=90shiphop">90s HipHop</a> &bull; 
   						<a href="/?subreddits=futuregarage+futurebeats">FutureGarage &amp; FutureBeats</a>
-  						
   					</div>
   					<!-- <p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p> -->
 				</div>
