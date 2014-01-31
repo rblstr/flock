@@ -6,6 +6,8 @@ import time
 import unittest
 import mock
 import flock
+import io
+import urllib
 
 
 class MockHTTPResponseWithString(object):
@@ -28,6 +30,14 @@ class FlockBaseTestCase(unittest.TestCase):
 
         test_json_handle = open('tests/futuregarage_hot_week_100.json')
         self.futuregarage_hot = json.load(test_json_handle)
+        test_json_handle.close()
+
+        test_json_handle = open('tests/kimono.json')
+        self.kimono_data = test_json_handle.read().decode('unicode-escape')
+        test_json_handle.close()
+
+        test_json_handle = open('tests/subreddit_list_dump.json')
+        self.subreddit_list = json.load(test_json_handle)
         test_json_handle.close()
 
         self.original_getRedditResponse = flock.getRedditResponse
@@ -578,6 +588,32 @@ class CacheTestCase(FlockBaseTestCase):
         self.assertEqual(flock.getRedditResponse.call_count, 0)
         self.assertEqual(flock.cache.set.call_count, 0)
 
+
+class SubredditListTestCase(FlockBaseTestCase):
+    def setUp(self):
+        FlockBaseTestCase.setUp(self)
+
+        flock.getSubredditList = self.original_getSubredditList
+
+        self.original_urlopen = urllib.urlopen
+        urllib.urlopen = mock.MagicMock(name='urlopen', return_value=io.StringIO(self.kimono_data))
+
+    def tearDown(self):
+        FlockBaseTestCase.tearDown(self)
+
+        urllib.urlopen = self.original_urlopen
+
+    def test_subreddits_are_parsed(self):
+        subreddit_list = flock.getSubredditList()
+        self.assertItemsEqual(subreddit_list, self.subreddit_list)
+
+    def test_no_urlopen_when_cache_is_hot(self):
+        flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(self.subreddit_list))
+        subreddit_list = flock.getSubredditList()
+
+        self.assertFalse(urllib.urlopen.called)
+
+        self.assertItemsEqual(subreddit_list, self.subreddit_list)
 
 if __name__ == '__main__':
     unittest.main()
