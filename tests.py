@@ -607,6 +607,13 @@ class SubredditListTestCase(FlockBaseTestCase):
         subreddit_list = flock.getSubredditList()
         self.assertItemsEqual(subreddit_list, self.subreddit_list)
 
+    def test_cache_is_warmed_when_cold(self):
+        flock.cache.set = mock.MagicMock()
+
+        subreddit_list = flock.getSubredditList()
+
+        flock.cache.set.assert_called_with('subreddits', pickle.dumps(subreddit_list))
+
     def test_no_urlopen_when_cache_is_hot(self):
         flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(self.subreddit_list))
         subreddit_list = flock.getSubredditList()
