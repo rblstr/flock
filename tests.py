@@ -562,7 +562,8 @@ class CacheTestCase(FlockBaseTestCase):
 
         self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
-        flock.cache.set.assert_called_with('futuregarage+hot+week', pickle.dumps(cache_value))
+        flock.cache.set.assert_called_with('futuregarage+hot+week',
+                                           pickle.dumps(cache_value))
 
     def test_cache_is_hit_after_cache_is_warmed(self):
         cache_value = flock.parseRedditResponse(self.futuregarage_top)
@@ -576,7 +577,8 @@ class CacheTestCase(FlockBaseTestCase):
         self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
         flock.getRedditResponse.assert_called_with(['futuregarage'], 'hot', 'week', 100)
-        flock.cache.set.assert_called_with('futuregarage+hot+week', pickle.dumps(cache_value))
+        flock.cache.set.assert_called_with('futuregarage+hot+week',
+                                           pickle.dumps(cache_value))
 
         flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(cache_value))
         flock.cache.set = mock.MagicMock(name='set')
@@ -612,7 +614,9 @@ class SubredditListTestCase(FlockBaseTestCase):
 
         subreddit_list = flock.getSubredditList()
 
-        flock.cache.set.assert_called_with('subreddits', pickle.dumps(subreddit_list))
+        flock.cache.set.assert_called_with('subreddits',
+                                           pickle.dumps(subreddit_list),
+                                           timeout=60*60*24*7)
 
     def test_no_urlopen_when_cache_is_hot(self):
         flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(self.subreddit_list))
@@ -621,6 +625,19 @@ class SubredditListTestCase(FlockBaseTestCase):
         self.assertFalse(urllib.urlopen.called)
 
         self.assertItemsEqual(subreddit_list, self.subreddit_list)
+
+    def test_no_kimono_response(self):
+        urllib.urlopen = mock.MagicMock(side_effect=IOError)
+        try:
+            subreddit_list = flock.getSubredditList()
+        except:
+            self.assertTrue(False)
+        self.assertEqual(subreddit_list, [])
+
+    def test_no_kimono_result(self):
+        urllib.urlopen = mock.MagicMock(return_value=io.StringIO(u'{}'))
+        subreddit_list = flock.getSubredditList()
+        self.assertEqual(subreddit_list, [])
 
 if __name__ == '__main__':
     unittest.main()

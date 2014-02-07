@@ -34,8 +34,15 @@ def getSubredditList():
         }
         query_string = urllib.urlencode(query)
 
-        response = urllib.urlopen('%s?%s' % (KIMONO_URL, query_string))
+        try:
+            response = urllib.urlopen('%s?%s' % (KIMONO_URL, query_string))
+        except:
+            return []
+
         response_obj = json.load(response)
+
+        if response_obj.get('results', None) is None:
+            return []
 
         results = response_obj['results']
         subreddit_list = results['collection1'] + results['collection2']
@@ -49,7 +56,8 @@ def getSubredditList():
 
         subreddit_list = sorted(parsed_subreddit_list)
 
-        cache.set('subreddits', pickle.dumps(subreddit_list))
+        timeout = 60 * 60 * 24 * 7
+        cache.set('subreddits', pickle.dumps(subreddit_list), timeout=timeout)
 
     return subreddit_list
 
@@ -224,9 +232,9 @@ def getLinks(subreddits, sort, t):
 
         for subreddit in subreddits_to_get:
 
-            filter_subreddits = lambda link: link.get('subreddits') != subreddit
+            filter_lambda = lambda link: link.get('subreddits') != subreddit
 
-            subreddit_links = filter(filter_subreddits, response_links)
+            subreddit_links = filter(filter_lambda, response_links)
 
             if subreddit_links:
                 key = "%s+%s+%s" % (subreddit, sort, t)
