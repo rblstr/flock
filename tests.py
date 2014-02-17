@@ -6,6 +6,9 @@ import time
 import unittest
 import mock
 import flock
+import io
+import urllib
+import datetime
 
 
 class MockHTTPResponseWithString(object):
@@ -574,6 +577,48 @@ class CacheTestCase(FlockBaseTestCase):
 		self.assertEqual(flock.getRedditResponse.call_count, 0)
 		self.assertEqual(flock.cache.set.call_count, 0)
 
+
+class RateLimitTestCase(FlockBaseTestCase):
+    def setUp(self):
+        FlockBaseTestCase.setUp(self)
+        urllib.urlopen = mock.MagicMock()
+
+    def tearDown(self):
+        FlockBaseTestCase.tearDown(self)
+
+    def test_rate_limit_call_waits_set_seconds_before_second_attempt(self):
+        before_call = datetime.datetime.now()
+        response = flock.rateLimitedRequest('url', 1.0)
+        response = flock.rateLimitedRequest('url', 1.0)
+        after_call = datetime.datetime.now()
+        delta = after_call - before_call
+        self.assertGreaterEqual(delta.seconds, 1.0)
+
+    def test_rate_limit_call_waits_no_longer_than_timeout_for_second_request(self):
+        before_call = datetime.datetime.now()
+        response = flock.rateLimitedRequest('url', 1.0)
+        response = flock.rateLimitedRequest('url', 1.0)
+        after_call = datetime.datetime.now()
+        delta = after_call - before_call
+        self.assertLess(delta.seconds, 2.0)
+
+    def test_rate_limit_calls_urlopen_when_timeout_has_passed(self):
+        response = flock.rateLimitedRequest('url', 1.0)
+        urllib.urlopen.assert_called_once_with('url')
+
+    def test_rate_limit_returns_urlopen_reponse(self):
+        urlopen_response = io.StringIO(u'{}')
+        urllib.urlopen = mock.MagicMock(return_value=urlopen_response)
+        response = flock.rateLimitedRequest('url', 1.0)
+        self.assertEquals(response, urlopen_response)
+
+    def test_rate_limit_only_applies_to_same_url(self):
+        before_call = datetime.datetime.now()
+        response1 = flock.rateLimitedRequest('url1', 5.0)
+        response2 = flock.rateLimitedRequest('url2', 5.0)
+        after_call = datetime.datetime.now()
+        delta = after_call - before_call
+        self.assertLess(delta.seconds, 5.0)
 
 if __name__ == '__main__':
 	unittest.main()

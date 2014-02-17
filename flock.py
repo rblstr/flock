@@ -9,6 +9,8 @@ import urlparse
 import logging
 import json
 import httplib
+import time
+from datetime import datetime
 from werkzeug.contrib.cache import MemcachedCache
 from flask import Flask, render_template, request, redirect, flash
 
@@ -19,6 +21,22 @@ logging.getLogger().setLevel(logging.DEBUG)
 
 REDDIT_URL = 'www.reddit.com'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
+
+rate_limited_requests = {}
+
+
+def rateLimitedRequest(url, timeout):
+    global rate_limited_requests
+    last_request_time = rate_limited_requests.get(url, datetime(1979, 1, 1, 1))
+    request_time = datetime.now()
+    delta = request_time - last_request_time
+    if delta.seconds < timeout:
+        time.sleep(timeout-delta.seconds)
+    response = urllib.urlopen(url)
+    request_time = datetime.now()
+    rate_limited_requests[url] = request_time
+    return response
+
 
 def getRedditResponse(subreddits, sort='top', t='week', limit=100):
     connection = httplib.HTTPConnection(REDDIT_URL)
