@@ -5,10 +5,13 @@ from datetime import datetime
 import os
 import HTMLParser
 import urllib
+import urllib2
 import urlparse
 import logging
 import json
 import httplib
+import time
+from datetime import datetime
 from werkzeug.contrib.cache import MemcachedCache
 from flask import Flask, render_template, request, redirect, flash
 
@@ -17,7 +20,7 @@ cache = MemcachedCache(['127.0.0.1:11211'])
 
 logging.getLogger().setLevel(logging.DEBUG)
 
-REDDIT_URL = 'www.reddit.com'
+REDDIT_URL = 'http://www.reddit.com'
 KIMONO_URL = 'http://www.kimonolabs.com/api/6bl1t44o'
 YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
@@ -35,7 +38,7 @@ def getSubredditList():
         query_string = urllib.urlencode(query)
 
         try:
-            response = urllib.urlopen('%s?%s' % (KIMONO_URL, query_string))
+            response = makeRequest('%s?%s' % (KIMONO_URL, query_string))
 
             response_obj = json.load(response)
         except:
@@ -63,26 +66,48 @@ def getSubredditList():
     return subreddit_list
 
 
-def getRedditResponse(subreddits, sort='top', t='week', limit=100):
-    connection = httplib.HTTPConnection(REDDIT_URL)
+def makeRequest(url):
+    headers = {
+        'User-Agent': USER_AGENT
+    }
+    request = urllib2.Request(url, headers=headers)
+    return urllib2.urlopen(request)
 
+
+rate_limited_requests = {}
+
+
+def rateLimitedRequest(url, timeout):
+    global rate_limited_requests
+    last_request_time = rate_limited_requests.get(url, datetime(1979, 1, 1, 1))
+    request_time = datetime.now()
+    delta = request_time - last_request_time
+    if delta.seconds < timeout:
+        time.sleep(timeout-delta.seconds)
+    response = makeRequest(url)
+    request_time = datetime.now()
+    rate_limited_requests[url] = request_time
+    return response
+
+
+def getRedditResponse(subreddits, sort='top', t='week', limit=100):
     query = {
         't': t,
         'limit': limit
     }
     query_string = urllib.urlencode(query)
 
-    subreddit_string = '+'.join(subreddits)
-    request_url = '/r/%s/%s.json?%s' % (subreddit_string, sort, query_string)
+    request_url = '%s/r/%s/%s.json?%s' % (REDDIT_URL,
+                                          '+'.join(subreddits),
+                                          sort,
+                                          query_string)
 
-    headers = {
-        'User-Agent': USER_AGENT
-    }
+    try:
+        response = rateLimitedRequest(request_url, 2.0)
+    except urllib2.HTTPError:
+        return None
 
-    connection.request('GET', request_url, headers=headers)
-    response = connection.getresponse()
-
-    if not response or response.status != 200:
+    if not response:
         return None
 
     body = response.read()
@@ -166,8 +191,8 @@ def parseRedditResponse(response_object):
             continue
         child['url'] = url
         child['title'] = html_parser.unescape(child.get('title'))
-        permalink = 'http://%s%s' % (REDDIT_URL, child.get('permalink'))
-        child['permalink'] = permalink
+        child['permalink'] = 'http://%s%s' % (REDDIT_URL,
+                                              child.get('permalink'))
         child = parseChild(child)
         links.append(child)
 
@@ -208,7 +233,8 @@ def generateYouTubeURL(links):
     }
     query_string = urllib.urlencode(query)
 
-    youtube_url = "%s%s?%s" % (YOUTUBE_EMBED_URL, first_id, query_string)
+    youtube_url = "https://www.youtube.com/embed/%s?%s" % (first_id,
+                                                           query_string)
     return youtube_url
 
 
@@ -232,11 +258,9 @@ def getLinks(subreddits, sort, t):
         response_links = parseRedditResponse(reddit_response)
 
         for subreddit in subreddits_to_get:
-
-            filter_lambda = lambda link: link.get('subreddits') != subreddit
-
-            subreddit_links = filter(filter_lambda, response_links)
-
+            subreddit_links = filter(lambda link:
+                                     link.get('subreddits') != subreddit,
+                                     response_links)
             if subreddit_links:
                 key = "%s+%s+%s" % (subreddit, sort, t)
                 cache.set(key, pickle.dumps(subreddit_links))
@@ -259,7 +283,7 @@ def hot(entry):
     else:
         sign = 0
     seconds = date - 1134028003
-    return round(order + sign * seconds / 45000, 7)
+    return round(sign * order + seconds / 45000, 7)
 
 
 def top(entry):

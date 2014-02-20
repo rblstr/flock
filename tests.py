@@ -7,7 +7,8 @@ import unittest
 import mock
 import flock
 import io
-import urllib
+import urllib2
+import datetime
 
 
 class MockHTTPResponseWithString(object):
@@ -40,17 +41,17 @@ class FlockBaseTestCase(unittest.TestCase):
         self.subreddit_list = json.load(test_json_handle)
         test_json_handle.close()
 
+        self.original_getSubredditList = flock.getSubredditList
+
+        flock.getSubredditList = mock.MagicMock(return_value=[])
+
         self.original_getRedditResponse = flock.getRedditResponse
         self.original_cache_get = flock.cache.get
         self.original_cache_set = flock.cache.set
-        self.original_request = flock.httplib.HTTPConnection.request
-        self.original_response = flock.httplib.HTTPConnection.getresponse
-        self.original_getSubredditList = flock.getSubredditList
-
-        flock.getSubredditList = mock.MagicMock(name='getSubredditList', return_value=[])
+        self.original_urlopen = flock.urllib2.urlopen
 
         """ We never want to make an actual HTTP request """
-        flock.httplib.HTTPConnection.request = mock.MagicMock(name='request')
+        flock.urllib2.urlopen = mock.MagicMock()
         """ Ensure we don't hit the cache by default """
         flock.cache.get = mock.MagicMock(name='get', return_value=None)
     
@@ -58,9 +59,10 @@ class FlockBaseTestCase(unittest.TestCase):
         flock.getRedditResponse = self.original_getRedditResponse
         flock.cache.get = self.original_cache_get
         flock.cache.set = self.original_cache_set
-        flock.httplib.HTTPConnection.request = self.original_request
-        flock.httplib.HTTPConnection.getresponse = self.original_response
+        flock.urllib2.urlopen = self.original_urlopen
         flock.getSubredditList = self.original_getSubredditList
+
+        flock.rate_limited_requests = {}
 
 
 class FrontpageTestCase(FlockBaseTestCase):
@@ -70,8 +72,7 @@ class FrontpageTestCase(FlockBaseTestCase):
 
     def test_frontpage_subreddits_no_response(self):
         flock.cache.get = mock.MagicMock(name='get', return_value=None)
-        flock.httplib.HTTPConnection.getresponse = mock.MagicMock(name='getresponse',
-                                                                  return_value=None)
+        flock.urllib2.urlopen = mock.MagicMock(return_value=None)
 
         response = self.app.get('/?subreddits=futuregarage',
                                 content_type='text/html',
@@ -82,8 +83,9 @@ class FrontpageTestCase(FlockBaseTestCase):
 
     def test_frontpage_subreddits_no_response_404(self):
         flock.cache.get = mock.MagicMock(name='get', return_value=None)
-        flock.httplib.HTTPConnection.getresponse = mock.MagicMock(name='getresponse',
-                                                return_value=MockHTTPResponseWithString(404, ''))
+        def throw_404(url):
+            raise urllib2.HTTPError(url, 404, 'Not found', None, None)
+        flock.urllib2.urlopen = mock.MagicMock(side_effect=throw_404)
 
         response = self.app.get('/?subreddits=futuregarage',
                                 content_type='text/html',
@@ -93,10 +95,9 @@ class FrontpageTestCase(FlockBaseTestCase):
         self.assertIn('No Reddit response', response.data)
 
     def test_frontpage_subreddits_reddit_error(self):
-        response_string = '{ "error" : {} }'
+        response_string = u'{ "error" : {} }'
         flock.cache.get = mock.MagicMock(name='get', return_value=None)
-        flock.httplib.HTTPConnection.getresponse = mock.MagicMock(name='getresponse',
-                                    return_value=MockHTTPResponseWithString(200, response_string))
+        flock.urllib2.urlopen = mock.MagicMock(return_value=io.StringIO(response_string))
 
         response = self.app.get('/?subreddits=futuregarage',
                                 content_type='text/html',
@@ -106,10 +107,9 @@ class FrontpageTestCase(FlockBaseTestCase):
         self.assertIn('No Reddit response', response.data)
 
     def test_frontpage_subreddits_invalid_json(self):
-        response_string = '<html></html>'
+        return_value = io.StringIO(u'<html></html>')
         flock.cache.get = mock.MagicMock(name='get', return_value=None)
-        flock.httplib.HTTPConnection.getresponse = mock.MagicMock(name='getresponse',
-                                    return_value=MockHTTPResponseWithString(200, response_string))
+        flock.urllib2.urlopen = mock.MagicMock(return_value=return_value)
 
         response = self.app.get('/?subreddits=futuregarage',
                                 content_type='text/html',
@@ -119,9 +119,8 @@ class FrontpageTestCase(FlockBaseTestCase):
         self.assertIn('No Reddit response', response.data)
 
     def test_frontpage_subreddits_no_youtube_links(self):
-        flock.httplib.HTTPConnection.getresponse = mock.MagicMock(
-                name='getresponse',
-                return_value=MockHTTPResponseWithString(200, json.dumps(self.futuregarage_top)))
+        return_value = io.StringIO(json.dumps(self.futuregarage_top, ensure_ascii=False))
+        flock.urllib2.urlopen = mock.MagicMock(return_value=return_value)
 
         flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
@@ -148,10 +147,8 @@ class FrontpageTestCase(FlockBaseTestCase):
         h = HTMLParser.HTMLParser()
         futuregarage_links = flock.parseRedditResponse(self.futuregarage_top)
 
-        flock.httplib.HTTPConnection.request = mock.MagicMock(name='request')
-        flock.httplib.HTTPConnection.getresponse = mock.MagicMock(
-                name='getresponse ',
-                return_value=MockHTTPResponseWithString(200, json.dumps(self.futuregarage_top)))
+        return_value = io.StringIO(json.dumps(self.futuregarage_top, ensure_ascii=False))
+        flock.urllib2.urlopen = mock.MagicMock(return_value=return_value)
     
         flock.cache.get = mock.MagicMock(name='get', return_value=None)
 
@@ -562,8 +559,7 @@ class CacheTestCase(FlockBaseTestCase):
 
         self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
-        flock.cache.set.assert_called_with('futuregarage+hot+week',
-                                           pickle.dumps(cache_value))
+        flock.cache.set.assert_called_with('futuregarage+hot+week', pickle.dumps(cache_value))
 
     def test_cache_is_hit_after_cache_is_warmed(self):
         cache_value = flock.parseRedditResponse(self.futuregarage_top)
@@ -577,8 +573,7 @@ class CacheTestCase(FlockBaseTestCase):
         self.app.get('/?subreddits=futuregarage', follow_redirects=True)
 
         flock.getRedditResponse.assert_called_with(['futuregarage'], 'hot', 'week', 100)
-        flock.cache.set.assert_called_with('futuregarage+hot+week',
-                                           pickle.dumps(cache_value))
+        flock.cache.set.assert_called_with('futuregarage+hot+week', pickle.dumps(cache_value))
 
         flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(cache_value))
         flock.cache.set = mock.MagicMock(name='set')
@@ -596,55 +591,92 @@ class SubredditListTestCase(FlockBaseTestCase):
         FlockBaseTestCase.setUp(self)
 
         flock.getSubredditList = self.original_getSubredditList
-
-        self.original_urlopen = urllib.urlopen
-        urllib.urlopen = mock.MagicMock(name='urlopen', return_value=io.StringIO(self.kimono_data))
+        flock.urllib2.urlopen = mock.MagicMock(return_value=io.StringIO(self.kimono_data))
 
     def tearDown(self):
         FlockBaseTestCase.tearDown(self)
-
-        urllib.urlopen = self.original_urlopen
+        flock.urllib2.urlopen = self.original_urlopen
 
     def test_subreddits_are_parsed(self):
         subreddit_list = flock.getSubredditList()
         self.assertItemsEqual(subreddit_list, self.subreddit_list)
 
     def test_cache_is_warmed_when_cold(self):
+        flock.cache.get = mock.MagicMock(return_value=None)
         flock.cache.set = mock.MagicMock()
 
         subreddit_list = flock.getSubredditList()
 
+        self.assertTrue(flock.urllib2.urlopen.called)
         flock.cache.set.assert_called_with('subreddits',
                                            pickle.dumps(subreddit_list),
                                            timeout=60*60*24*7)
 
     def test_no_urlopen_when_cache_is_hot(self):
-        flock.cache.get = mock.MagicMock(name='get', return_value=pickle.dumps(self.subreddit_list))
+        flock.cache.get = mock.MagicMock(return_value=pickle.dumps(self.subreddit_list))
         subreddit_list = flock.getSubredditList()
 
-        self.assertFalse(urllib.urlopen.called)
+        self.assertFalse(flock.urllib2.urlopen.called)
 
         self.assertItemsEqual(subreddit_list, self.subreddit_list)
 
     def test_no_kimono_response(self):
-        urllib.urlopen = mock.MagicMock(side_effect=IOError)
-        try:
-            subreddit_list = flock.getSubredditList()
-        except:
-            self.assertTrue(False)
+        flock.urllib2.urlopen = mock.MagicMock(side_effect=IOError)
+        subreddit_list = flock.getSubredditList()
         self.assertEqual(subreddit_list, [])
 
     def test_no_kimono_result(self):
-        urllib.urlopen = mock.MagicMock(return_value=io.StringIO(u'{}'))
+        flock.urllib2.urlopen = mock.MagicMock(return_value=io.StringIO(u'{}'))
         subreddit_list = flock.getSubredditList()
         self.assertEqual(subreddit_list, [])
 
     def test_invalid_kimono_result(self):
-        urllib.urlopen = mock.MagicMock(return_value=io.StringIO(u'<xml/>'))
+        flock.urllib2.urlopen = mock.MagicMock(return_value=io.StringIO(u'<xml/>'))
         subreddit_list = flock.getSubredditList()
         self.assertEqual(subreddit_list, [])
 
 
+class RateLimitTestCase(FlockBaseTestCase):
+    def setUp(self):
+        FlockBaseTestCase.setUp(self)
+
+    def tearDown(self):
+        FlockBaseTestCase.tearDown(self)
+
+    def test_rate_limit_call_waits_set_seconds_before_second_attempt(self):
+        before_call = datetime.datetime.now()
+        response = flock.rateLimitedRequest('url', 1.0)
+        response = flock.rateLimitedRequest('url', 1.0)
+        after_call = datetime.datetime.now()
+        delta = after_call - before_call
+        self.assertGreaterEqual(delta.seconds, 1.0)
+
+    def test_rate_limit_call_waits_no_longer_than_timeout_for_second_request(self):
+        before_call = datetime.datetime.now()
+        response = flock.rateLimitedRequest('url', 1.0)
+        response = flock.rateLimitedRequest('url', 1.0)
+        after_call = datetime.datetime.now()
+        delta = after_call - before_call
+        self.assertLess(delta.seconds, 2.0)
+
+    def test_rate_limit_calls_urlopen_when_timeout_has_passed(self):
+        response = flock.rateLimitedRequest('url', 1.0)
+        self.assertEqual(flock.urllib2.urlopen.call_count, 1)
+
+    def test_rate_limit_returns_urlopen_reponse(self):
+        urlopen_response = io.StringIO(u'{}')
+        flock.urllib2.urlopen = mock.MagicMock(return_value=urlopen_response)
+        response = flock.rateLimitedRequest('url', 1.0)
+        self.assertEquals(response, urlopen_response)
+
+    def test_rate_limit_only_applies_to_same_url(self):
+        before_call = datetime.datetime.now()
+        response1 = flock.rateLimitedRequest('url1', 5.0)
+        response2 = flock.rateLimitedRequest('url2', 5.0)
+        after_call = datetime.datetime.now()
+        delta = after_call - before_call
+        self.assertLess(delta.seconds, 5.0)
+
+
 if __name__ == '__main__':
     unittest.main()
-
