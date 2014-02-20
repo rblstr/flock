@@ -54,7 +54,7 @@ def getSubredditList():
                 entry = entry['text'][3:]
                 parsed_subreddit_list.append(entry)
 
-        subreddit_list = sorted(parsed_subreddit_list)
+        subreddit_list = sorted(parsed_subreddit_list, key=len)
 
         timeout = 60 * 60 * 24 * 7
         cache.set('subreddits', pickle.dumps(subreddit_list), timeout=timeout)
@@ -307,6 +307,9 @@ def playlist():
         return redirect('/')
 
     subreddits = subreddits_str.split()
+    for entry in subreddits:
+        if not entry in subreddit_list:
+            subreddit_list.append(entry)
 
     links = getLinks(subreddits, sort, t)
 

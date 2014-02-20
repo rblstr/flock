@@ -408,15 +408,36 @@
           break;
         case 13:
           if (this.results_showing) {
-            evt.preventDefault();
+            if (!this.is_multiple || this.result_highlight) {
+              evt.preventDefault();
+              return this.result_select(evt);
+            }  
+
+            $(this.form_field).append('<option>' + $(evt.target).val() + '</option>');
+            $(this.form_field).trigger('chosen:updated');
+            this.result_highlight = this.search_results.find('li.active-result').last();
             return this.result_select(evt);
-          }
+          } 
           break;
         case 27:
           if (this.results_showing) {
             this.results_hide();
           }
           return true;
+        case 32: //space
+        case 13:
+          if (this.results_showing) {
+            if (!this.is_multiple || this.result_highlight) {
+              evt.preventDefault();
+              return this.result_select(evt);
+            }  
+
+            $(this.form_field).append('<option>' + $(evt.target).val() + '</option>');
+            $(this.form_field).trigger('chosen:updated');
+            this.result_highlight = this.search_results.find('li.active-result').last();
+            return this.result_select(evt);
+          } 
+          break;
         case 9:
         case 38:
         case 40:
