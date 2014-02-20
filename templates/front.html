@@ -48,10 +48,10 @@
 							<select data-placeholder="subreddit subreddit subreddit" class="chosen-select form-control" multiple tabindex="4">
 								<option value=""></option>
 								{% for subreddit in subreddit_list %}
-									<option value="{{subreddit}}" {% if subreddit|lower in subreddits|lower %} selected {% endif %}>{{subreddit}}</option>
+									<option value="{{subreddit}}" {% if subreddit|lower in selected_subreddits|map('lower') %} selected {% endif %}>{{subreddit}}</option>
 								{% endfor %}
 							</select>
-							<input type="hidden" name="subreddits" value="{{subreddits}}" id="subredditsParam" />
+							<input type="hidden" name="subreddits" value="{{selected_subreddits|join(' ')}}" id="subredditsParam" />
 					      	<!-- <input type="text" placeholder="subreddit subreddit subreddit" class="form-control" name="subreddits" value="{{subreddits}}" /> -->
 					      	<span class="input-group-btn">
 						        <button type="submit" class="btn btn-default" style="height:42px;"><span class="glyphicon glyphicon-play"></span> Play </button>

@@ -36,10 +36,10 @@ def getSubredditList():
 
         try:
             response = urllib.urlopen('%s?%s' % (KIMONO_URL, query_string))
+
+            response_obj = json.load(response)
         except:
             return []
-
-        response_obj = json.load(response)
 
         if response_obj.get('results', None) is None:
             return []
@@ -54,7 +54,8 @@ def getSubredditList():
                 entry = entry['text'][3:]
                 parsed_subreddit_list.append(entry)
 
-        subreddit_list = sorted(parsed_subreddit_list, key=len)
+        subreddit_list = sorted(parsed_subreddit_list, key=lambda s: s.lower())
+        subreddit_list = sorted(subreddit_list, key=len)
 
         timeout = 60 * 60 * 24 * 7
         cache.set('subreddits', pickle.dumps(subreddit_list), timeout=timeout)
@@ -282,6 +283,7 @@ supported_times = [
 @app.route('/', methods=['GET'])
 def playlist():
     subreddit_list = getSubredditList()
+
     subreddits_str = request.args.get('subreddits')
     if not subreddits_str:
         return render_template('front.html', subreddit_list=subreddit_list)
@@ -306,12 +308,12 @@ def playlist():
         flash('Invalid limit: %d' % limit, 'error')
         return redirect('/')
 
-    subreddits = subreddits_str.split()
-    for entry in subreddits:
-        if not entry in subreddit_list:
-            subreddit_list.append(entry)
+    selected_subreddits = subreddits_str.split()
+    for subreddit in selected_subreddits:
+        if not subreddit in subreddit_list:
+            subreddit_list.append(subreddit)
 
-    links = getLinks(subreddits, sort, t)
+    links = getLinks(selected_subreddits, sort, t)
 
     if not links:
         flash('No links found', 'error')
@@ -328,7 +330,7 @@ def playlist():
     youtube_url = generateYouTubeURL(links)
 
     return render_template('front.html',
-                           subreddits=subreddits_str,
+                           selected_subreddits=selected_subreddits,
                            youtube_url=youtube_url,
                            links=links,
                            sort=sort,

@@ -639,6 +639,12 @@ class SubredditListTestCase(FlockBaseTestCase):
         subreddit_list = flock.getSubredditList()
         self.assertEqual(subreddit_list, [])
 
+    def test_invalid_kimono_result(self):
+        urllib.urlopen = mock.MagicMock(return_value=io.StringIO(u'<xml/>'))
+        subreddit_list = flock.getSubredditList()
+        self.assertEqual(subreddit_list, [])
+
+
 if __name__ == '__main__':
     unittest.main()
 
