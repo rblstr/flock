@@ -33,6 +33,18 @@ class FlockBaseTestCase(unittest.TestCase):
         self.futuregarage_hot = json.load(test_json_handle)
         test_json_handle.close()
 
+        test_json_handle = open('tests/kimono.json')
+        self.kimono_data = test_json_handle.read().decode('unicode-escape')
+        test_json_handle.close()
+
+        test_json_handle = open('tests/subreddit_list_dump.json')
+        self.subreddit_list = json.load(test_json_handle)
+        test_json_handle.close()
+
+        self.original_getSubredditList = flock.getSubredditList
+
+        flock.getSubredditList = mock.MagicMock(return_value=[])
+
         self.original_getRedditResponse = flock.getRedditResponse
         self.original_cache_get = flock.cache.get
         self.original_cache_set = flock.cache.set
@@ -48,6 +60,7 @@ class FlockBaseTestCase(unittest.TestCase):
         flock.cache.get = self.original_cache_get
         flock.cache.set = self.original_cache_set
         flock.urllib2.urlopen = self.original_urlopen
+        flock.getSubredditList = self.original_getSubredditList
 
         flock.rate_limited_requests = {}
 
@@ -573,6 +586,56 @@ class CacheTestCase(FlockBaseTestCase):
         self.assertEqual(flock.cache.set.call_count, 0)
 
 
+class SubredditListTestCase(FlockBaseTestCase):
+    def setUp(self):
+        FlockBaseTestCase.setUp(self)
+
+        flock.getSubredditList = self.original_getSubredditList
+        flock.urllib2.urlopen = mock.MagicMock(return_value=io.StringIO(self.kimono_data))
+
+    def tearDown(self):
+        FlockBaseTestCase.tearDown(self)
+        flock.urllib2.urlopen = self.original_urlopen
+
+    def test_subreddits_are_parsed(self):
+        subreddit_list = flock.getSubredditList()
+        self.assertItemsEqual(subreddit_list, self.subreddit_list)
+
+    def test_cache_is_warmed_when_cold(self):
+        flock.cache.get = mock.MagicMock(return_value=None)
+        flock.cache.set = mock.MagicMock()
+
+        subreddit_list = flock.getSubredditList()
+
+        self.assertTrue(flock.urllib2.urlopen.called)
+        flock.cache.set.assert_called_with('subreddits',
+                                           pickle.dumps(subreddit_list),
+                                           timeout=60*60*24*7)
+
+    def test_no_urlopen_when_cache_is_hot(self):
+        flock.cache.get = mock.MagicMock(return_value=pickle.dumps(self.subreddit_list))
+        subreddit_list = flock.getSubredditList()
+
+        self.assertFalse(flock.urllib2.urlopen.called)
+
+        self.assertItemsEqual(subreddit_list, self.subreddit_list)
+
+    def test_no_kimono_response(self):
+        flock.urllib2.urlopen = mock.MagicMock(side_effect=IOError)
+        subreddit_list = flock.getSubredditList()
+        self.assertEqual(subreddit_list, [])
+
+    def test_no_kimono_result(self):
+        flock.urllib2.urlopen = mock.MagicMock(return_value=io.StringIO(u'{}'))
+        subreddit_list = flock.getSubredditList()
+        self.assertEqual(subreddit_list, [])
+
+    def test_invalid_kimono_result(self):
+        flock.urllib2.urlopen = mock.MagicMock(return_value=io.StringIO(u'<xml/>'))
+        subreddit_list = flock.getSubredditList()
+        self.assertEqual(subreddit_list, [])
+
+
 class RateLimitTestCase(FlockBaseTestCase):
     def setUp(self):
         FlockBaseTestCase.setUp(self)
@@ -614,6 +677,6 @@ class RateLimitTestCase(FlockBaseTestCase):
         delta = after_call - before_call
         self.assertLess(delta.seconds, 5.0)
 
+
 if __name__ == '__main__':
     unittest.main()
-

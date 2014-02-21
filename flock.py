@@ -21,7 +21,49 @@ cache = MemcachedCache(['127.0.0.1:11211'])
 logging.getLogger().setLevel(logging.DEBUG)
 
 REDDIT_URL = 'http://www.reddit.com'
+KIMONO_URL = 'http://www.kimonolabs.com/api/6bl1t44o'
+YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
+
+
+def getSubredditList():
+    subreddit_list = cache.get('subreddits')
+
+    if subreddit_list:
+        subreddit_list = pickle.loads(subreddit_list)
+    else:
+        query = {
+            'apikey': app.config['KIMONO_KEY']
+        }
+        query_string = urllib.urlencode(query)
+
+        try:
+            response = makeRequest('%s?%s' % (KIMONO_URL, query_string))
+
+            response_obj = json.load(response)
+        except:
+            return []
+
+        if response_obj.get('results', None) is None:
+            return []
+
+        results = response_obj['results']
+        subreddit_list = results['collection1'] + results['collection2']
+
+        parsed_subreddit_list = []
+        for entry in subreddit_list:
+            entry = entry['subreddit']
+            if entry['text'].startswith('/r/'):
+                entry = entry['text'][3:]
+                parsed_subreddit_list.append(entry)
+
+        subreddit_list = sorted(parsed_subreddit_list, key=lambda s: s.lower())
+        subreddit_list = sorted(subreddit_list, key=len)
+
+        timeout = 60 * 60 * 24 * 7
+        cache.set('subreddits', pickle.dumps(subreddit_list), timeout=timeout)
+
+    return subreddit_list
 
 
 def makeRequest(url):
@@ -59,10 +101,6 @@ def getRedditResponse(subreddits, sort='top', t='week', limit=100):
                                           '+'.join(subreddits),
                                           sort,
                                           query_string)
-
-    headers = {
-        'User-Agent': USER_AGENT
-    }
 
     try:
         response = rateLimitedRequest(request_url, 2.0)
@@ -268,9 +306,11 @@ supported_times = [
 
 @app.route('/', methods=['GET'])
 def playlist():
+    subreddit_list = getSubredditList()
+
     subreddits_str = request.args.get('subreddits')
     if not subreddits_str:
-        return render_template('front.html')
+        return render_template('front.html', subreddit_list=subreddit_list)
 
     sort = request.args.get('sort', 'hot')
     if not sort in supported_sorts.keys():
@@ -292,9 +332,12 @@ def playlist():
         flash('Invalid limit: %d' % limit, 'error')
         return redirect('/')
 
-    subreddits = subreddits_str.split()
+    selected_subreddits = subreddits_str.split()
+    for subreddit in selected_subreddits:
+        if not subreddit in subreddit_list:
+            subreddit_list.append(subreddit)
 
-    links = getLinks(subreddits, sort, t)
+    links = getLinks(selected_subreddits, sort, t)
 
     if not links:
         flash('No links found', 'error')
@@ -311,11 +354,12 @@ def playlist():
     youtube_url = generateYouTubeURL(links)
 
     return render_template('front.html',
-                           subreddits=subreddits_str,
+                           selected_subreddits=selected_subreddits,
                            youtube_url=youtube_url,
                            links=links,
                            sort=sort,
-                           time=t)
+                           time=t,
+                           subreddit_list=subreddit_list)
 
 
 app.config.from_object('debug_config')
@@ -324,4 +368,4 @@ if os.getenv('FLOCK_SETTINGS', None):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
