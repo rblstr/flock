@@ -192,7 +192,7 @@ def parseRedditResponse(response_object):
         child['url'] = url
         child['title'] = html_parser.unescape(child.get('title'))
         child['permalink'] = '%s%s' % (REDDIT_URL,
-                                              child.get('permalink'))
+                                       child.get('permalink'))
         child = parseChild(child)
         links.append(child)
 
