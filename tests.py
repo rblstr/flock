@@ -11,15 +11,6 @@ import urllib2
 import datetime
 
 
-class MockHTTPResponseWithString(object):
-    def __init__(self, status, response):
-        self.status = status
-        self.response = response
-    
-    def read(self):
-        return self.response
-
-
 class FlockBaseTestCase(unittest.TestCase):
     def setUp(self):
         flock.app.testing = True
