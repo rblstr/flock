@@ -9,7 +9,9 @@ import flock
 import io
 import urllib2
 import datetime
+import logging
 
+flock.logging.disable(logging.CRITICAL)
 
 class FlockBaseTestCase(unittest.TestCase):
     def setUp(self):
@@ -636,16 +638,16 @@ class RateLimitTestCase(FlockBaseTestCase):
 
     def test_rate_limit_call_waits_set_seconds_before_second_attempt(self):
         before_call = datetime.datetime.now()
-        response = flock.rateLimitedRequest('url', 1.0)
-        response = flock.rateLimitedRequest('url', 1.0)
+        response = flock.rateLimitedRequest('http://url.com', 1.0)
+        response = flock.rateLimitedRequest('http://url.com', 1.0)
         after_call = datetime.datetime.now()
         delta = after_call - before_call
         self.assertGreaterEqual(delta.seconds, 1.0)
 
     def test_rate_limit_call_waits_no_longer_than_timeout_for_second_request(self):
         before_call = datetime.datetime.now()
-        response = flock.rateLimitedRequest('url', 1.0)
-        response = flock.rateLimitedRequest('url', 1.0)
+        response = flock.rateLimitedRequest('http://url.com', 1.0)
+        response = flock.rateLimitedRequest('http://url.com', 1.0)
         after_call = datetime.datetime.now()
         delta = after_call - before_call
         self.assertLess(delta.seconds, 2.0)
@@ -662,8 +664,8 @@ class RateLimitTestCase(FlockBaseTestCase):
 
     def test_rate_limit_only_applies_to_same_url(self):
         before_call = datetime.datetime.now()
-        response1 = flock.rateLimitedRequest('url1', 5.0)
-        response2 = flock.rateLimitedRequest('url2', 5.0)
+        response1 = flock.rateLimitedRequest('http://url1.com', 5.0)
+        response2 = flock.rateLimitedRequest('http://url2.com', 5.0)
         after_call = datetime.datetime.now()
         delta = after_call - before_call
         self.assertLess(delta.seconds, 5.0)
