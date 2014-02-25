@@ -1,0 +1,3470 @@
+{
+    "frequency": "daily", 
+    "lastrunstatus": "success", 
+    "lastsuccess": "Wed Jan 29 2014 21:55:05 GMT+0000 (UTC)", 
+    "name": "musical-subreddits", 
+    "newdata": true, 
+    "nextrun": "Thu Jan 30 2014 21:55:05 GMT+0000 (UTC)", 
+    "results": {
+        "collection1": [
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/composer", 
+                    "text": "/r/composer"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/baroque", 
+                    "text": "/r/baroque"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/contemporary", 
+                    "text": "/r/contemporary"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/concertband", 
+                    "text": "/r/concertband"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/choralmusic", 
+                    "text": "/r/choralmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ChamberMusic", 
+                    "text": "/r/ChamberMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/EarlyMusic", 
+                    "text": "/r/EarlyMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/earlymusicalnotation", 
+                    "text": "/r/earlymusicalnotation"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ElitistClassical", 
+                    "text": "/r/ElitistClassical"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/icm", 
+                    "text": "/r/icm"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Opera", 
+                    "text": "/r/Opera"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/orchestra", 
+                    "text": "/r/orchestra"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/composer+baroque+classicalmusic+contemporary+concertband+choralmusic+ChamberMusic+EarlyMusic+earlymusicalnotation+ElitistClassical+icm+Opera+orchestra", 
+                    "text": "Classical music combined"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/acidhouse", 
+                    "text": "/r/acidhouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ambientmusic", 
+                    "text": "/r/ambientmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AStateOfTrance", 
+                    "text": "/r/AStateOfTrance"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AtmosphericDnB", 
+                    "text": "/r/AtmosphericDnB"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/BigBeat", 
+                    "text": "/r/BigBeat"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/boogiemusic", 
+                    "text": "/r/boogiemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/breakbeat", 
+                    "text": "/r/breakbeat"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/breakcore", 
+                    "text": "/r/breakcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/brostep", 
+                    "text": "/r/brostep"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/chicagohouse", 
+                    "text": "/r/chicagohouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/chillout", 
+                    "text": "/r/chillout"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Chipbreak", 
+                    "text": "/r/Chipbreak"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Chiptunes", 
+                    "text": "/r/Chiptunes"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/complextro", 
+                    "text": "/r/complextro"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/darkstep", 
+                    "text": "/r/darkstep"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/electronicdancemusic", 
+                    "text": "/r/electronicdancemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ElectronicJazz", 
+                    "text": "/r/ElectronicJazz"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ElectronicBlues", 
+                    "text": "/r/ElectronicBlues"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/electrohiphop", 
+                    "text": "/r/electrohiphop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/electronicmagic", 
+                    "text": "/r/electronicmagic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/electropop", 
+                    "text": "/r/electropop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/electroswing", 
+                    "text": "/r/electroswing"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ExperimentalMusic", 
+                    "text": "/r/ExperimentalMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/fidget", 
+                    "text": "/r/fidget"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/filth", 
+                    "text": "/r/filth"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/frenchelectro", 
+                    "text": "/r/frenchelectro"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/frenchhouse", 
+                    "text": "/r/frenchhouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/funkhouse", 
+                    "text": "/r/funkhouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/fusiondancemusic", 
+                    "text": "/r/fusiondancemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FutureFunkAirlines", 
+                    "text": "/r/FutureFunkAirlines"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FutureGarage", 
+                    "text": "/r/FutureGarage"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/futuresynth", 
+                    "text": "/r/futuresynth"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/gabber", 
+                    "text": "/r/gabber"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/glitch", 
+                    "text": "/r/glitch"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/glitchop", 
+                    "text": "/r/glitchop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Grime", 
+                    "text": "/r/Grime"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/happyhardcore", 
+                    "text": "/r/happyhardcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/hardhouse", 
+                    "text": "/r/hardhouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/hardstyle", 
+                    "text": "/r/hardstyle"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/house", 
+                    "text": "/r/house"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/idm", 
+                    "text": "/r/idm"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/industrialmusic", 
+                    "text": "/r/industrialmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ItaloDisco", 
+                    "text": "/r/ItaloDisco"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/latinhouse", 
+                    "text": "/r/latinhouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/LiquidDubstep", 
+                    "text": "/r/LiquidDubstep"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/mashups", 
+                    "text": "/r/mashups"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/minimal", 
+                    "text": "/r/minimal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/mixes", 
+                    "text": "/r/mixes"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/moombahcore", 
+                    "text": "/r/moombahcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/nightstep", 
+                    "text": "/r/nightstep"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/OldskoolRave", 
+                    "text": "/r/OldskoolRave"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/partymusic", 
+                    "text": "/r/partymusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/psybient", 
+                    "text": "/r/psybient"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PsyBreaks", 
+                    "text": "/r/PsyBreaks"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/psytrance", 
+                    "text": "/r/psytrance"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/purplemusic", 
+                    "text": "/r/purplemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/raggajungle", 
+                    "text": "/r/raggajungle"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/skweee", 
+                    "text": "/r/skweee"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/swinghouse", 
+                    "text": "/r/swinghouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/tech_house", 
+                    "text": "/r/tech_house"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Techno", 
+                    "text": "/r/Techno"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/tranceandbass", 
+                    "text": "/r/tranceandbass"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/trap", 
+                    "text": "/r/trap"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/tribalbeats", 
+                    "text": "/r/tribalbeats"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ukfunky", 
+                    "text": "/r/ukfunky"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/witchhouse", 
+                    "text": "/r/witchhouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/acidhouse+ambientmusic+AStateOfTrance+AtmosphericDnB+breakbeat+breakcore+brostep+chicagohouse+Chipbreak+Chiptunes+complextro+darkstep+DnB+DubStep+electronicdancemusic+ElectronicJazz+ElectronicBlues+electrohiphop+electrohouse+ElectronicMusic+electropop+electroswing+ExperimentalMusic+fidget+filth+freestylemusic+frenchelectro+frenchhouse+funkhouse+fusiondancemusic+futurebeats+FutureFunkAirlines+FutureGarage+futuresynth+gabber+glitch+glitchop+Grime+happyhardcore+hardhouse+hardstyle+house+idm+industrialmusic+ItaloDisco+LiquidDubstep+mashups+minimal+mixes+moombahcore+nightstep+OldskoolRave+partymusic+psybient+PsyBreaks+psytrance+purplemusic+raggajungle+RealDubstep+skweee+swinghouse+tech_house+Techno+Trance+tranceandbass+trap+tribalbeats+turntablists+ukfunky", 
+                    "text": "Combined electronic subreddits"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/80sHardcorePunk", 
+                    "text": "/r/80sHardcorePunk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/90sAlternative", 
+                    "text": "/r/90sAlternative"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/90sRock", 
+                    "text": "/r/90sRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AlternativeRock", 
+                    "text": "/r/AlternativeRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AltCountry", 
+                    "text": "/r/AltCountry"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AORMelodic", 
+                    "text": "/r/AORMelodic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ausmetal", 
+                    "text": "/r/ausmetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/BlackMetal", 
+                    "text": "/r/BlackMetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/bluegrass", 
+                    "text": "/r/bluegrass"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Blues", 
+                    "text": "/r/Blues"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/bluesrock", 
+                    "text": "/r/bluesrock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/CanadianClassicRock", 
+                    "text": "/r/CanadianClassicRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/CanadianMusic", 
+                    "text": "/r/CanadianMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ClassicRock", 
+                    "text": "/r/ClassicRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/country", 
+                    "text": "/r/country"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Christcore", 
+                    "text": "/r/Christcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/crunkcore", 
+                    "text": "/r/crunkcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/deathcore", 
+                    "text": "/r/deathcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/deathmetal", 
+                    "text": "/r/deathmetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Djent", 
+                    "text": "/r/Djent"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DoomMetal", 
+                    "text": "/r/DoomMetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Drone", 
+                    "text": "/r/Drone"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/EmoScreamo", 
+                    "text": "/r/EmoScreamo"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/epicmetal", 
+                    "text": "/r/epicmetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/flocked", 
+                    "text": "/r/flocked"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/folk", 
+                    "text": "/r/folk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/folkmetal", 
+                    "text": "/r/folkmetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/folkpunk", 
+                    "text": "/r/folkpunk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/folkrock", 
+                    "text": "/r/folkrock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GaragePunk", 
+                    "text": "/r/GaragePunk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GothicMetal", 
+                    "text": "/r/GothicMetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Grunge", 
+                    "text": "/r/Grunge"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/hardcore", 
+                    "text": "/r/hardcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/HardRock", 
+                    "text": "/r/HardRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/horrorpunk", 
+                    "text": "/r/horrorpunk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/indie_rock", 
+                    "text": "/r/indie_rock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/jrock", 
+                    "text": "/r/jrock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/krautrock", 
+                    "text": "/r/krautrock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/LadiesofMetal", 
+                    "text": "/r/LadiesofMetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MathRock", 
+                    "text": "/r/MathRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/melodicdeathmetal", 
+                    "text": "/r/melodicdeathmetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MelodicMetal", 
+                    "text": "/r/MelodicMetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MetalNews", 
+                    "text": "/r/MetalNews"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Metalmusic", 
+                    "text": "/r/Metalmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/metalcore", 
+                    "text": "/r/metalcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/monsterfuzz", 
+                    "text": "/r/monsterfuzz"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/neopsychedelia", 
+                    "text": "/r/neopsychedelia"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/NewWave", 
+                    "text": "/r/NewWave"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/noiserock", 
+                    "text": "/r/noiserock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/numetal", 
+                    "text": "/r/numetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/pianorock", 
+                    "text": "/r/pianorock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/poppunkers", 
+                    "text": "/r/poppunkers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PostHardcore", 
+                    "text": "/r/PostHardcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/powermetal", 
+                    "text": "/r/powermetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/powerpop", 
+                    "text": "/r/powerpop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/progrockmusic", 
+                    "text": "/r/progrockmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PsychedelicRock", 
+                    "text": "/r/PsychedelicRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Punkskahardcore", 
+                    "text": "/r/Punkskahardcore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Punk_Rock", 
+                    "text": "/r/Punk_Rock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/raprock", 
+                    "text": "/r/raprock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Rock", 
+                    "text": "/r/Rock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/shoegaze", 
+                    "text": "/r/shoegaze"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/stonerrock", 
+                    "text": "/r/stonerrock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/symphonicblackmetal", 
+                    "text": "/r/symphonicblackmetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/symphonicmetal", 
+                    "text": "/r/symphonicmetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/synthrock", 
+                    "text": "/r/synthrock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/truethrash", 
+                    "text": "/r/truethrash"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Truemetal", 
+                    "text": "/r/Truemetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/OutlawCountry", 
+                    "text": "/r/OutlawCountry"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/WomenRock", 
+                    "text": "/r/WomenRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/80sHardcorePunk+90sAlternative+90sRock+AlternativeRock+AltCountry+AORMelodic+ausmetal%20Australian%20Metal+BlackMetal+bluegrass+Blues+bluesrock+CanadianClassicRock+CanadianMusic+ClassicRock+country+Christcore+crunkcore+deathcore+deathmetal+Djent+DoomMetal+EmoScreamo+folk+folkmetal+folkpunk+folkrock+GaragePunk+GothicMetal+Grunge+hardcore+HardRock+horrorpunk+indie_rock+jrock+krautrock+MathRock+melodicdeathmetal+MelodicMetal+MetalNews+metal+metalcore+monsterfuzz+neopsychedelia+NewWave+noiserock+numetal+pianorock+poppunkers+PostHardcore+PostRock+powermetal+powerpop+ProgMetal+progrockmusic+PsychedelicRock+punk+Punkskahardcore+Punk_Rock+Rock+shoegaze+stonerrock+symphonicblackmetal+symphonicmetal+synthrock+truethrash+Truemetal+OutlawCountry+WomenRock", 
+                    "text": "Combined rock subreddits"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/90sHipHop", 
+                    "text": "/r/90sHipHop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/altrap", 
+                    "text": "/r/altrap"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/asianrap", 
+                    "text": "/r/asianrap"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/backspin", 
+                    "text": "/r/backspin"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ChapHop", 
+                    "text": "/r/ChapHop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Gfunk", 
+                    "text": "/r/Gfunk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Rap", 
+                    "text": "/r/Rap"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/raprock", 
+                    "text": "/r/raprock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/rapverses", 
+                    "text": "/r/rapverses"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/trapmuzik", 
+                    "text": "/r/trapmuzik"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/90sHipHop+altrap+asianrap+backspin+ChapHop+Gfunk+HipHopHeads+Rap+rapverses+trapmuzik+Turntablists", 
+                    "text": "Combined hip hop subreddits"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/2010smusic", 
+                    "text": "/r/2010smusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/2000smusic", 
+                    "text": "/r/2000smusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/90sMusic", 
+                    "text": "/r/90sMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/80sMusic", 
+                    "text": "/r/80sMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/70sMusic", 
+                    "text": "/r/70sMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/60sMusic", 
+                    "text": "/r/60sMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/50sMusic", 
+                    "text": "/r/50sMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/70s", 
+                    "text": "/r/70s"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Acappella", 
+                    "text": "/r/Acappella"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AcousticCovers", 
+                    "text": "/r/AcousticCovers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/afrobeat", 
+                    "text": "/r/afrobeat"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/animemusic", 
+                    "text": "/r/animemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/balkanbrass", 
+                    "text": "/r/balkanbrass"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/balkanmusic", 
+                    "text": "/r/balkanmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/boomswing", 
+                    "text": "/r/boomswing"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/bossanova", 
+                    "text": "/r/bossanova"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/britpop", 
+                    "text": "/r/britpop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/carmusic", 
+                    "text": "/r/carmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/concerts", 
+                    "text": "/r/concerts"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/cpop", 
+                    "text": "/r/cpop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Complextro", 
+                    "text": "/r/Complextro"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/dembow", 
+                    "text": "/r/dembow"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/disco", 
+                    "text": "/r/disco"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DreamPop", 
+                    "text": "/r/DreamPop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Elephant6", 
+                    "text": "/r/Elephant6"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Exotica", 
+                    "text": "/r/Exotica"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FilmMusic", 
+                    "text": "/r/FilmMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FunkSouMusic", 
+                    "text": "/r/FunkSouMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GypsyJazz", 
+                    "text": "/r/GypsyJazz"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/HispanicMusic", 
+                    "text": "/r/HispanicMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/IndieFolk", 
+                    "text": "/r/IndieFolk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Irishmusic", 
+                    "text": "/r/Irishmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ItalianMusic", 
+                    "text": "/r/ItalianMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/jambands", 
+                    "text": "/r/jambands"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/JazzFusion", 
+                    "text": "/r/JazzFusion"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/jpop", 
+                    "text": "/r/jpop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/listentoconcerts", 
+                    "text": "/r/listentoconcerts"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/klezmer", 
+                    "text": "/r/klezmer"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/lt10k", 
+                    "text": "/r/lt10k"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MelancholyMusic", 
+                    "text": "/r/MelancholyMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/minimalism_music", 
+                    "text": "/r/minimalism_music"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/motown", 
+                    "text": "/r/motown"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MovieMusic", 
+                    "text": "/r/MovieMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/muzyka", 
+                    "text": "/r/muzyka"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/oldiemusic", 
+                    "text": "/r/oldiemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/OldiesMusic", 
+                    "text": "/r/OldiesMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/pianocovers", 
+                    "text": "/r/pianocovers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PopMusic", 
+                    "text": "/r/PopMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PoptoRock", 
+                    "text": "/r/PoptoRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/rainymood", 
+                    "text": "/r/rainymood"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/recordstorefinds", 
+                    "text": "/r/recordstorefinds"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/reggae", 
+                    "text": "/r/reggae"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/remixxd", 
+                    "text": "/r/remixxd"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RetroMusic", 
+                    "text": "/r/RetroMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/rnb", 
+                    "text": "/r/rnb"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/rootsmusic", 
+                    "text": "/r/rootsmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SalsaMusic", 
+                    "text": "/r/SalsaMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Ska", 
+                    "text": "/r/Ska"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Soca", 
+                    "text": "/r/Soca"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/songbooks", 
+                    "text": "/r/songbooks"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Soulies", 
+                    "text": "/r/Soulies"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SoulDivas", 
+                    "text": "/r/SoulDivas"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SoundsVintage", 
+                    "text": "/r/SoundsVintage"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SpaceMusic", 
+                    "text": "/r/SpaceMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/swing", 
+                    "text": "/r/swing"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Tango", 
+                    "text": "/r/Tango"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheRealBookVideos", 
+                    "text": "/r/TheRealBookVideos"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TouhouMusic", 
+                    "text": "/r/TouhouMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TraditionalMusic", 
+                    "text": "/r/TraditionalMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/triphop", 
+                    "text": "/r/triphop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/VintageObscura", 
+                    "text": "/r/VintageObscura"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/vocaloid", 
+                    "text": "/r/vocaloid"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/WorldMusic", 
+                    "text": "/r/WorldMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/70s+Acappella+AcousticCovers+afrobeat+animemusic+balkanbrass+balkanmusic+boomswing+bossanova+britpop+carmusic+concerts+chillmusic+cpop+CrappyMusic+dembow+disco+DreamPop+Exotica+FilmMusic+folkpunk+FunkSouMusic+gamemusic+GypsyJazz+HispanicMusic+IndieFolk+Irishmusic+ItalianMusic+jambands+jazz+jpop+kpop+listentoconcerts+klezmer+lt10k+MelancholyMusic+minimalism_music+motown+MovieMusic+muzyka+oldiemusic+pianocovers+PopMusic+rainymood+recordstorefinds+reggae+remixxd+RetroMusic+rnb+rootsmusic+SalsaMusic+Ska+songbooks+Soulies+SoundsVintage+SpaceMusic+swing+Tango+TheRealBookVideos+TouhouMusic+treemusic+triphop+VintageObscura+vocaloid+WorldMusic+SoulDivas+blues", 
+                    "text": "Combined Other subreddits"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/audioinsurrection", 
+                    "text": "/r/audioinsurrection"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/danktunes", 
+                    "text": "/r/danktunes"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/albumaday", 
+                    "text": "/r/albumaday"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/albumoftheday", 
+                    "text": "/r/albumoftheday"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Albums", 
+                    "text": "/r/Albums"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/albumlisteners", 
+                    "text": "/r/albumlisteners"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/bassheavy", 
+                    "text": "/r/bassheavy"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Catchysongs", 
+                    "text": "/r/Catchysongs"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Chopping", 
+                    "text": "/r/Chopping"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/CircleMusic", 
+                    "text": "/r/CircleMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/cyberpunk_music", 
+                    "text": "/r/cyberpunk_music"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DANCEPARTY", 
+                    "text": "/r/DANCEPARTY"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/deepcuts", 
+                    "text": "/r/deepcuts"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/EarlyMusic", 
+                    "text": "/r/EarlyMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/earlymusicalnotation", 
+                    "text": "/r/earlymusicalnotation"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FemaleVocalists", 
+                    "text": "/r/FemaleVocalists"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/findaband", 
+                    "text": "/r/findaband"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FreeAlbums", 
+                    "text": "/r/FreeAlbums"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/freemusic", 
+                    "text": "/r/freemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/gameofbands", 
+                    "text": "/r/gameofbands"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GayMusic", 
+                    "text": "/r/GayMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/germusic", 
+                    "text": "/r/germusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/gethightothis", 
+                    "text": "/r/gethightothis"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FitTunes", 
+                    "text": "/r/FitTunes"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/HeadNodders", 
+                    "text": "/r/HeadNodders"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/heady", 
+                    "text": "/r/heady"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/HeyThatWasIn", 
+                    "text": "/r/HeyThatWasIn"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/HighFidelity", 
+                    "text": "/r/HighFidelity"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/IndieWok", 
+                    "text": "/r/IndieWok"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Instrumentals", 
+                    "text": "/r/Instrumentals"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ipm", 
+                    "text": "/r/ipm"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/IsolatedVocals", 
+                    "text": "/r/IsolatedVocals"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/LetsTalkMusic", 
+                    "text": "/r/LetsTalkMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/listentoconcerts", 
+                    "text": "/r/listentoconcerts"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/listentomusic", 
+                    "text": "/r/listentomusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/listentonews", 
+                    "text": "/r/listentonews"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ListenToUs", 
+                    "text": "/r/ListenToUs"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/livemusic", 
+                    "text": "/r/livemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/llawenyddhebddiwedd", 
+                    "text": "/r/llawenyddhebddiwedd"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Lyrics", 
+                    "text": "/r/Lyrics"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/mainstreammusic", 
+                    "text": "/r/mainstreammusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MiddleEasternMusic", 
+                    "text": "/r/MiddleEasternMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MLPtunes", 
+                    "text": "/r/MLPtunes"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicAlbums", 
+                    "text": "/r/MusicAlbums"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/musicsuggestions", 
+                    "text": "/r/musicsuggestions"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicToSleepTo", 
+                    "text": "/r/MusicToSleepTo"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/musicvideos", 
+                    "text": "/r/musicvideos"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/NewAlbums", 
+                    "text": "/r/NewAlbums"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/newmusic", 
+                    "text": "/r/newmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/onealbumaweek", 
+                    "text": "/r/onealbumaweek"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/partymusic", 
+                    "text": "/r/partymusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RedditOriginals", 
+                    "text": "/r/RedditOriginals"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RepublicOfMusic", 
+                    "text": "/r/RepublicOfMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RoyaltyFreeMusic", 
+                    "text": "/r/RoyaltyFreeMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/runningmusic", 
+                    "text": "/r/runningmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Samples", 
+                    "text": "/r/Samples"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SpotifyMusic", 
+                    "text": "/r/SpotifyMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ThemVoices", 
+                    "text": "/r/ThemVoices"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/unheardof", 
+                    "text": "/r/unheardof"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/WTFMusicVideos", 
+                    "text": "/r/WTFMusicVideos"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/danktunes+albumaday+albumoftheday+Albums+albumlisteners+bassheavy+Catchysongs+CircleMusic+CoverSongs+DutchMusic+EarlyMusic+earlymusicalnotation+FemaleVocalists+findaband+freemusic+Frisson+gameofbands+GayMusic+germusic+HeadNodders+heady+HeyThatWasIn+HighFidelity+ifyoulikeblank+indie+Instrumentals+IndieWok+ipm+IsolatedVocals+japanesemusic+LetsTalkMusic+listentoconcerts+listentomusic+ListenToThis+ListenToUs+livemusic+Lyrics+mainstreammusic+MiddleEasternMusic+Music+MusicAlbums+musicsuggestions+MusicToSleepTo+musicvideos+NewAlbums+newmusic+onealbumaweek+partymusic+RedditOriginals+RepublicOfMusic+RoyaltyFreeMusic+SpotifyMusic+ThemVoices+unheardof+WTFMusicVideos", 
+                    "text": "Combined Any Genre subreddits"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AlbumArtPorn", 
+                    "text": "/r/AlbumArtPorn"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/albumreviews", 
+                    "text": "/r/albumreviews"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Audio", 
+                    "text": "/r/Audio"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Audiophile", 
+                    "text": "/r/Audiophile"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AustinMusicians", 
+                    "text": "/r/AustinMusicians"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/bandmembers", 
+                    "text": "/r/bandmembers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/CarAV", 
+                    "text": "/r/CarAV"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/CassetteCulture", 
+                    "text": "/r/CassetteCulture"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Cd_collectors", 
+                    "text": "/r/Cd_collectors"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ConcertTickets", 
+                    "text": "/r/ConcertTickets"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/germusic", 
+                    "text": "/r/germusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ICoveredASong", 
+                    "text": "/r/ICoveredASong"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ifyoulikeblank", 
+                    "text": "/r/ifyoulikeblank"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/independentmusic", 
+                    "text": "/r/independentmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ineedasong/", 
+                    "text": "/r/ineedasong/"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/japanesemusic", 
+                    "text": "/r/japanesemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/koreanmusic", 
+                    "text": "/r/koreanmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/LubbockMusicians", 
+                    "text": "/r/LubbockMusicians"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/mixcd", 
+                    "text": "/r/mixcd"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/musiccritics", 
+                    "text": "/r/musiccritics"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/musicessentials", 
+                    "text": "/r/musicessentials"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicEventMeetUp", 
+                    "text": "/r/MusicEventMeetUp"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/musicfestivals", 
+                    "text": "/r/musicfestivals"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/musicnews", 
+                    "text": "/r/musicnews"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusiciansBlogs", 
+                    "text": "/r/MusiciansBlogs"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Musicians", 
+                    "text": "/r/Musicians"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/NeedVocals", 
+                    "text": "/r/NeedVocals"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/OSOM", 
+                    "text": "/r/OSOM"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/performer", 
+                    "text": "/r/performer"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RecordClub", 
+                    "text": "/r/RecordClub"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/recordstore", 
+                    "text": "/r/recordstore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/redditmusicclub", 
+                    "text": "/r/redditmusicclub"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Rockband", 
+                    "text": "/r/Rockband"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RockbandChallenges", 
+                    "text": "/r/RockbandChallenges"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TouringMusicians", 
+                    "text": "/r/TouringMusicians"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/VinylReleases", 
+                    "text": "/r/VinylReleases"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/300Songs", 
+                    "text": "/r/300Songs"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AcousticOriginals", 
+                    "text": "/r/AcousticOriginals"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Composer", 
+                    "text": "/r/Composer"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ICoveredASong", 
+                    "text": "/r/ICoveredASong"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/independentmusic", 
+                    "text": "/r/independentmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicCritique", 
+                    "text": "/r/MusicCritique"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicInTheMaking", 
+                    "text": "/r/MusicInTheMaking"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MyMusic", 
+                    "text": "/r/MyMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RadioReddit", 
+                    "text": "/r/RadioReddit"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ratemyband", 
+                    "text": "/r/ratemyband"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Songwriters", 
+                    "text": "/r/Songwriters"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheseAreOurAlbums", 
+                    "text": "/r/TheseAreOurAlbums"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ThisIsOurMusic", 
+                    "text": "/r/ThisIsOurMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/311", 
+                    "text": "/r/311"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ADTR", 
+                    "text": "/r/ADTR"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AliciaKeys", 
+                    "text": "/r/AliciaKeys"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ArcadeFire", 
+                    "text": "/r/ArcadeFire"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ArethaFranklin", 
+                    "text": "/r/ArethaFranklin"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/APerfectCircle", 
+                    "text": "/r/APerfectCircle"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheAvettBrothers", 
+                    "text": "/r/TheAvettBrothers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/BaysideIsACult", 
+                    "text": "/r/BaysideIsACult"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheBeachBoys", 
+                    "text": "/r/TheBeachBoys"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/billytalent", 
+                    "text": "/r/billytalent"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Blink182", 
+                    "text": "/r/Blink182"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/BMSR", 
+                    "text": "/r/BMSR"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/boniver", 
+                    "text": "/r/boniver"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/brandnew", 
+                    "text": "/r/brandnew"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/BruceSpringsteen", 
+                    "text": "/r/BruceSpringsteen"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Burial", 
+                    "text": "/r/Burial"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ChristinaAguilera", 
+                    "text": "/r/ChristinaAguilera"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/cityandcolour", 
+                    "text": "/r/cityandcolour"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Coldplay", 
+                    "text": "/r/Coldplay"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/CutCopy", 
+                    "text": "/r/CutCopy"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheCure", 
+                    "text": "/r/TheCure"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DavidBowie", 
+                    "text": "/r/DavidBowie"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Deadmau5", 
+                    "text": "/r/Deadmau5"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DeepPurple", 
+                    "text": "/r/DeepPurple"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Deftones", 
+                    "text": "/r/Deftones"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DieAntwoord", 
+                    "text": "/r/DieAntwoord"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DMB", 
+                    "text": "/r/DMB"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/elliegoulding", 
+                    "text": "/r/elliegoulding"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/empireofthesun", 
+                    "text": "/r/empireofthesun"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/EnterShikari", 
+                    "text": "/r/EnterShikari"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Evanescence", 
+                    "text": "/r/Evanescence"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/feedme", 
+                    "text": "/r/feedme"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FirstAidKit", 
+                    "text": "/r/FirstAidKit"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/flaminglips", 
+                    "text": "/r/flaminglips"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/franzferdinand", 
+                    "text": "/r/franzferdinand"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Gorillaz", 
+                    "text": "/r/Gorillaz"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/gratefuldead", 
+                    "text": "/r/gratefuldead"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Greenday", 
+                    "text": "/r/Greenday"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GunsNRoses", 
+                    "text": "/r/GunsNRoses"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Incubus", 
+                    "text": "/r/Incubus"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/JackWhite", 
+                    "text": "/r/JackWhite"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/JanetJackson", 
+                    "text": "/r/JanetJackson"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/John_frusciante", 
+                    "text": "/r/John_frusciante"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/kings_of_leon", 
+                    "text": "/r/kings_of_leon"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ladygaga", 
+                    "text": "/r/ladygaga"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/lanadelrey", 
+                    "text": "/r/lanadelrey"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/lennykravitz", 
+                    "text": "/r/lennykravitz"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Led_Zeppelin", 
+                    "text": "/r/Led_Zeppelin"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Macklemore", 
+                    "text": "/r/Macklemore"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Manowar", 
+                    "text": "/r/Manowar"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MariahCarey", 
+                    "text": "/r/MariahCarey"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MattAndKim", 
+                    "text": "/r/MattAndKim"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Megadeth", 
+                    "text": "/r/Megadeth"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Metallica", 
+                    "text": "/r/Metallica"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MGMT", 
+                    "text": "/r/MGMT"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MichaelJackson", 
+                    "text": "/r/MichaelJackson"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MinusTheBear", 
+                    "text": "/r/MinusTheBear"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ModestMouse", 
+                    "text": "/r/ModestMouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Morrissey", 
+                    "text": "/r/Morrissey"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MyChemicalRomance", 
+                    "text": "/r/MyChemicalRomance"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Muse", 
+                    "text": "/r/Muse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/NeilYoung", 
+                    "text": "/r/NeilYoung"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/NIN", 
+                    "text": "/r/NIN"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Nirvana", 
+                    "text": "/r/Nirvana"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/oasis", 
+                    "text": "/r/oasis"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Opeth", 
+                    "text": "/r/Opeth"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/OFWGKTA", 
+                    "text": "/r/OFWGKTA"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/OutKast", 
+                    "text": "/r/OutKast"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/panicatthedisco", 
+                    "text": "/r/panicatthedisco"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PearlJam", 
+                    "text": "/r/PearlJam"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/phish", 
+                    "text": "/r/phish"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Pinback", 
+                    "text": "/r/Pinback"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PinkFloyd", 
+                    "text": "/r/PinkFloyd"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/porcupinetree", 
+                    "text": "/r/porcupinetree"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/prettylights", 
+                    "text": "/r/prettylights"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Puscifer", 
+                    "text": "/r/Puscifer"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Queen", 
+                    "text": "/r/Queen"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RATM", 
+                    "text": "/r/RATM"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RedHotChiliPeppers", 
+                    "text": "/r/RedHotChiliPeppers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/The_Residents", 
+                    "text": "/r/The_Residents"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RiseAgainst", 
+                    "text": "/r/RiseAgainst"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Rush", 
+                    "text": "/r/Rush"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SigurRos", 
+                    "text": "/r/SigurRos"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Slayer", 
+                    "text": "/r/Slayer"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/slipknot", 
+                    "text": "/r/slipknot"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SmashingPumpkins", 
+                    "text": "/r/SmashingPumpkins"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SparksFTW", 
+                    "text": "/r/SparksFTW"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TeganAndSara", 
+                    "text": "/r/TeganAndSara"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheKillers", 
+                    "text": "/r/TheKillers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheOffspring", 
+                    "text": "/r/TheOffspring"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheStrokes", 
+                    "text": "/r/TheStrokes"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TheMagneticZeros", 
+                    "text": "/r/TheMagneticZeros"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/tragicallyhip", 
+                    "text": "/r/tragicallyhip"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ToolBand", 
+                    "text": "/r/ToolBand"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/U2Band", 
+                    "text": "/r/U2Band"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Umphreys", 
+                    "text": "/r/Umphreys"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/UnicornsMusic", 
+                    "text": "/r/UnicornsMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/velvetunderground", 
+                    "text": "/r/velvetunderground"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Ween", 
+                    "text": "/r/Ween"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/weezer", 
+                    "text": "/r/weezer"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/WeirdAl", 
+                    "text": "/r/WeirdAl"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/yesband", 
+                    "text": "/r/yesband"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Zappa", 
+                    "text": "/r/Zappa"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AlbumArtPorn", 
+                    "text": "/r/AlbumArtPorn"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/BandPorn", 
+                    "text": "/r/BandPorn"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/concertporn", 
+                    "text": "/r/concertporn"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/InstrumentPorn", 
+                    "text": "/r/InstrumentPorn"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MetalMemes", 
+                    "text": "/r/MetalMemes"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicPics", 
+                    "text": "/r/MusicPics"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GrooveSharkPlaylists", 
+                    "text": "/r/GrooveSharkPlaylists"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PirateRadio", 
+                    "text": "/r/PirateRadio"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Spotify", 
+                    "text": "/r/Spotify"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Turntablists", 
+                    "text": "/r/Turntablists"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/abletonclass", 
+                    "text": "/r/abletonclass"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/bandmembers", 
+                    "text": "/r/bandmembers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/bassLessons", 
+                    "text": "/r/bassLessons"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DancePerformance", 
+                    "text": "/r/DancePerformance"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/earlymusicalnotation", 
+                    "text": "/r/earlymusicalnotation"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Ethnomusicology", 
+                    "text": "/r/Ethnomusicology"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ExplainThisSong", 
+                    "text": "/r/ExplainThisSong"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GuitarLessons", 
+                    "text": "/r/GuitarLessons"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/LearnMusic", 
+                    "text": "/r/LearnMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicEd", 
+                    "text": "/r/MusicEd"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/musicindustry", 
+                    "text": "/r/musicindustry"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicInstructor", 
+                    "text": "/r/MusicInstructor"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/musicology", 
+                    "text": "/r/musicology"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MusicTheory", 
+                    "text": "/r/MusicTheory"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/solresol", 
+                    "text": "/r/solresol"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/tabs", 
+                    "text": "/r/tabs"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Accordion", 
+                    "text": "/r/Accordion"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/banjo", 
+                    "text": "/r/banjo"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/bassplaying", 
+                    "text": "/r/bassplaying"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Bassoon", 
+                    "text": "/r/Bassoon"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/beatbox", 
+                    "text": "/r/beatbox"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/brass", 
+                    "text": "/r/brass"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Cello", 
+                    "text": "/r/Cello"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Clarinet", 
+                    "text": "/r/Clarinet"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ClassicalGuitar", 
+                    "text": "/r/ClassicalGuitar"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Concertina", 
+                    "text": "/r/Concertina"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DoubleBass", 
+                    "text": "/r/DoubleBass"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Drummers", 
+                    "text": "/r/Drummers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Drums", 
+                    "text": "/r/Drums"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Flute", 
+                    "text": "/r/Flute"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/hammondorgan", 
+                    "text": "/r/hammondorgan"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/handpan", 
+                    "text": "/r/handpan"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/harmonica", 
+                    "text": "/r/harmonica"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Horn", 
+                    "text": "/r/Horn"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/keys", 
+                    "text": "/r/keys"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/luthier", 
+                    "text": "/r/luthier"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Oboe", 
+                    "text": "/r/Oboe"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Ocarina", 
+                    "text": "/r/Ocarina"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Percussion", 
+                    "text": "/r/Percussion"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Percussionists", 
+                    "text": "/r/Percussionists"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Piccolo", 
+                    "text": "/r/Piccolo"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Recorder", 
+                    "text": "/r/Recorder"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/saxophone", 
+                    "text": "/r/saxophone"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/saxophonics", 
+                    "text": "/r/saxophonics"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/synthesizers", 
+                    "text": "/r/synthesizers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Telecaster", 
+                    "text": "/r/Telecaster"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Trombone", 
+                    "text": "/r/Trombone"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Trumpet", 
+                    "text": "/r/Trumpet"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/tuba", 
+                    "text": "/r/tuba"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ukulele", 
+                    "text": "/r/ukulele"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/viola", 
+                    "text": "/r/viola"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Violinist", 
+                    "text": "/r/Violinist"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AudioEngineering", 
+                    "text": "/r/AudioEngineering"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/EDMproduction", 
+                    "text": "/r/EDMproduction"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/FL_Studio", 
+                    "text": "/r/FL_Studio"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AbletonLive", 
+                    "text": "/r/AbletonLive"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/AudioPost", 
+                    "text": "/r/AudioPost"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Cubase", 
+                    "text": "/r/Cubase"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/futurebeatproducers", 
+                    "text": "/r/futurebeatproducers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GameAudio", 
+                    "text": "/r/GameAudio"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/linuxaudio", 
+                    "text": "/r/linuxaudio"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/LocationSound", 
+                    "text": "/r/LocationSound"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Logic_Studio", 
+                    "text": "/r/Logic_Studio"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/MaxMSP", 
+                    "text": "/r/MaxMSP"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ProductionLounge", 
+                    "text": "/r/ProductionLounge"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Protools", 
+                    "text": "/r/Protools"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RateMyAudio", 
+                    "text": "/r/RateMyAudio"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Reaper", 
+                    "text": "/r/Reaper"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Reasoners", 
+                    "text": "/r/Reasoners"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Remix", 
+                    "text": "/r/Remix"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Renoise", 
+                    "text": "/r/Renoise"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Samplehunters", 
+                    "text": "/r/Samplehunters"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/SongStems", 
+                    "text": "/r/SongStems"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/VSTi", 
+                    "text": "/r/VSTi"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DIYGear", 
+                    "text": "/r/DIYGear"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Gear4Sale", 
+                    "text": "/r/Gear4Sale"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/GuitarPedals", 
+                    "text": "/r/GuitarPedals"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/skullcandy", 
+                    "text": "/r/skullcandy"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Synthesizers", 
+                    "text": "/r/Synthesizers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/raerth/comments/f2xrr/raerths_moderation_guide/", 
+                    "text": "Raerth's guide to starting a new subreddit"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Music/submit", 
+                    "text": "Make yourself a post in r/Music"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/NewReddits", 
+                    "text": "/r/NewReddits"
+                }
+            }
+        ], 
+        "collection2": [
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/classicalmusic", 
+                    "text": "/r/classicalmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DnB", 
+                    "text": "/r/DnB"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DubStep", 
+                    "text": "/r/DubStep"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/electrohouse", 
+                    "text": "/r/electrohouse"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ElectronicMusic", 
+                    "text": "/r/ElectronicMusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/futurebeats", 
+                    "text": "/r/futurebeats"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/RealDubstep", 
+                    "text": "/r/RealDubstep"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Trance", 
+                    "text": "/r/Trance"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/metal", 
+                    "text": "/r/metal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/PostRock", 
+                    "text": "/r/PostRock"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ProgMetal", 
+                    "text": "/r/ProgMetal"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/punk", 
+                    "text": "/r/punk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/HipHopHeads", 
+                    "text": "/r/HipHopHeads"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/chillmusic", 
+                    "text": "/r/chillmusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/gamemusic", 
+                    "text": "/r/gamemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/jazz", 
+                    "text": "/r/jazz"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/kpop", 
+                    "text": "/r/kpop"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/treemusic", 
+                    "text": "/r/treemusic"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/CoverSongs", 
+                    "text": "/r/CoverSongs"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Frisson", 
+                    "text": "/r/Frisson"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ifyoulikeblank", 
+                    "text": "/r/ifyoulikeblank"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/indie", 
+                    "text": "/r/indie"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/ListenToThis", 
+                    "text": "/r/ListenToThis"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Music", 
+                    "text": "/r/Music"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/TipOfMyTongue", 
+                    "text": "/r/TipOfMyTongue"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/vinyl", 
+                    "text": "/r/vinyl"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/WeAreTheMusicMakers", 
+                    "text": "/r/WeAreTheMusicMakers"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Beatles", 
+                    "text": "/r/Beatles"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DaftPunk", 
+                    "text": "/r/DaftPunk"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Radiohead", 
+                    "text": "/r/Radiohead"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/DJs", 
+                    "text": "/r/DJs"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Bass", 
+                    "text": "/r/Bass"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Guitar", 
+                    "text": "/r/Guitar"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Piano", 
+                    "text": "/r/Piano"
+                }
+            }, 
+            {
+                "subreddit": {
+                    "href": "http://www.reddit.com/r/Singing", 
+                    "text": "/r/Singing"
+                }
+            }
+        ]
+    }
+}
