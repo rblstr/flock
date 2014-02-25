@@ -214,7 +214,7 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
                     }
                 ]
         youtube_url = flock.generateYouTubeURL(links)
-        expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=&showinfo=1&autohide=0&rel=0'
+        expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?playlist=&showinfo=1&modestbranding=1&enablejsapi=1&version=3&autohide=0&rel=0'
         self.assertEquals(youtube_url, expected)
 
     def test_generate_youtube_embed_url_two_links(self):
@@ -227,7 +227,7 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
                     }
                 ]
         youtube_url = flock.generateYouTubeURL(links)
-        expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+        expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?playlist=wRpHf4X7FNM&showinfo=1&modestbranding=1&enablejsapi=1&version=3&autohide=0&rel=0'
         self.assertEquals(youtube_url, expected)
 
     def test_generate_youtube_embed_url_multiple_links(self):
@@ -243,7 +243,7 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
                     }
                 ]
         youtube_url = flock.generateYouTubeURL(links)
-        expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM%2CwRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+        expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?playlist=wRpHf4X7FNM%2CwRpHf4X7FNM&showinfo=1&modestbranding=1&enablejsapi=1&version=3&autohide=0&rel=0'
         self.assertEquals(youtube_url, expected)
 
     def test_generate_youtube_embed_url_missing_videoid(self):
@@ -259,7 +259,7 @@ class YouTubeEmbedURLTestCase(unittest.TestCase):
                     }
                 ]
         youtube_url = flock.generateYouTubeURL(links)
-        expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?modestbranding=1&playlist=wRpHf4X7FNM&showinfo=1&autohide=0&rel=0'
+        expected = 'https://www.youtube.com/embed/wRpHf4X7FNM?playlist=wRpHf4X7FNM&showinfo=1&modestbranding=1&enablejsapi=1&version=3&autohide=0&rel=0'
         self.assertEquals(youtube_url, expected)
 
 

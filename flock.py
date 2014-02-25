@@ -229,6 +229,8 @@ def generateYouTubeURL(links):
         'showinfo': 1,
         'modestbranding': 1,
         'rel': 0,
+        'version': 3,
+        'enablejsapi': 1,
         'playlist': playlist
     }
     query_string = urllib.urlencode(query)
