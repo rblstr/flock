@@ -6,9 +6,13 @@ import io
 import json
 import logging
 import pickle
+import os
 import time
 import unittest
 import urllib2
+
+os.environ['FLOCK_SETTINGS'] = 'debug_config.py'
+
 import flock
 
 
