@@ -1,21 +1,70 @@
+import mock
+import datetime
 import HTMLParser
 import httplib
+import io
 import json
+import logging
 import pickle
 import time
 import unittest
-import mock
-import flock
-import io
 import urllib2
-import datetime
-import logging
+import flock
 
-flock.logging.disable(logging.CRITICAL)
+
+flock.app.testing = True
+logging.disable(logging.CRITICAL)
+
+urllib2.urlopen = mock.MagicMock()
+
+
+class DuplicateSubredditTestCase(unittest.TestCase):
+    def setUp(self):
+        global mock_cache
+        self.app = flock.app.test_client()
+        self.mock_cache = {}
+
+        f = open('tests/futuregarage_hot_week_100.json', 'r')
+        reddit_response = json.load(f)
+        f.close()
+
+        self.reddit_response_dump = reddit_response
+
+        f = open('tests/subreddit_list_dump.json', 'r')
+        self.subreddit_list = json.load(f)
+        f.close()
+
+        self.getSubredditList = flock.getSubredditList
+        flock.getSubredditList = mock.MagicMock()
+
+        self.getRedditResponse = flock.getRedditResponse
+        flock.getRedditResponse = mock.MagicMock()
+
+        self.render_template = flock.render_template
+        flock.render_template = mock.MagicMock()
+        flock.render_template.side_effect = self.render_template
+
+        self.get = flock.cache.get
+        flock.cache.get = mock.MagicMock()
+        flock.cache.get.return_value = None
+
+    def tearDown(self):
+        flock.getSubredditList = self.getSubredditList
+        flock.getRedditResponse = self.getRedditResponse
+        flock.render_template = self.render_template
+        flock.cache.get = self.get
+
+    def test_subreddit_list_contains_no_duplicates(self):
+        flock.getSubredditList.return_value = self.subreddit_list[:]
+        flock.getRedditResponse.return_value = self.reddit_response_dump
+        response = self.app.get('/?subreddits=futuregarage+futurebeats')
+        self.assertEqual(response.status_code, 200)
+        args,kwargs = flock.render_template.call_args
+        self.assertItemsEqual(kwargs.get('subreddit_list'), self.subreddit_list)
+
 
 class FlockBaseTestCase(unittest.TestCase):
     def setUp(self):
-        flock.app.testing = True
         self.app = flock.app.test_client()
         
         test_json_handle = open('tests/futuregarage_top_week_100.json')

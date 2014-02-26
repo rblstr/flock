@@ -1,16 +1,15 @@
 import copy
-import pickle
-import math
-from datetime import datetime
-import os
 import HTMLParser
+import httplib
+import json
+import logging
+import math
+import os
+import pickle
+import time
 import urllib
 import urllib2
 import urlparse
-import logging
-import json
-import httplib
-import time
 from datetime import datetime
 from werkzeug.contrib.cache import MemcachedCache, SimpleCache
 from flask import Flask, render_template, request, redirect, flash
