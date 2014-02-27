@@ -1,22 +1,28 @@
 import copy
-import pickle
-import math
-from datetime import datetime
-import os
 import HTMLParser
+import httplib
+import json
+import logging
+import math
+import os
+import pickle
+import time
 import urllib
 import urllib2
 import urlparse
-import logging
-import json
-import httplib
-import time
 from datetime import datetime
-from werkzeug.contrib.cache import MemcachedCache
+from werkzeug.contrib.cache import MemcachedCache, SimpleCache
 from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__, static_folder='static', static_url_path='')
-cache = MemcachedCache(['127.0.0.1:11211'])
+app.config.from_object('debug_config')
+if os.getenv('FLOCK_SETTINGS', None):
+    app.config.from_envvar('FLOCK_SETTINGS')
+
+if app.debug:
+    cache = SimpleCache()
+else:
+    cache = MemcachedCache(['127.0.0.1:11211'])
 
 logging.getLogger().setLevel(logging.DEBUG)
 
@@ -41,6 +47,8 @@ def getSubredditList():
             response = makeRequest('%s?%s' % (KIMONO_URL, query_string))
 
             response_obj = json.load(response)
+
+            response.close()
         except:
             return []
 
@@ -71,7 +79,8 @@ def makeRequest(url):
         'User-Agent': USER_AGENT
     }
     request = urllib2.Request(url, headers=headers)
-    return urllib2.urlopen(request)
+    result = urllib2.urlopen(request)
+    return result
 
 
 rate_limited_requests = {}
@@ -79,14 +88,15 @@ rate_limited_requests = {}
 
 def rateLimitedRequest(url, timeout):
     global rate_limited_requests
-    last_request_time = rate_limited_requests.get(url, datetime(1979, 1, 1, 1))
+    domain = urlparse.urlparse(url).netloc
+    last_request_time = rate_limited_requests.get(domain, datetime(1979, 1, 1, 1))
     request_time = datetime.now()
     delta = request_time - last_request_time
     if delta.seconds < timeout:
         time.sleep(timeout-delta.seconds)
     response = makeRequest(url)
     request_time = datetime.now()
-    rate_limited_requests[url] = request_time
+    rate_limited_requests[domain] = request_time
     return response
 
 
@@ -111,6 +121,7 @@ def getRedditResponse(subreddits, sort='top', t='week', limit=100):
         return None
 
     body = response.read()
+    response.close()
     try:
         response_object = json.loads(body)
     except ValueError:
@@ -335,8 +346,9 @@ def playlist():
         return redirect('/')
 
     selected_subreddits = subreddits_str.split()
+    lower_subreddit_list = [sub.lower() for sub in subreddit_list]
     for subreddit in selected_subreddits:
-        if not subreddit in subreddit_list:
+        if not subreddit.lower() in lower_subreddit_list:
             subreddit_list.append(subreddit)
 
     links = getLinks(selected_subreddits, sort, t)
@@ -362,11 +374,6 @@ def playlist():
                            sort=sort,
                            time=t,
                            subreddit_list=subreddit_list)
-
-
-app.config.from_object('debug_config')
-if os.getenv('FLOCK_SETTINGS', None):
-    app.config.from_envvar('FLOCK_SETTINGS')
 
 
 if __name__ == '__main__':

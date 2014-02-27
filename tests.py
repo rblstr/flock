@@ -1,19 +1,84 @@
+import mock
+import datetime
 import HTMLParser
 import httplib
+import io
 import json
+import logging
 import pickle
+import os
 import time
 import unittest
-import mock
-import flock
-import io
 import urllib2
-import datetime
+
+os.environ['FLOCK_SETTINGS'] = 'debug_config.py'
+
+import flock
+
+
+flock.app.testing = True
+logging.disable(logging.CRITICAL)
+
+urllib2.urlopen = mock.MagicMock()
+
+
+class DuplicateSubredditTestCase(unittest.TestCase):
+    def setUp(self):
+        global mock_cache
+        self.app = flock.app.test_client()
+        self.mock_cache = {}
+
+        f = open('tests/futuregarage_hot_week_100.json', 'r')
+        reddit_response = json.load(f)
+        f.close()
+
+        self.reddit_response_dump = reddit_response
+
+        f = open('tests/subreddit_list_dump.json', 'r')
+        self.subreddit_list = json.load(f)
+        f.close()
+
+        self.getSubredditList = flock.getSubredditList
+        flock.getSubredditList = mock.MagicMock()
+
+        self.getRedditResponse = flock.getRedditResponse
+        flock.getRedditResponse = mock.MagicMock()
+
+        self.render_template = flock.render_template
+        flock.render_template = mock.MagicMock()
+        flock.render_template.side_effect = self.render_template
+
+        self.get = flock.cache.get
+        flock.cache.get = mock.MagicMock()
+        flock.cache.get.return_value = None
+
+    def tearDown(self):
+        flock.getSubredditList = self.getSubredditList
+        flock.getRedditResponse = self.getRedditResponse
+        flock.render_template = self.render_template
+        flock.cache.get = self.get
+
+    def test_subreddit_list_contains_no_duplicates(self):
+        flock.getSubredditList.return_value = self.subreddit_list[:]
+        flock.getRedditResponse.return_value = self.reddit_response_dump
+        response = self.app.get('/?subreddits=futuregarage+futurebeats')
+        self.assertEqual(response.status_code, 200)
+        args,kwargs = flock.render_template.call_args
+        self.assertItemsEqual(kwargs.get('subreddit_list'), self.subreddit_list)
+
+    def test_subreddit_list_contains_non_music_subreddits_when_requested(self):
+        flock.getSubredditList.return_value = self.subreddit_list[:]
+        flock.getRedditResponse.return_value = self.reddit_response_dump
+        response = self.app.get('/?subreddits=youtubehaiku')
+        self.assertEqual(response.status_code, 200)
+        args,kwargs = flock.render_template.call_args
+        subreddit_list = self.subreddit_list[:]
+        subreddit_list.append('youtubehaiku')
+        self.assertItemsEqual(kwargs.get('subreddit_list'), subreddit_list)
 
 
 class FlockBaseTestCase(unittest.TestCase):
     def setUp(self):
-        flock.app.testing = True
         self.app = flock.app.test_client()
         
         test_json_handle = open('tests/futuregarage_top_week_100.json')
@@ -636,16 +701,16 @@ class RateLimitTestCase(FlockBaseTestCase):
 
     def test_rate_limit_call_waits_set_seconds_before_second_attempt(self):
         before_call = datetime.datetime.now()
-        response = flock.rateLimitedRequest('url', 1.0)
-        response = flock.rateLimitedRequest('url', 1.0)
+        response = flock.rateLimitedRequest('http://url.com', 1.0)
+        response = flock.rateLimitedRequest('http://url.com', 1.0)
         after_call = datetime.datetime.now()
         delta = after_call - before_call
         self.assertGreaterEqual(delta.seconds, 1.0)
 
     def test_rate_limit_call_waits_no_longer_than_timeout_for_second_request(self):
         before_call = datetime.datetime.now()
-        response = flock.rateLimitedRequest('url', 1.0)
-        response = flock.rateLimitedRequest('url', 1.0)
+        response = flock.rateLimitedRequest('http://url.com', 1.0)
+        response = flock.rateLimitedRequest('http://url.com', 1.0)
         after_call = datetime.datetime.now()
         delta = after_call - before_call
         self.assertLess(delta.seconds, 2.0)
@@ -662,8 +727,8 @@ class RateLimitTestCase(FlockBaseTestCase):
 
     def test_rate_limit_only_applies_to_same_url(self):
         before_call = datetime.datetime.now()
-        response1 = flock.rateLimitedRequest('url1', 5.0)
-        response2 = flock.rateLimitedRequest('url2', 5.0)
+        response1 = flock.rateLimitedRequest('http://url1.com', 5.0)
+        response2 = flock.rateLimitedRequest('http://url2.com', 5.0)
         after_call = datetime.datetime.now()
         delta = after_call - before_call
         self.assertLess(delta.seconds, 5.0)
