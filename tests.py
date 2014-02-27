@@ -66,6 +66,16 @@ class DuplicateSubredditTestCase(unittest.TestCase):
         args,kwargs = flock.render_template.call_args
         self.assertItemsEqual(kwargs.get('subreddit_list'), self.subreddit_list)
 
+    def test_subreddit_list_contains_non_music_subreddits_when_requested(self):
+        flock.getSubredditList.return_value = self.subreddit_list[:]
+        flock.getRedditResponse.return_value = self.reddit_response_dump
+        response = self.app.get('/?subreddits=youtubehaiku')
+        self.assertEqual(response.status_code, 200)
+        args,kwargs = flock.render_template.call_args
+        subreddit_list = self.subreddit_list[:]
+        subreddit_list.append('youtubehaiku')
+        self.assertItemsEqual(kwargs.get('subreddit_list'), subreddit_list)
+
 
 class FlockBaseTestCase(unittest.TestCase):
     def setUp(self):
