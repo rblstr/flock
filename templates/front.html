@@ -17,22 +17,45 @@
 		<title>flock - subreddit playlister</title>
 		<link href="css/bootstrap.min.css" rel="stylesheet">
 		<link href="css/flock.css" rel="stylesheet">
+		<link href="css/chosen.min.css" rel="stylesheet">
+		<link href="css/chosen-bootstrap.css" rel="stylesheet">
+
+		<script type="text/javascript">
+		  WebFontConfig = {
+		    google: { families: [ 'Lato:400,700,400italic,700italic:latin' ] }
+		  };
+		  (function() {
+		    var wf = document.createElement('script');
+		    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+		      '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+		    wf.type = 'text/javascript';
+		    wf.async = 'true';
+		    var s = document.getElementsByTagName('script')[0];
+		    s.parentNode.insertBefore(wf, s);
+		  })(); 
+		 </script>
 	</head>
 	<body>
 		<div class="container">
 			<a href="/" class="black"><h1 class="flock">flock</h1><span class="beta-stamp">beta</span></a>
-			<form action="/" method="get">
+			<form action="/" method="get" id="mainForm">
 				<!-- Subreddits: <input type="text" name="subreddits" value="{{subreddits}}" />
 				<button type="submit" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-play"></span> Play </button>
 				<span>{{error}}</span> -->
-
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="input-group">
-					      <input type="text" placeholder="subreddit subreddit subreddit" class="form-control" name="subreddits" value="{{subreddits}}" />
-					      <span class="input-group-btn">
-					        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-play"></span> Play </button>
-					      </span>
+							<select data-placeholder="subreddit subreddit subreddit" class="chosen-select form-control" multiple tabindex="4">
+								<option value=""></option>
+								{% for subreddit in subreddit_list %}
+									<option value="{{subreddit}}" {% if subreddit|lower in selected_subreddits|map('lower') %} selected {% endif %}>{{subreddit}}</option>
+								{% endfor %}
+							</select>
+							<input type="hidden" name="subreddits" value="{{selected_subreddits|join(' ')}}" id="subredditsParam" />
+					      	<!-- <input type="text" placeholder="subreddit subreddit subreddit" class="form-control" name="subreddits" value="{{subreddits}}" /> -->
+					      	<span class="input-group-btn">
+						        <button type="submit" class="btn btn-default" style="height:42px;"><span class="glyphicon glyphicon-play"></span> Play </button>
+						    </span>
 					    </div><!-- /input-group -->
 			    	</div><!-- /.col-lg-6 -->
 				</div><!-- /.row -->
@@ -61,7 +84,6 @@
   						<a href="/?subreddits=blues+rock">Blues &amp; Rock</a> &bull; 
   						<a href="/?subreddits=90shiphop">90s HipHop</a> &bull; 
   						<a href="/?subreddits=futuregarage+futurebeats">FutureGarage &amp; FutureBeats</a>
-  						
   					</div>
   					<!-- <p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p> -->
 				</div>
@@ -143,88 +165,9 @@
 		<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	    <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
 	    <!-- Include all compiled plugins (for now) -->
-	    <script src="js/bootstrap.min.js"></script>
-		<script type="text/javascript">
-			var tag = document.createElement('script'),
-				first_script_tag,
-				player;
-
-			tag.src = "http://www.youtube.com/iframe_api";
-			first_script_tag = document.getElementsByTagName('script')[0];
-			first_script_tag.parentNode.insertBefore(tag, first_script_tag);
-
-			function onYouTubeIframeAPIReady() {
-				player = new YT.Player('player', {
-				  events: {
-				  	'onError': onYTError,
-					'onReady': onPlayerReady,
-					'onStateChange': onPlayerStateChange
-				  }
-				});
-			}
-
-			$(document).ready(function() {
-				$('.playTrack').on('click', function() {
-					player.playVideoAt($(this).parent().data('playnum'));
-					updateNowPlaying();
-				});
-
-				$('.commentNum').on('click', function(e) {
-					e.stopPropagation();
-				});
-			});
-	
-			function onYTError(event)
-			{
-				$('.errors').html(
-					$('.errors').html() +
-					'<div class="alert alert-danger">' +
-						'<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>' +
-						'<strong>Error!</strong> Having difficulty connecting to the YouTube API. The player controls will still work, but certain functions will not. This is most likely due to network problems. Thanks for your patience!' +
-					'</div>'
-				);
-			}
-
-			function onPlayerReady(event)
-			{
-				player.playVideoAt(0);
-			}
-
-			function onPlayerStateChange(event)
-			{
-				updateNowPlaying();
-			}
-
-			function updateNowPlaying()
-			{
-				if(player)
-				{
-					var currentlyPlayingIndex = player.getPlaylistIndex(),
-						nowPlaying = $('.track.nowPlaying'),
-						currentlyPlayingTrackRow = $('.track[data-playnum = \'' + currentlyPlayingIndex + '\']');
-
-					nowPlaying.removeClass('nowPlaying');
-					currentlyPlayingTrackRow.addClass('nowPlaying');
-
-					document.title = 'flock - ' + currentlyPlayingTrackRow.find('.playTitle').html();
-				}
-			}
-
-			function addArg(key, value)
-			{
-				var newParams = '';
-				for(var i = 0; i < key.length; i ++)
-				{
-					newParams += '&' + key[i] + '=' + value[i];
-				}
-				
-				window.location.search = '?subreddits=' + getParameterByName('subreddits') + newParams;
-			}
-
-			function getParameterByName(name) {
-			    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
-			    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
-			}
-	    </script>
+	    <script src="js/bootstrap.min-ck.js"></script>
+	    <script src="js/chosen.jquery.js"></script>
+	    <!-- Custom JS -->
+	    <script src="js/site-ck.js"></script>
 	</body>
 </html>

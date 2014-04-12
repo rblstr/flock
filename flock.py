@@ -1,54 +1,134 @@
 import copy
-import pickle
-import math
-from datetime import datetime
-import os
 import HTMLParser
-import urllib
-import urlparse
-import logging
-import json
 import httplib
-from werkzeug.contrib.cache import MemcachedCache
+import json
+import logging
+import math
+import os
+import pickle
+import time
+import urllib
+import urllib2
+import urlparse
+from datetime import datetime
+from werkzeug.contrib.cache import MemcachedCache, SimpleCache
 from flask import Flask, render_template, request, redirect, flash
 
 app = Flask(__name__, static_folder='static', static_url_path='')
-cache = MemcachedCache(['127.0.0.1:11211'])
+app.config.from_object('debug_config')
+if os.getenv('FLOCK_SETTINGS', None):
+    app.config.from_envvar('FLOCK_SETTINGS')
+
+if app.debug:
+    cache = SimpleCache()
+else:
+    cache = MemcachedCache(['127.0.0.1:11211'])
 
 logging.getLogger().setLevel(logging.DEBUG)
 
-REDDIT_URL = 'www.reddit.com'
+REDDIT_URL = 'http://www.reddit.com'
+KIMONO_URL = 'http://www.kimonolabs.com/api/6bl1t44o'
+YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
 
-def getRedditResponse(subreddits, sort='top', t='week', limit=100):
-    connection = httplib.HTTPConnection(REDDIT_URL)
 
+def getSubredditList():
+    subreddit_list = cache.get('subreddits')
+
+    if subreddit_list:
+        subreddit_list = pickle.loads(subreddit_list)
+    else:
+        query = {
+            'apikey': app.config['KIMONO_KEY']
+        }
+        query_string = urllib.urlencode(query)
+
+        try:
+            response = makeRequest('%s?%s' % (KIMONO_URL, query_string))
+
+            response_obj = json.load(response)
+
+            response.close()
+        except:
+            return []
+
+        if response_obj.get('results', None) is None:
+            return []
+
+        results = response_obj['results']
+        subreddit_list = results['collection1'] + results['collection2']
+
+        parsed_subreddit_list = []
+        for entry in subreddit_list:
+            entry = entry['subreddit']
+            if entry['text'].startswith('/r/'):
+                entry = entry['text'][3:]
+                parsed_subreddit_list.append(entry)
+
+        subreddit_list = sorted(parsed_subreddit_list, key=lambda s: s.lower())
+        subreddit_list = sorted(subreddit_list, key=len)
+
+        timeout = 60 * 60 * 24 * 7
+        cache.set('subreddits', pickle.dumps(subreddit_list), timeout=timeout)
+
+    return subreddit_list
+
+
+def makeRequest(url):
+    headers = {
+        'User-Agent': USER_AGENT
+    }
+    request = urllib2.Request(url, headers=headers)
+    result = urllib2.urlopen(request)
+    return result
+
+
+rate_limited_requests = {}
+
+
+def rateLimitedRequest(url, timeout):
+    global rate_limited_requests
+    domain = urlparse.urlparse(url).netloc
+    last_request_time = rate_limited_requests.get(domain, datetime(1979, 1, 1, 1))
+    request_time = datetime.now()
+    delta = request_time - last_request_time
+    if delta.seconds < timeout:
+        time.sleep(timeout-delta.seconds)
+    response = makeRequest(url)
+    request_time = datetime.now()
+    rate_limited_requests[domain] = request_time
+    return response
+
+
+def getRedditResponse(subreddits, sort='top', t='week', limit=100):
     query = {
-        't' : t,
-        'limit' : limit
+        't': t,
+        'limit': limit
     }
     query_string = urllib.urlencode(query)
-    
-    request_url = '/r/%s/%s.json?%s' % ('+'.join(subreddits), sort, query_string)
-    
-    headers = {
-        'User-Agent' : USER_AGENT
-    }
-    
-    connection.request('GET', request_url, headers=headers)
-    response = connection.getresponse()
 
-    if not response or response.status != 200:
+    request_url = '%s/r/%s/%s.json?%s' % (REDDIT_URL,
+                                          '+'.join(subreddits),
+                                          sort,
+                                          query_string)
+
+    try:
+        response = rateLimitedRequest(request_url, 2.0)
+    except urllib2.HTTPError:
         return None
-    
+
+    if not response:
+        return None
+
     body = response.read()
+    response.close()
     try:
         response_object = json.loads(body)
     except ValueError:
         return None
-    if response_object.get('error') != None:
+    if response_object.get('error') is not None:
         return None
-    
+
     return response_object
 
 
@@ -111,10 +191,10 @@ def parseChild(child):
 def parseRedditResponse(response_object):
     response_copy = copy.deepcopy(response_object)
     html_parser = HTMLParser.HTMLParser()
-    
+
     children = response_copy['data']['children']
     children = [child['data'] for child in children]
-    
+
     links = []
     for child in children:
         url = sanitiseURL(child.get('url'))
@@ -122,10 +202,11 @@ def parseRedditResponse(response_object):
             continue
         child['url'] = url
         child['title'] = html_parser.unescape(child.get('title'))
-        child['permalink'] = 'http://%s%s' % (REDDIT_URL, child.get('permalink'))
+        child['permalink'] = '%s%s' % (REDDIT_URL,
+                                       child.get('permalink'))
         child = parseChild(child)
         links.append(child)
-        
+
     return links
 
 
@@ -148,24 +229,25 @@ def generateYouTubeURL(links):
             continue
         v_id = v_id[0]
         youtube_ids.append(v_id)
-        
+
     first_id = youtube_ids[0]
     youtube_ids = youtube_ids[1:]
     playlist = ",".join(youtube_ids)
     playlist = unicode(playlist).encode('utf-8')
 
     query = {
-        'autohide' : 0,
-        'showinfo' : 1,
-        'modestbranding' : 1,
-        'rel' : 0,
+        'autohide': 0,
+        'showinfo': 1,
+        'modestbranding': 1,
+        'rel': 0,
         'version': 3,
         'enablejsapi': 1,
-        'playlist' : playlist
+        'playlist': playlist
     }
     query_string = urllib.urlencode(query)
-    
-    youtube_url = "https://www.youtube.com/embed/%s?%s" % (first_id, query_string)
+
+    youtube_url = "https://www.youtube.com/embed/%s?%s" % (first_id,
+                                                           query_string)
     return youtube_url
 
 
@@ -189,8 +271,9 @@ def getLinks(subreddits, sort, t):
         response_links = parseRedditResponse(reddit_response)
 
         for subreddit in subreddits_to_get:
-            subreddit_links = filter(lambda link: link.get('subreddits') != subreddit,
-                                        response_links)
+            subreddit_links = filter(lambda link:
+                                     link.get('subreddits') != subreddit,
+                                     response_links)
             if subreddit_links:
                 key = "%s+%s+%s" % (subreddit, sort, t)
                 cache.set(key, pickle.dumps(subreddit_links))
@@ -213,7 +296,7 @@ def hot(entry):
     else:
         sign = 0
     seconds = date - 1134028003
-    return round(order + sign * seconds / 45000, 7)
+    return round(sign * order + seconds / 45000, 7)
 
 
 def top(entry):
@@ -221,8 +304,8 @@ def top(entry):
 
 
 supported_sorts = {
-    'top' : top,
-    'hot' : hot
+    'top': top,
+    'hot': hot
 }
 
 supported_times = [
@@ -236,9 +319,11 @@ supported_times = [
 
 @app.route('/', methods=['GET'])
 def playlist():
+    subreddit_list = getSubredditList()
+
     subreddits_str = request.args.get('subreddits')
     if not subreddits_str:
-        return render_template('front.html')
+        return render_template('front.html', subreddit_list=subreddit_list)
 
     sort = request.args.get('sort', 'hot')
     if not sort in supported_sorts.keys():
@@ -260,9 +345,13 @@ def playlist():
         flash('Invalid limit: %d' % limit, 'error')
         return redirect('/')
 
-    subreddits = subreddits_str.split()
-    
-    links = getLinks(subreddits, sort, t)
+    selected_subreddits = subreddits_str.split()
+    lower_subreddit_list = [sub.lower() for sub in subreddit_list]
+    for subreddit in selected_subreddits:
+        if not subreddit.lower() in lower_subreddit_list:
+            subreddit_list.append(subreddit)
+
+    links = getLinks(selected_subreddits, sort, t)
 
     if not links:
         flash('No links found', 'error')
@@ -278,19 +367,14 @@ def playlist():
 
     youtube_url = generateYouTubeURL(links)
 
-    return render_template( 'front.html',
-                            subreddits=subreddits_str,
-                            youtube_url=youtube_url,
-                            links=links, 
-                            sort=sort,
-                            time=t)
-
-
-app.config.from_object('debug_config')
-if os.getenv('FLOCK_SETTINGS', None):
-    app.config.from_envvar('FLOCK_SETTINGS')
+    return render_template('front.html',
+                           selected_subreddits=selected_subreddits,
+                           youtube_url=youtube_url,
+                           links=links,
+                           sort=sort,
+                           time=t,
+                           subreddit_list=subreddit_list)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
-
+    app.run()
