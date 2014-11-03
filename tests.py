@@ -734,5 +734,63 @@ class RateLimitTestCase(FlockBaseTestCase):
         self.assertLess(delta.seconds, 5.0)
 
 
+class KimonoTestCase(unittest.TestCase):
+    @mock.patch('flock.cache.get')
+    @mock.patch('flock.makeRequest')
+    def test_kimono_error(self, mock_makeRequest, mock_get):
+        mock_get.return_value = None
+        mock_makeRequest.return_value = io.StringIO(u"""
+        {
+            "error": "somestring"
+        }
+        """)
+        subreddits = flock.getSubredditList()
+        self.assertEquals(subreddits, [])
+
+    @mock.patch('flock.cache.get')
+    @mock.patch('flock.makeRequest')
+    def test_kimono_no_collections(self, mock_makeRequest, mock_get):
+        mock_get.return_value = None
+        mock_makeRequest.return_value = io.StringIO(u"""
+        {
+            "results": {
+
+            }
+        }
+        """)
+        subreddits = flock.getSubredditList()
+        self.assertEquals(subreddits, [])
+
+    @mock.patch('flock.cache.get')
+    @mock.patch('flock.makeRequest')
+    def test_kimono_no_collection1(self, mock_makeRequest, mock_get):
+        mock_get.return_value = None
+        mock_makeRequest.return_value = io.StringIO(u"""
+        {
+            "results": {
+                "collection2": [
+                ]
+            }
+        }
+        """)
+        subreddits = flock.getSubredditList()
+        self.assertEquals(subreddits, [])
+
+    @mock.patch('flock.cache.get')
+    @mock.patch('flock.makeRequest')
+    def test_kimono_no_collection2(self, mock_makeRequest, mock_get):
+        mock_get.return_value = None
+        mock_makeRequest.return_value = io.StringIO(u"""
+        {
+            "results": {
+                "collection1": [
+                ]
+            }
+        }
+        """)
+        subreddits = flock.getSubredditList()
+        self.assertEquals(subreddits, [])
+
+
 if __name__ == '__main__':
     unittest.main()
