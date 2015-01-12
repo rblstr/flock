@@ -26,11 +26,32 @@ else:
 
 logging.getLogger().setLevel(logging.DEBUG)
 
+db = {}
+
 REDDIT_URL = 'http://www.reddit.com'
 KIMONO_URL = 'http://www.kimonolabs.com/api/6bl1t44o'
 YOUTUBE_EMBED_URL = 'https://www.youtube.com/embed/'
 USER_AGENT = 'flock/0.1 by /u/rblstr'
+DB_URI = 'tmp.db'
 
+
+def dbRead(key, default=None):
+    db = {}
+    if os.path.isfile(DB_URI):
+        with open(DB_URI, 'r') as f:
+            db = json.load(f)
+    else:
+        return default
+    return db.get(key, default)
+
+def dbWrite(key, value):
+    db = {}
+    if os.path.isfile(DB_URI):
+        with open(DB_URI, 'r') as f:
+            db = json.load(f)
+    db[key] = value
+    with open(DB_URI, 'w') as f:
+        json.dump(db, f)
 
 def getSubredditList():
     subreddit_list = cache.get('subreddits')
@@ -374,6 +395,41 @@ def playlist():
                            sort=sort,
                            time=t,
                            subreddit_list=subreddit_list)
+
+@app.route('/chart', methods=['GET'])
+def chart():
+    subreddits = ['futuregarage']
+
+    for subreddit in subreddits:
+        reddit_response = getRedditResponse(subreddits, sort='top', t='week', limit=100)
+        reddit_response = {child['permalink']: child for child in reddit_response}
+        response_links = parseRedditResponse(reddit_response)
+
+        week = datetime.date.today().isocalendar()[1]
+        root = dbRead('%s-%d' % (subreddit, week-1), None)
+
+        chart = {}
+        if root:
+            for key in reddit_response.keys():
+                entry = reddit_response[key]
+                chart[key] = entry
+                root_entry = root.get(key, None)
+                if root_entry:
+                    chart[key]['score'] = entry['ups'] - root_entry['ups']
+                else:
+                    chart[key]['score'] = entry['ups']
+        else:
+            dbWrite('%s-%d' % (subreddit, week), reddit_response)
+            chart = reddit_response
+            for entry in chart.values():
+                entry['score'] = entry['ups']
+
+        top_of_the_pops = chart.values()
+        top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['score'], reverse=True)
+        top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['ups'], reverse=True)
+
+        top_of_the_pops = ['%d. %s - %d:%d' % (i+1, entry['title'], entry['score'], entry['ups']) for i,entry in enumerate(top_of_the_pops.values)]
+        return '<br>'.join(top_of_the_pops)
 
 
 if __name__ == '__main__':
