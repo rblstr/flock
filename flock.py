@@ -77,6 +77,10 @@ def getSubredditList():
             return []
 
         results = response_obj['results']
+
+        if results.get('collection1', None) is None or results.get('collection2', None) is None:
+            return []
+
         subreddit_list = results['collection1'] + results['collection2']
 
         parsed_subreddit_list = []
