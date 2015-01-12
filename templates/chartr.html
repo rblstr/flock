@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <title>flock - subreddit playlister</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/flock.css" rel="stylesheet">
+        <link href="css/chosen.min.css" rel="stylesheet">
+        <link href="css/chosen-bootstrap.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <a href="/chart" class="black"><h1 class="flock">flock - chartr</h1><span class="beta-stamp">beta</span></a>
+
+            <br>
+
+            <iframe id="player" class="player" type="text/html" width="640" height="360" src="{{youtube_url}}" frameborder="0" allowfullscreen></iframe>
+
+            <br>
+
+            <!-- The list of tracks and such -->
+            <table class="table table-striped">
+                <tbody>
+                    {% for link in links %}
+                        <tr class="track" data-playnum="{{ loop.index0 }}">
+                            <td class="playNumber playTrack">
+                                <span class="playNum">{{ loop.index }}</span>
+                                <span class="glyphicon glyphicon-play grey playIcon"></span>
+                                <span class="glyphicon glyphicon-volume-down nowPlayingIcon"></span>
+                            </td>
+                            <td class="playTrack">
+                                <span class="playTitle">{{ link.get("title") }}</span>
+                                <span class="comments">
+                                    <a class="commentNum" target="_blank" href="{{ link.get("permalink") }}">
+                                
+                                        <span class="glyphicon glyphicon-comment"></span>
+                                        {{link.get("num_comments")}}</a>
+                                    </a>
+                                </span>
+                            </td>
+                            <td class="">
+                                <span class="youtube">
+                                    <a class="italic permalink" target="_blank" href="{{ link.get("url") }}">
+                                        <span class="glyphicon glyphicon-film"></span>
+                                        YouTube
+                                    </a>
+                                </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div class="footer">
+                <h2>with <span class="glyphicon glyphicon-heart"></span> from <a target="_blank" href="https://twitter.com/rblstr">@rblstr</a> and <a target="_blank" href="http://twitter.com/rokeeffe">@rokeeffe</a></h2>
+                <h4>Check out the project and submit bug reports on <a href="https://github.com/rblstr/flock">GitHub</a></h4>
+            </div>
+        </div>
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
+        <!-- Include all compiled plugins (for now) -->
+        <script src="js/bootstrap.min-ck.js"></script>
+        <script src="js/chosen.jquery.js"></script>
+        <!-- Custom JS -->
+        <script src="js/site-ck.js"></script>
+    </body>
+</html>

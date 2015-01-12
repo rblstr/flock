@@ -431,10 +431,11 @@ def chart():
     top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['score'], reverse=True)
     top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['ups'], reverse=True)
 
-    youtube_url = '<iframe id="player" class="player" type="text/html" width="640" height="360" src="%s" frameborder="0" allowfullscreen></iframe>' % generateYouTubeURL(top_of_the_pops)
+    youtube_url = generateYouTubeURL(top_of_the_pops)
 
-    top_of_the_pops = ['%d. %s - %d:%d' % (i+1, entry['title'], entry['score'], entry['ups']) for i,entry in enumerate(top_of_the_pops)]
-    return '%s<br>%s' % (youtube_url, '<br>'.join(top_of_the_pops))
+    return render_template('chartr.html',
+                           youtube_url=youtube_url,
+                           links=top_of_the_pops)
 
 
 if __name__ == '__main__':
