@@ -10,7 +10,7 @@ import time
 import urllib
 import urllib2
 import urlparse
-from datetime import datetime
+from datetime import date, datetime
 from werkzeug.contrib.cache import MemcachedCache, SimpleCache
 from flask import Flask, render_template, request, redirect, flash
 
@@ -402,38 +402,39 @@ def playlist():
 
 @app.route('/chart', methods=['GET'])
 def chart():
-    subreddits = ['futuregarage']
+    subreddit = 'futuregarage'
 
-    for subreddit in subreddits:
-        reddit_response = getRedditResponse(subreddits, sort='top', t='week', limit=100)
-        reddit_response = {child['permalink']: child for child in reddit_response}
-        response_links = parseRedditResponse(reddit_response)
+    reddit_response = getRedditResponse([subreddit], sort='top', t='week', limit=100)
+    reddit_response = parseRedditResponse(reddit_response)
+    reddit_response = {child['permalink']: child for child in reddit_response}
 
-        week = datetime.date.today().isocalendar()[1]
-        root = dbRead('%s-%d' % (subreddit, week-1), None)
+    week = date.today().isocalendar()[1]
+    root = dbRead('%s-%d' % (subreddit, week-1), None)
 
-        chart = {}
-        if root:
-            for key in reddit_response.keys():
-                entry = reddit_response[key]
-                chart[key] = entry
-                root_entry = root.get(key, None)
-                if root_entry:
-                    chart[key]['score'] = entry['ups'] - root_entry['ups']
-                else:
-                    chart[key]['score'] = entry['ups']
-        else:
-            dbWrite('%s-%d' % (subreddit, week), reddit_response)
-            chart = reddit_response
-            for entry in chart.values():
-                entry['score'] = entry['ups']
+    chart = {}
+    if root:
+        for key in reddit_response.keys():
+            entry = reddit_response[key]
+            chart[key] = entry
+            root_entry = root.get(key, None)
+            if root_entry:
+                chart[key]['score'] = entry['ups'] - root_entry['ups']
+            else:
+                chart[key]['score'] = entry['ups']
+    else:
+        dbWrite('%s-%d' % (subreddit, week), reddit_response)
+        chart = reddit_response
+        for entry in chart.values():
+            entry['score'] = entry['ups']
 
-        top_of_the_pops = chart.values()
-        top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['score'], reverse=True)
-        top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['ups'], reverse=True)
+    top_of_the_pops = chart.values()
+    top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['score'], reverse=True)
+    top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['ups'], reverse=True)
 
-        top_of_the_pops = ['%d. %s - %d:%d' % (i+1, entry['title'], entry['score'], entry['ups']) for i,entry in enumerate(top_of_the_pops.values)]
-        return '<br>'.join(top_of_the_pops)
+    youtube_url = '<iframe id="player" class="player" type="text/html" width="640" height="360" src="%s" frameborder="0" allowfullscreen></iframe>' % generateYouTubeURL(top_of_the_pops)
+
+    top_of_the_pops = ['%d. %s - %d:%d' % (i+1, entry['title'], entry['score'], entry['ups']) for i,entry in enumerate(top_of_the_pops)]
+    return '%s<br>%s' % (youtube_url, '<br>'.join(top_of_the_pops))
 
 
 if __name__ == '__main__':
