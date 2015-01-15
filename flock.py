@@ -402,7 +402,9 @@ def playlist():
 
 @app.route('/chart', methods=['GET'])
 def chart():
-    subreddit = 'futuregarage'
+    subreddit = request.args.get('subreddit')
+    if not subreddit:
+        return render_template('chartr.html')
 
     reddit_response = getRedditResponse([subreddit], sort='top', t='week', limit=100)
     reddit_response = parseRedditResponse(reddit_response)
@@ -434,6 +436,7 @@ def chart():
     youtube_url = generateYouTubeURL(top_of_the_pops)
 
     return render_template('chartr.html',
+                           subreddit=subreddit,
                            youtube_url=youtube_url,
                            links=top_of_the_pops)
 
