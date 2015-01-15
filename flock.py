@@ -51,7 +51,7 @@ def dbWrite(key, value):
             db = json.load(f)
     db[key] = value
     with open(DB_URI, 'w') as f:
-        json.dump(db, f)
+        json.dump(db, f, sort_keys=True, indent=4)
 
 def getSubredditList():
     subreddit_list = cache.get('subreddits')
@@ -406,9 +406,9 @@ def chart():
     if not subreddit:
         return render_template('chartr.html')
 
-    reddit_response = getRedditResponse([subreddit], sort='top', t='week', limit=100)
+    reddit_response = getRedditResponse([subreddit], sort='top', t='month', limit=100)
     reddit_response = parseRedditResponse(reddit_response)
-    reddit_response = {child['permalink']: child for child in reddit_response}
+    reddit_response = {child['id']: child for child in reddit_response}
 
     week = date.today().isocalendar()[1]
     root = dbRead('%s-%d' % (subreddit, week-1), None)
