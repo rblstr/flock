@@ -44,6 +44,7 @@ def dbRead(key, default=None):
         return default
     return db.get(key, default)
 
+
 def dbWrite(key, value):
     db = {}
     if os.path.isfile(DB_URI):
@@ -52,6 +53,7 @@ def dbWrite(key, value):
     db[key] = value
     with open(DB_URI, 'w') as f:
         json.dump(db, f, sort_keys=True, indent=4)
+
 
 def getSubredditList():
     subreddit_list = cache.get('subreddits')
@@ -78,7 +80,8 @@ def getSubredditList():
 
         results = response_obj['results']
 
-        if results.get('collection1', None) is None or results.get('collection2', None) is None:
+        if (results.get('collection1', None) is None
+                or results.get('collection2', None) is None):
             return []
 
         subreddit_list = results['collection1'] + results['collection2']
@@ -114,7 +117,8 @@ rate_limited_requests = {}
 def rateLimitedRequest(url, timeout):
     global rate_limited_requests
     domain = urlparse.urlparse(url).netloc
-    last_request_time = rate_limited_requests.get(domain, datetime(1979, 1, 1, 1))
+    epoch = datetime(1979, 1, 1, 1)
+    last_request_time = rate_limited_requests.get(domain, epoch)
     request_time = datetime.now()
     delta = request_time - last_request_time
     if delta.seconds < timeout:
@@ -308,6 +312,47 @@ def getLinks(subreddits, sort, t):
     return links
 
 
+def getChart(subreddit):
+    reddit_response = getRedditResponse([subreddit],
+                                        sort='top',
+                                        t='month',
+                                        limit=100)
+
+    reddit_response = parseRedditResponse(reddit_response)
+    reddit_response = {child['id']: child for child in reddit_response}
+
+    week = date.today().isocalendar()[1]
+    root = dbRead('%s-%d' % (subreddit, week-1), None)
+
+    chart = {}
+    if root:
+        for key in reddit_response.keys():
+            entry = reddit_response[key]
+            chart[key] = entry
+            root_entry = root.get(key, None)
+            if root_entry:
+                chart[key]['score'] = entry['ups'] - root_entry['ups']
+            else:
+                chart[key]['score'] = entry['ups']
+    else:
+        dbWrite('%s-%d' % (subreddit, week), reddit_response)
+        chart = reddit_response
+        for entry in chart.values():
+            entry['score'] = entry['ups']
+
+    top_of_the_pops = chart.values()
+
+    top_of_the_pops = sorted(top_of_the_pops,
+                             key=lambda e: e['score'],
+                             reverse=True)
+
+    top_of_the_pops = sorted(top_of_the_pops,
+                             key=lambda e: e['ups'],
+                             reverse=True)
+
+    return top_of_the_pops
+
+
 def hot(entry):
     ups = entry.get('ups')
     downs = entry.get('downs')
@@ -400,45 +445,21 @@ def playlist():
                            time=t,
                            subreddit_list=subreddit_list)
 
+
 @app.route('/chart', methods=['GET'])
 def chart():
     subreddit = request.args.get('subreddit')
     if not subreddit:
         return render_template('chartr.html')
 
-    reddit_response = getRedditResponse([subreddit], sort='top', t='month', limit=100)
-    reddit_response = parseRedditResponse(reddit_response)
-    reddit_response = {child['id']: child for child in reddit_response}
+    chart = getChart(subreddit)
 
-    week = date.today().isocalendar()[1]
-    root = dbRead('%s-%d' % (subreddit, week-1), None)
-
-    chart = {}
-    if root:
-        for key in reddit_response.keys():
-            entry = reddit_response[key]
-            chart[key] = entry
-            root_entry = root.get(key, None)
-            if root_entry:
-                chart[key]['score'] = entry['ups'] - root_entry['ups']
-            else:
-                chart[key]['score'] = entry['ups']
-    else:
-        dbWrite('%s-%d' % (subreddit, week), reddit_response)
-        chart = reddit_response
-        for entry in chart.values():
-            entry['score'] = entry['ups']
-
-    top_of_the_pops = chart.values()
-    top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['score'], reverse=True)
-    top_of_the_pops = sorted(top_of_the_pops, key=lambda e: e['ups'], reverse=True)
-
-    youtube_url = generateYouTubeURL(top_of_the_pops)
+    youtube_url = generateYouTubeURL(chart)
 
     return render_template('chartr.html',
                            subreddit=subreddit,
                            youtube_url=youtube_url,
-                           links=top_of_the_pops)
+                           links=chart)
 
 
 if __name__ == '__main__':
