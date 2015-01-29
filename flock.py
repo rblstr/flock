@@ -462,5 +462,57 @@ def chart():
                            links=chart)
 
 
+def chartScrape():
+    subreddit = 'futuregarage'
+
+    def tmp_getRedditResponse(subreddit, after=None):
+        query = {
+            't': 'month',
+            'limit': 100,
+        }
+        if after:
+            query['after'] = after
+        query_string = urllib.urlencode(query)
+
+        request_url = '%s/r/%s/%s.json?%s' % (REDDIT_URL,
+                                              subreddit,
+                                              'top',
+                                              query_string)
+
+        try:
+            response = rateLimitedRequest(request_url, 2.0)
+        except urllib2.HTTPError:
+            return None
+
+        if not response:
+            return None
+
+        body = response.read()
+        response.close()
+        try:
+            response_object = json.loads(body)
+        except ValueError:
+            return None
+        if response_object.get('error') is not None:
+            return None
+
+        children = parseRedditResponse(response_object)
+
+        response_after = response_object['data'].get('after', None)
+        if response_after:
+            children = children + tmp_getRedditResponse(subreddit,
+                                                        response_after)
+
+        return children
+
+
+    children = tmp_getRedditResponse(subreddit)
+    reddit_response = {child['id']: child for child in children}
+
+    week = date.today().isocalendar()[1]
+
+    dbWrite('%s-%d' % (subreddit, week), reddit_response)
+
+
 if __name__ == '__main__':
     app.run()
